@@ -1,0 +1,516 @@
+openapi: 3.0.0
+info:
+  title: Dragon Cave Lineage DB
+  description:
+    The API for a Dragon Cave Lineage Database that will hold all sorts
+    of lineages based on lineage type, holiday, breeds, etc.
+  contact:
+    name: Brittani S Avery
+    email: brittani.s.avery@gmail.com
+  version: "1.0"
+servers:
+  - url: https://virtserver.swaggerhub.com/brittaniSavery/DCLineageDatabase/1.0
+    description: SwaggerHub API Auto Mocking
+tags:
+  - name: Lineages
+  - name: Searches
+paths:
+  /lineages:
+    get:
+      tags:
+        - Lineages
+      summary: Retrieves all lineages
+      operationId: getLineages
+      parameters:
+        - name: offset
+          in: query
+          description: The starting position for
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lineage"
+        "5XX":
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      tags:
+        - Lineages
+      summary: Adds a new lineage
+      operationId: addLineage
+      requestBody:
+        description: New lineage information to add
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Lineage"
+      responses:
+        "201":
+          description: Created the new lineage
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /lineages/{id}:
+    get:
+      tags:
+        - Lineages
+      summary: Retrieves a specific lineage by id
+      operationId: getLineageById
+      parameters:
+        - name: id
+          in: path
+          description: Id of the lineage
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lineage"
+        "404":
+          description: Lineage cannot be found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      tags:
+        - Lineages
+      summary: Delete a specific lineage by id
+      operationId: deleteLineage
+      parameters:
+        - name: id
+          in: path
+          description: Id of the lineage
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Lineage cannot be found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    patch:
+      tags:
+        - Lineages
+      summary: Update a specific lineage by id
+      operationId: updateLineage
+      parameters:
+        - name: id
+          in: path
+          description: Id of the lineage
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        description: Updated lineage information to edit
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Lineage"
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Lineage cannot be found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /lineages/search/codes:
+    get:
+      tags:
+        - Searches
+      summary: Retrieves all lineages by dragon's code(s)
+      operationId: getLineagesByCode
+      parameters:
+        - name: gender
+          in: query
+          description: The gender(s) to include in search
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            enum:
+              - male
+              - female
+              - all
+        - name: code
+          in: query
+          description: Dragon code to search for
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lineage"
+        "5XX":
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /lineages/search/breeds:
+    get:
+      tags:
+        - Searches
+      summary: Retrieves all lineages by dragon's breed(s)
+      operationId: getLineagesByBreed
+      parameters:
+        - name: gender
+          in: query
+          description: The gender(s) to include in search
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            enum:
+              - male
+              - female
+              - all
+        - name: breed
+          in: query
+          description: Dragon breed to search for
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lineage"
+        "5XX":
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /lineages/search/names:
+    get:
+      tags:
+        - Searches
+      summary: Retrieves all lineages by dragon's name(s)
+      operationId: getLineagesByNames
+      parameters:
+        - name: gender
+          in: query
+          description: The gender(s) to include in search
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            enum:
+              - male
+              - female
+              - all
+        - name: name
+          in: query
+          description: Dragon breed to search for
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lineage"
+        "5XX":
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /lineages/owner/{user}:
+    get:
+      tags:
+        - Lineages
+      summary: Retrieves all lineages of a specific user
+      operationId: getLineagesByOwner
+      parameters:
+        - name: user
+          in: path
+          description: Owner of the lineage
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lineage"
+        "404":
+          description: Owner cannot be found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "5XX":
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      tags:
+        - Lineages
+      summary: Deletes all lineages of a specific user
+      operationId: deleteLineagesByOwner
+      parameters:
+        - name: user
+          in: path
+          description: Owner of the lineage
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Owner cannot be found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Breeding:
+      required:
+        - result
+        - timestamp
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        fertility:
+          type: boolean
+        result:
+          type: string
+          enum:
+            - produced
+            - no egg
+            - no interest
+            - refused
+        offspring:
+          maxItems: 4
+          type: array
+          items:
+            type: string
+    Lineage:
+      required:
+        - generation
+        - owner
+        - type
+      type: object
+      properties:
+        id:
+          type: string
+        owner:
+          type: string
+        male-code:
+          type: string
+        male-name:
+          type: string
+        male-breed:
+          type: string
+        female-code:
+          type: string
+        female-name:
+          type: string
+        female-breed:
+          type: string
+        type:
+          type: string
+          enum:
+            - arrow
+            - checker
+            - even
+            - hybrid
+            - purebred
+            - spiral
+            - stairstep
+        subtype:
+          type: string
+          enum:
+            - left-pointing
+            - right-pointing
+            - seasonal
+        generation:
+          type: number
+        shiny:
+          type: boolean
+        holiday:
+          maxItems: 2
+          type: array
+          items:
+            type: string
+            enum:
+              - valentine
+              - halloween
+              - christmas
+        offspring-breeds:
+          type: array
+          items:
+            type: string
+        cdc:
+          type: string
+          enum:
+            - mate
+            - offspring
+            - active
+        srogg:
+          type: string
+          enum:
+            - mate
+            - offspring
+            - active
+        notes:
+          type: string
+        breedings:
+          type: array
+          items:
+            $ref: "#/components/schemas/Breeding"
+    Error:
+      required:
+        - code
+        - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+  responses:
+    SingleLineage:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Lineage"
+    MultipleLineages:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Lineage"
+    NotFound:
+      description: Lineage cannot be found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Error:
+      description: Unexpected error occurred
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+  parameters:
+    LineageId:
+      name: id
+      in: path
+      description: Id of the lineage
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    Gender:
+      name: gender
+      in: query
+      description: The gender(s) to include in search
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+        enum:
+          - male
+          - female
+          - all
