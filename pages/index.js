@@ -1,18 +1,20 @@
-import React from "react";
-import Head from "next/head";
 import {
   AppBar,
+  Button,
   Container,
+  Grid,
   Toolbar,
   Typography,
-  Grid,
-  Button,
+  Divider,
 } from "@material-ui/core";
+import Head from "next/head";
+import React from "react";
+import SearchCard from "../components/SearchCard";
 import {
+  ADD_LINEAGE,
+  SEARCH_LINEAGES,
   SITE_NAME,
   SITE_NAME_ABBV,
-  SEARCH_LINEAGES,
-  ADD_LINEAGE,
 } from "../lib/constants";
 
 export default function Index() {
@@ -53,6 +55,15 @@ export default function Index() {
             <Button variant="outlined" color="primary">
               {SEARCH_LINEAGES}
             </Button>
+          </Grid>
+        </Grid>
+        <Divider variant="middle" />
+        <Grid container justify="center">
+          <Typography variant="h5">Common Searches</Typography>
+          <Grid item container justify="center" alignItems="center">
+            <SearchCard type="Valentine" />
+            <SearchCard type="Halloween" />
+            <SearchCard type="Christmas" />
           </Grid>
         </Grid>
       </Container>
