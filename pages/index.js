@@ -16,8 +16,20 @@ import {
   SITE_NAME,
   SITE_NAME_ABBV,
 } from "../lib/constants";
+import { makeStyles } from "@material-ui/styles";
+
+const useStyles = makeStyles({
+  textPadding: {
+    padding: 5,
+  },
+  buttonPadding: {
+    paddingBottom: 15,
+  },
+});
 
 export default function Index() {
+  const classes = useStyles();
+
   return (
     <React.Fragment>
       <AppBar position="relative" elevation={0}>
@@ -45,7 +57,12 @@ export default function Index() {
           whether they are checkers or staircases, shinies or holidays, 2nd
           generation or 12th generation, all lineages are welcomed here!
         </Typography>
-        <Grid container spacing={2} justify="center">
+        <Grid
+          container
+          spacing={2}
+          justify="center"
+          className={classes.buttonPadding}
+        >
           <Grid item>
             <Button variant="contained" color="primary">
               {ADD_LINEAGE}
@@ -59,7 +76,9 @@ export default function Index() {
         </Grid>
         <Divider variant="middle" />
         <Grid container justify="center">
-          <Typography variant="h5">Common Searches</Typography>
+          <Typography variant="h5" className={classes.textPadding}>
+            Common Searches
+          </Typography>
           <Grid item container justify="center" alignItems="center">
             <SearchCard type="Valentine" />
             <SearchCard type="Halloween" />
