@@ -10,6 +10,7 @@ import {
   FormGroup,
   Checkbox,
   FormLabel,
+  Grid,
 } from "@material-ui/core";
 import { SEARCH_LINEAGES, HOLIDAYS, LINEAGE_TYPES } from "../lib/constants";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -31,22 +32,49 @@ export default function Search() {
         Use the form below to search the database for lineages.
       </Typography>
       <form noValidate autoComplete="off">
-        <Autocomplete
-          id="male-breed"
-          options={maleBreeds}
-          getOptionLabel={(option) => option.name}
-          renderInput={(params) => (
-            <TextField {...params} label="Male Breed" variant="outlined" />
-          )}
-        />
-        <Autocomplete
-          id="female-breed"
-          options={femaleBreeds}
-          getOptionLabel={(option) => option.name}
-          renderInput={(params) => (
-            <TextField {...params} label="Female Breed" variant="outlined" />
-          )}
-        />
+        <Grid container spacing={2}>
+          <Grid item xs sm>
+            <Autocomplete
+              fullwidth
+              id="male-breed"
+              options={maleBreeds}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <TextField {...params} label="Male Breed" variant="outlined" />
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} sm={12} md={2}>
+            <FormControlLabel
+              control={
+                <Switch
+                  //checked={state.checkedB}
+                  //onChange={handleChange}
+                  id="conditional-search"
+                  name="conditional"
+                  color="primary"
+                />
+              }
+              label="AND/OR"
+            />
+          </Grid>
+          <Grid item xs sm>
+            <Autocomplete
+              fullwidth
+              id="female-breed"
+              options={femaleBreeds}
+              getOptionLabel={(option) => option.name}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Female Breed"
+                  variant="outlined"
+                />
+              )}
+            />
+          </Grid>
+        </Grid>
+
         <Autocomplete
           id="type"
           options={LINEAGE_TYPES}
@@ -59,18 +87,6 @@ export default function Search() {
           label="Generation"
           type="number"
           variant="outlined"
-        />
-        <FormControlLabel
-          control={
-            <Switch
-              //checked={state.checkedB}
-              //onChange={handleChange}
-              id="shiny"
-              name="shiny"
-              color="primary"
-            />
-          }
-          label="Shiny"
         />
         <FormControl component="fieldset">
           <FormLabel component="legend">Holiday</FormLabel>
