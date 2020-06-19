@@ -4,6 +4,7 @@ import React from "react";
 import Layout from "../components/Layout";
 import SearchCard from "../components/SearchCard";
 import { ADD_LINEAGE, SEARCH_LINEAGES, SITE_NAME } from "../lib/constants";
+import Link from "next/link";
 
 const useStyles = makeStyles({
   textPadding: {
@@ -40,14 +41,18 @@ export default function Index() {
         className={classes.buttonPadding}
       >
         <Grid item>
-          <Button variant="contained" color="primary">
-            {ADD_LINEAGE}
-          </Button>
+          <Link href="/add" passHref>
+            <Button component="a" variant="contained" color="primary">
+              {ADD_LINEAGE}
+            </Button>
+          </Link>
         </Grid>
         <Grid item>
-          <Button variant="outlined" color="primary">
-            {SEARCH_LINEAGES}
-          </Button>
+          <Link href="/search" passHref>
+            <Button component="a" variant="outlined" color="primary">
+              {SEARCH_LINEAGES}
+            </Button>
+          </Link>
         </Grid>
       </Grid>
       <Divider variant="middle" />
