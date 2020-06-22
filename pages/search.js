@@ -1,28 +1,26 @@
-import React from "react";
-import Layout from "../components/Layout";
-import { useRouter } from "next/router";
+//import { useRouter } from "next/router";
 import {
-  Typography,
-  TextField,
-  FormControlLabel,
-  FormControl,
-  FormGroup,
+  Button,
   Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
   FormLabel,
   Grid,
-  Button,
+  Typography,
 } from "@material-ui/core";
-import {
-  SEARCH_LINEAGES,
-  HOLIDAYS,
-  LINEAGE_TYPES,
-  LINEAGE_SUB_TYPES,
-} from "../lib/constants";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import { makeStyles } from "@material-ui/core/styles";
-import { getMaleBreeds, getFemaleBreeds } from "../lib/breeds";
+import React from "react";
+import CustomSelectField from "../components/fields/CustomSelectField";
+import CustomTextField from "../components/fields/CustomTextField";
+import Layout from "../components/Layout";
+import { getFemaleBreeds, getMaleBreeds } from "../lib/breeds";
+import { HOLIDAYS, LINEAGE_TYPES, SEARCH_LINEAGES } from "../lib/constants";
 
 const useStyles = makeStyles((theme) => ({
+  form: {
+    paddingTop: theme.spacing(2),
+  },
   submitButton: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
@@ -33,8 +31,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Search() {
-  const router = useRouter();
-  const { breed } = router.query;
+  //const router = useRouter();
+  //const { breed } = router.query;
 
   const maleBreeds = getMaleBreeds();
   const femaleBreeds = getFemaleBreeds();
@@ -49,51 +47,29 @@ export default function Search() {
       <Typography variant="h6" component="p" gutterBottom>
         Use the form below to search the database for lineages.
       </Typography>
-      <form noValidate autoComplete="off">
+      <form noValidate autoComplete="off" className={classes.form}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12} md={6}>
-            <Autocomplete
-              fullWidth
+            <CustomSelectField
               id="male-breed"
-              options={maleBreeds}
+              label="Male Breed"
+              data={maleBreeds}
               getOptionLabel={(option) => option.name}
-              renderInput={(params) => (
-                <TextField {...params} label="Male Breed" variant="outlined" />
-              )}
             />
           </Grid>
           <Grid item xs={12} sm={12} md={6}>
-            <Autocomplete
-              fullWidth
+            <CustomSelectField
               id="female-breed"
-              options={femaleBreeds}
+              label="Female Breed"
+              data={femaleBreeds}
               getOptionLabel={(option) => option.name}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Female Breed"
-                  variant="outlined"
-                />
-              )}
             />
           </Grid>
           <Grid item xs={4} md={2} className={classes.generation}>
-            <TextField
-              fullWidth
-              id="generation"
-              label="Generation"
-              type="number"
-              variant="outlined"
-            />
+            <CustomTextField id="generation" label="Generation" type="number" />
           </Grid>
           <Grid item xs={8} md={10}>
-            <Autocomplete
-              id="type"
-              options={LINEAGE_TYPES}
-              renderInput={(params) => (
-                <TextField {...params} label="Type" variant="outlined" />
-              )}
-            />
+            <CustomSelectField id="type" label="Type" data={LINEAGE_TYPES} />
           </Grid>
           <Grid item xs={8} md={10}>
             <FormControl component="fieldset">

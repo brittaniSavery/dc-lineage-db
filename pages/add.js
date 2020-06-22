@@ -1,20 +1,15 @@
+import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
+import CustomRadioGroup from "../components/fields/CustomRadioGroup";
+import CustomSelectField from "../components/fields/CustomSelectField";
+import CustomTextField from "../components/fields/CustomTextField";
 import Layout from "../components/Layout";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import { getFemaleBreeds, getMaleBreeds } from "../lib/breeds";
 import {
-  Typography,
-  Grid,
-  TextField,
-  makeStyles,
-  FormControl,
-  FormLabel,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
-  Button,
-} from "@material-ui/core";
-import { ADD_LINEAGE, LINEAGE_TYPES, HOLIDAYS } from "../lib/constants";
-import { getMaleBreeds, getFemaleBreeds } from "../lib/breeds";
+  ADD_LINEAGE,
+  LINEAGE_SITES_STATUS,
+  LINEAGE_TYPES,
+} from "../lib/constants";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -41,130 +36,105 @@ export default function Add() {
       <form noValidate autoComplete="off" className={classes.form}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Typography variant="button" color="textSecondary">
+            <Typography variant="button" color="primary">
               Male Information
             </Typography>
           </Grid>
           <Grid item xs={4}>
-            <TextField
+            <CustomTextField
               required
-              fullWidth
               id="male-code"
               name="male-code"
               label="Male Code"
-              variant="outlined"
             />
           </Grid>
           <Grid item xs={8}>
-            <TextField
-              required
-              fullWidth
+            <CustomTextField
               id="male-name"
               name="male-name"
               label="Male Name"
-              variant="outlined"
             />
           </Grid>
           <Grid item xs={12}>
-            <Autocomplete
-              fullWidth
+            <CustomSelectField
               required
               id="male-breed"
-              options={maleBreeds}
+              label="Male Breed"
+              data={maleBreeds}
               getOptionLabel={(option) => option.name}
-              renderInput={(params) => (
-                <TextField {...params} label="Male Breed" variant="outlined" />
-              )}
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="button" color="textSecondary">
+            <Typography variant="button" color="primary">
               Female Information
             </Typography>
           </Grid>
           <Grid item xs={4}>
-            <TextField
+            <CustomTextField
               required
-              fullWidth
               id="female-code"
               name="female-code"
               label="Female Code"
-              variant="outlined"
             />
           </Grid>
           <Grid item xs={8}>
-            <TextField
-              required
-              fullWidth
+            <CustomTextField
               id="female-name"
               name="female-name"
               label="Female Name"
-              variant="outlined"
             />
           </Grid>
           <Grid item xs={12}>
-            <Autocomplete
-              fullWidth
+            <CustomSelectField
               required
               id="female-breed"
-              options={femaleBreeds}
+              label="Female Breed"
+              data={femaleBreeds}
               getOptionLabel={(option) => option.name}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Female Breed"
-                  variant="outlined"
-                />
-              )}
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="button" color="textSecondary">
+            <Typography variant="button" color="primary">
               Lineage Information
             </Typography>
           </Grid>
-          <Grid item xs={4}>
-            <TextField
+          <Grid item xs={12} sm={4}>
+            <CustomSelectField
               required
-              fullWidth
+              id="type"
+              label="Type"
+              data={LINEAGE_TYPES}
+            />
+          </Grid>
+          <Grid item xs={6} sm={4}>
+            <CustomTextField
+              required
               id="generation"
               name="generaton"
               label="Generation"
-              variant="outlined"
+              type="number"
             />
           </Grid>
-          <Grid item xs={8}>
-            <Autocomplete
-              id="type"
-              options={LINEAGE_TYPES}
-              renderInput={(params) => (
-                <TextField {...params} label="Type" variant="outlined" />
-              )}
-            />
-          </Grid>
-          <Grid item xs={4}>
-            <TextField
-              required
-              fullWidth
+          <Grid item xs={6} sm={4}>
+            <CustomTextField
               id="offspring-code"
               name="offspring-code"
               label="Sample Offspring Code"
-              variant="outlined"
             />
           </Grid>
-          <Grid item xs={8}>
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Holiday</FormLabel>
-              <FormGroup row>
-                {HOLIDAYS.map((holiday) => (
-                  <FormControlLabel
-                    key={holiday}
-                    control={<Checkbox name={holiday.toLowerCase()} />}
-                    label={holiday}
-                  />
-                ))}
-              </FormGroup>
-            </FormControl>
+          <Grid item xs>
+            <CustomRadioGroup
+              id="cdc"
+              label="CDC Entry"
+              items={LINEAGE_SITES_STATUS}
+            />
+          </Grid>
+          <Grid item xs>
+            <CustomRadioGroup
+              id="srogg"
+              label="SROGG Entry"
+              items={LINEAGE_SITES_STATUS}
+            />
           </Grid>
         </Grid>
         <Grid container justify="center">
