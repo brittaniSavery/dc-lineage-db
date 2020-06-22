@@ -15,7 +15,7 @@ import CustomSelectField from "../components/fields/CustomSelectField";
 import CustomTextField from "../components/fields/CustomTextField";
 import Layout from "../components/Layout";
 import { getFemaleBreeds, getMaleBreeds } from "../lib/breeds";
-import { HOLIDAYS, LINEAGE_TYPES, SEARCH_LINEAGES } from "../lib/constants";
+import { HOLIDAYS, LINEAGE_TYPES } from "../lib/constants";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -42,7 +42,7 @@ export default function Search() {
   return (
     <Layout title="Search">
       <Typography variant="h2" component="h1">
-        {SEARCH_LINEAGES}
+        Search Database
       </Typography>
       <Typography variant="h6" component="p" gutterBottom>
         Use the form below to search the database for lineages.
@@ -65,13 +65,13 @@ export default function Search() {
               getOptionLabel={(option) => option.name}
             />
           </Grid>
-          <Grid item xs={4} md={2} className={classes.generation}>
+          <Grid item xs={3} md={2} className={classes.generation}>
             <CustomTextField id="generation" label="Generation" type="number" />
           </Grid>
-          <Grid item xs={8} md={10}>
+          <Grid item xs={6} md={5}>
             <CustomSelectField id="type" label="Type" data={LINEAGE_TYPES} />
           </Grid>
-          <Grid item xs={8} md={10}>
+          <Grid item xs={3} md={5}>
             <FormControl component="fieldset">
               <FormLabel component="legend">Holiday</FormLabel>
               <FormGroup row>
@@ -84,6 +84,9 @@ export default function Search() {
                 ))}
               </FormGroup>
             </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <CustomTextField id="owner" label="Owner" />
           </Grid>
         </Grid>
         <Grid container justify="center">

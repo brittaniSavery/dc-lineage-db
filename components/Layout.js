@@ -28,7 +28,7 @@ export default function Layout({ title, children }) {
         <Toolbar>
           <Grid
             container
-            spacing={2}
+            spacing={3}
             alignItems="center"
             className={classes.menu}
           >
@@ -52,7 +52,7 @@ export default function Layout({ title, children }) {
                   color="inherit"
                   noWrap
                 >
-                  Add
+                  My Lineages
                 </MaterialLink>
               </Link>
             </Grid>
@@ -64,7 +64,7 @@ export default function Layout({ title, children }) {
                   color="inherit"
                   noWrap
                 >
-                  Search
+                  Database
                 </MaterialLink>
               </Link>
             </Grid>

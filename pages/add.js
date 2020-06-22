@@ -136,6 +136,9 @@ export default function Add() {
               items={LINEAGE_SITES_STATUS}
             />
           </Grid>
+          <Grid item xs={12}>
+            <CustomTextField id="notes" label="Notes" multiline rows={4} />
+          </Grid>
         </Grid>
         <Grid container justify="center">
           <Button
