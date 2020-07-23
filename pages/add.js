@@ -1,156 +1,151 @@
-import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
-import CustomRadioGroup from "../components/fields/CustomRadioGroup";
-import CustomSelectField from "../components/fields/CustomSelectField";
-import CustomTextField from "../components/fields/CustomTextField";
+import { Form } from "react-final-form";
+import Header from "../components/Header";
 import Layout from "../components/Layout";
-import { getFemaleBreeds, getMaleBreeds } from "../lib/breeds";
-import {
-  ADD_LINEAGE,
-  LINEAGE_SITES_STATUS,
-  LINEAGE_TYPES,
-} from "../lib/constants";
-
-const useStyles = makeStyles((theme) => ({
-  form: {
-    paddingTop: theme.spacing(2),
-  },
-  submitButton: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
-}));
+import SearchableSelectField from "../components/fields/SearchableSelectField";
+import InputField from "../components/fields/InputField";
+import SelectField from "../components/fields/SelectField";
+import TextareaField from "../components/fields/TextareaField";
+import RadioGroup from "../components/fields/RadioGroup";
+import { LINEAGE_TYPES, LINEAGE_SITES_STATUS } from "../lib/constants";
+import ButtonGroup from "../components/fields/ButtonGroup";
+import Button from "../components/fields/Button";
 
 export default function Add() {
-  const classes = useStyles();
-  const maleBreeds = getMaleBreeds();
-  const femaleBreeds = getFemaleBreeds();
+  const onSubmit = (values) => {
+    console.log(values);
+  };
+
+  const validate = (values) => {
+    const errors = {};
+    return errors;
+  };
+
   return (
     <Layout title="Add">
-      <Typography variant="h2" component="h1">
-        {ADD_LINEAGE}
-      </Typography>
-      <Typography variant="h6" component="p" gutterBottom>
-        Add your new lineage to the database.
-      </Typography>
-      <form noValidate autoComplete="off" className={classes.form}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Typography variant="button" color="primary">
-              Male Information
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <CustomTextField
-              required
-              id="male-code"
-              name="male-code"
-              label="Male Code"
-            />
-          </Grid>
-          <Grid item xs={8}>
-            <CustomTextField
-              id="male-name"
-              name="male-name"
-              label="Male Name"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <CustomSelectField
-              required
-              id="male-breed"
-              label="Male Breed"
-              data={maleBreeds}
-              getOptionLabel={(option) => option.name}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="button" color="primary">
-              Female Information
-            </Typography>
-          </Grid>
-          <Grid item xs={4}>
-            <CustomTextField
-              required
-              id="female-code"
-              name="female-code"
-              label="Female Code"
-            />
-          </Grid>
-          <Grid item xs={8}>
-            <CustomTextField
-              id="female-name"
-              name="female-name"
-              label="Female Name"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <CustomSelectField
-              required
-              id="female-breed"
-              label="Female Breed"
-              data={femaleBreeds}
-              getOptionLabel={(option) => option.name}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="button" color="primary">
-              Lineage Information
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <CustomSelectField
-              required
-              id="type"
-              label="Type"
-              data={LINEAGE_TYPES}
-            />
-          </Grid>
-          <Grid item xs={6} sm={4}>
-            <CustomTextField
-              required
-              id="generation"
-              name="generaton"
-              label="Generation"
-              type="number"
-            />
-          </Grid>
-          <Grid item xs={6} sm={4}>
-            <CustomTextField
-              id="offspring-code"
-              name="offspring-code"
-              label="Sample Offspring Code"
-            />
-          </Grid>
-          <Grid item xs>
-            <CustomRadioGroup
-              id="cdc"
-              label="CDC Entry"
-              items={LINEAGE_SITES_STATUS}
-            />
-          </Grid>
-          <Grid item xs>
-            <CustomRadioGroup
-              id="srogg"
-              label="SROGG Entry"
-              items={LINEAGE_SITES_STATUS}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <CustomTextField id="notes" label="Notes" multiline rows={4} />
-          </Grid>
-        </Grid>
-        <Grid container justify="center">
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            className={classes.submitButton}
-          >
-            Add
-          </Button>
-        </Grid>
-      </form>
+      <Header>Add Lineage</Header>
+      <p className="pb-5">
+        All fields marked with an asterik (*) are{" "}
+        <span className="has-text-info">required</span>. A male code or female
+        code is also required.
+      </p>
+
+      <Form
+        onSubmit={onSubmit}
+        validate={validate}
+        render={({ handleSubmit, submitting, pristine, form }) => (
+          <form onSubmit={handleSubmit}>
+            <div className="columns is-multiline">
+              <div className="column is-12">
+                <h2 className="is-uppercase has-text-weight-light has-text-info">
+                  Male Information
+                </h2>
+              </div>
+              <div className="column is-12-tablet is-6-desktop">
+                <SearchableSelectField
+                  name="maleBreed"
+                  label="Male Breed"
+                  required
+                />
+              </div>
+              <div className="column is-narrow" style={{ width: "7em" }}>
+                <InputField
+                  name="maleCode"
+                  label="Male Code"
+                  maxLength="5"
+                  style={{ width: "5em" }} //Bulma Hack: doesn't recognize size attribute
+                />
+              </div>
+              <div className="column">
+                <InputField name="maleName" label="Male Name" />
+              </div>
+              <div className="column is-12">
+                <h2 className="is-uppercase has-text-weight-light has-text-info">
+                  Female Information
+                </h2>
+              </div>
+              <div className="column is-12-tablet is-6-desktop">
+                <SearchableSelectField
+                  name="femaleBreed"
+                  label="Female Breed"
+                  required
+                />
+              </div>
+              <div className="column is-narrow">
+                <InputField
+                  name="femaleCode"
+                  label="Female Code"
+                  maxLength="5"
+                  style={{ width: "5em" }} //Bulma Hack: doesn't recognize size attribute
+                />
+              </div>
+              <div className="column">
+                <InputField name="femaleName" label="Female Name" />
+              </div>
+              <div className="column is-12">
+                <h2 className="is-uppercase has-text-weight-light has-text-info">
+                  Lineage Information
+                </h2>
+              </div>
+              <div className="column is-3">
+                <InputField
+                  name="generation"
+                  label="Generation"
+                  type="number"
+                  required
+                />
+              </div>
+              <div className="column">
+                <SelectField
+                  name="type"
+                  label="Type"
+                  options={LINEAGE_TYPES}
+                  required
+                />
+              </div>
+              <div className="column">
+                <SelectField
+                  name="cdc"
+                  label="CDC Entry"
+                  options={LINEAGE_SITES_STATUS}
+                  getOptionLabel={(x) => x.label}
+                  getOptionValue={(x) => x.value}
+                />
+              </div>
+              <div className="column">
+                <SelectField
+                  name="srogg"
+                  label="SROGG Entry"
+                  options={LINEAGE_SITES_STATUS}
+                  getOptionLabel={(x) => x.label}
+                  getOptionValue={(x) => x.value}
+                />
+              </div>
+              <div className="column is-12">
+                <TextareaField name="notes" label="Notes"></TextareaField>
+              </div>
+              <div className="column is-12">
+                <ButtonGroup alignment="center">
+                  <Button
+                    primary
+                    type="submit"
+                    disabled={submitting || pristine}
+                  >
+                    Add
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={form.reset}
+                    disabled={submitting || pristine}
+                  >
+                    Cancel
+                  </Button>
+                </ButtonGroup>
+              </div>
+            </div>
+          </form>
+        )}
+      />
     </Layout>
   );
 }

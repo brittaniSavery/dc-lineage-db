@@ -14,8 +14,8 @@ import React from "react";
 import CustomSelectField from "../components/fields/CustomSelectField";
 import CustomTextField from "../components/fields/CustomTextField";
 import Layout from "../components/Layout";
-import { getFemaleBreeds, getMaleBreeds } from "../lib/breeds";
 import { HOLIDAYS, LINEAGE_TYPES } from "../lib/constants";
+import { getMaleBreeds, getFemaleBreeds } from "../middleware/apiEndpoints";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -30,13 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Search() {
-  //const router = useRouter();
-  //const { breed } = router.query;
-
-  const maleBreeds = getMaleBreeds();
-  const femaleBreeds = getFemaleBreeds();
-
+export default function Search({ maleBreeds, femaleBreeds }) {
   const classes = useStyles();
 
   return (
@@ -55,6 +49,7 @@ export default function Search() {
               label="Male Breed"
               data={maleBreeds}
               getOptionLabel={(option) => option.name}
+              getOptionValue={(option) => option.name}
             />
           </Grid>
           <Grid item xs={12} sm={12} md={6}>
@@ -102,4 +97,17 @@ export default function Search() {
       </form>
     </Layout>
   );
+}
+
+export async function getStaticProps() {
+  const maleBreeds = await getMaleBreeds();
+  console.log(maleBreeds);
+  const femaleBreeds = await getFemaleBreeds();
+
+  return {
+    props: {
+      maleBreeds,
+      femaleBreeds,
+    },
+  };
 }
