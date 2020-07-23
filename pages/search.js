@@ -1,4 +1,16 @@
-//import { useRouter } from "next/router";
+import React from "react";
+import Layout from "../components/Layout";
+import Header from "../components/Header";
+
+export default function Search() {
+  return (
+    <Layout title="Search">
+      <Header>Search Database</Header>
+    </Layout>
+  );
+}
+
+/* //import { useRouter } from "next/router";
 import {
   Button,
   Checkbox,
@@ -10,7 +22,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
 import CustomSelectField from "../components/fields/CustomSelectField";
 import CustomTextField from "../components/fields/CustomTextField";
 import Layout from "../components/Layout";
@@ -111,3 +122,4 @@ export async function getStaticProps() {
     },
   };
 }
+ */

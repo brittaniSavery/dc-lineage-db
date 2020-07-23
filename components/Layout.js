@@ -36,12 +36,16 @@ export default function Layout({ title, children }) {
         </div>
         <div className={`navbar-menu ${activeMenu && "is-active"}`}>
           <div className="navbar-start">
-            <a className="navbar-item is-uppercase has-text-weight-medium	">
-              My Lineages
-            </a>
-            <a className="navbar-item is-uppercase has-text-weight-medium	">
-              Documentation
-            </a>
+            <Link href="/lineages">
+              <a className="navbar-item is-uppercase has-text-weight-medium">
+                My Lineages
+              </a>
+            </Link>
+            <Link href="/search">
+              <a className="navbar-item is-uppercase has-text-weight-medium">
+                Database
+              </a>
+            </Link>
           </div>
           <div className="navbar-end">
             <div className="navbar-item">
