@@ -9,7 +9,7 @@ An online database for lineages and breedings of the digital dragons from the cr
 
 - [React](https://reactjs.org/)
 - [Next.js](https://nextjs.org/)
-- [Material UI](https://material-ui.com/)
+- [Bulma](https://bulma.io/)
 
 ## 🤝 Contributing
 

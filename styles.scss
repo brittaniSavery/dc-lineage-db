@@ -1,0 +1,51 @@
+//colors
+$danger: #de3914;
+$warning: #e9d985;
+$success: #439a86;
+$info: #007991;
+$link: #56629f;
+$nav-link: #bcd8c1;
+$primary: #007991;
+$text: #222e50;
+$white: #fff;
+
+//navigation customization
+$navbar-padding-vertical: 0.5rem;
+$navbar-padding-horizontal: 1rem;
+$navbar-background-color: $primary;
+$navbar-item-color: $white;
+$navbar-item-hover-color: $nav-link;
+$navbar-item-hover-background-color: $primary;
+$navbar-burger-color: $white;
+
+.navbar-burger {
+  background-color: $primary;
+  color: $white;
+}
+
+.navbar-burger:hover {
+  color: $white;
+}
+
+//layout
+$section-padding: 0rem;
+.grid-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+//form fields
+$label-color: $text;
+$label-weight: 400;
+
+//misc
+$size-1: 4rem;
+$size-2: 3rem;
+
+.site-header {
+  line-height: 1.25;
+  padding-bottom: 0.5rem;
+}
+
+@import "./node_modules/bulma/bulma.sass";

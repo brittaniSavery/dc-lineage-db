@@ -1,34 +1,20 @@
 {
-  "name": "dc-lineage-db",
+  "name": "dcldb-temp",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "rm -rf .next && cross-env NODE_OPTIONS='--inspect' next dev",
+    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "test": "jest"
+    "start": "next start"
   },
   "dependencies": {
-    "@material-ui/core": "^4.10.0",
-    "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.55",
-    "lodash.escaperegexp": "^4.1.2",
-    "mongodb": "^3.5.9",
+    "bulma": "^0.9.0",
+    "final-form": "^4.20.1",
     "next": "9.4.4",
-    "next-connect": "^0.8.0",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
-  },
-  "devDependencies": {
-    "@testing-library/jest-dom": "^5.9.0",
-    "@testing-library/react": "^10.0.4",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-jest": "^26.0.1",
-    "cross-env": "^7.0.2",
-    "eslint": "^7.1.0",
-    "eslint-plugin-react": "^7.20.0",
-    "identity-obj-proxy": "^3.0.0",
-    "jest": "^26.0.1",
-    "react-test-renderer": "^16.13.1"
+    "react-dom": "16.13.1",
+    "react-final-form": "^6.5.1",
+    "react-select": "^3.1.0",
+    "sass": "^1.26.10"
   }
 }
