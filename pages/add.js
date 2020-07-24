@@ -1,17 +1,17 @@
 import React from "react";
 import { Form } from "react-final-form";
-import Header from "../components/Header";
-import Layout from "../components/Layout";
-import SearchableSelectField from "../components/fields/SearchableSelectField";
+import Button from "../components/fields/Button";
+import ButtonGroup from "../components/fields/ButtonGroup";
 import InputField from "../components/fields/InputField";
+import SearchableSelectField from "../components/fields/SearchableSelectField";
 import SelectField from "../components/fields/SelectField";
 import TextareaField from "../components/fields/TextareaField";
-import RadioGroup from "../components/fields/RadioGroup";
-import { LINEAGE_TYPES, LINEAGE_SITES_STATUS } from "../lib/constants";
-import ButtonGroup from "../components/fields/ButtonGroup";
-import Button from "../components/fields/Button";
+import Header from "../components/Header";
+import Layout from "../components/Layout";
+import { LINEAGE_SITES_STATUS, LINEAGE_TYPES } from "../lib/constants";
+import { getMaleBreeds, getFemaleBreeds } from "../middleware/database";
 
-export default function Add() {
+export default function Add({ maleBreeds, femaleBreeds }) {
   const onSubmit = (values) => {
     console.log(values);
   };
@@ -45,6 +45,9 @@ export default function Add() {
                 <SearchableSelectField
                   name="maleBreed"
                   label="Male Breed"
+                  options={maleBreeds}
+                  getOptionLabel={(x) => x}
+                  matchFromStart
                   required
                 />
               </div>
@@ -68,6 +71,9 @@ export default function Add() {
                 <SearchableSelectField
                   name="femaleBreed"
                   label="Female Breed"
+                  options={femaleBreeds}
+                  getOptionLabel={(x) => x}
+                  matchFromStart
                   required
                 />
               </div>
@@ -122,7 +128,7 @@ export default function Add() {
                 />
               </div>
               <div className="column is-12">
-                <TextareaField name="notes" label="Notes"></TextareaField>
+                <TextareaField name="notes" label="Notes" />
               </div>
               <div className="column is-12">
                 <ButtonGroup alignment="center">
@@ -148,4 +154,14 @@ export default function Add() {
       />
     </Layout>
   );
+}
+
+export async function getStaticProps() {
+  return {
+    props: {
+      maleBreeds: await getMaleBreeds(),
+      femaleBreeds: await getFemaleBreeds(),
+    },
+    unstable_revalidate: 86400, //attempts to pull new breeds every 24 hours
+  };
 }

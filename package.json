@@ -3,18 +3,32 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
     "bulma": "^0.9.0",
     "final-form": "^4.20.1",
+    "lodash.escaperegexp": "^4.1.2",
+    "mongodb": "^3.5.9",
     "next": "9.4.4",
+    "next-connect": "^0.8.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-final-form": "^6.5.1",
     "react-select": "^3.1.0",
     "sass": "^1.26.10"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.1",
+    "@testing-library/react": "^10.4.7",
+    "babel-jest": "^26.1.0",
+    "cross-env": "^7.0.2",
+    "eslint": "^7.5.0",
+    "eslint-plugin-react": "^7.20.3",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^26.1.0",
+    "react-test-renderer": "^16.13.1"
   }
 }

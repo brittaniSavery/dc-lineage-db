@@ -1,13 +1,17 @@
 import React from "react";
 import { Field } from "react-final-form";
-import Select from "react-select";
+import Select, { createFilter } from "react-select";
 
 export default function SearchableSelectField({
   name,
   label,
   options,
   required,
+  matchFromStart,
+  ...rest
 }) {
+  const filterConfig = { matchFrom: "start" };
+
   return (
     <Field name={name}>
       {({ input, meta }) => (
@@ -17,10 +21,16 @@ export default function SearchableSelectField({
             {required && " *"}
           </label>
           <div className="control">
-            <Select inputId={name} options={options} {...input} />
+            <Select
+              inputId={name}
+              options={options}
+              filterOption={matchFromStart && createFilter(filterConfig)}
+              {...input}
+              {...rest}
+            />
           </div>
           {meta.error && meta.touched && (
-            <p class="help is-danger">{meta.error}</p>
+            <p className="help is-danger">{meta.error}</p>
           )}
         </div>
       )}

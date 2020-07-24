@@ -7,14 +7,31 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
 });
 
-async function database(req, res, next) {
+async function databaseSetup() {
   if (!client.isConnected()) await client.connect();
-  req.dbClient = client;
-  req.db = client.db(process.env.DATABASE_NAME);
+  return { dbClient: client, db: client.db(process.env.DATABASE_NAME) };
+}
+
+export async function getMaleBreeds() {
+  const db = (await databaseSetup()).db;
+  let breeds = await db.collection("breeds").distinct("name", { male: true });
+  return breeds.sort();
+}
+
+export async function getFemaleBreeds() {
+  const db = (await databaseSetup()).db;
+  let breeds = await db.collection("breeds").distinct("name", { female: true });
+  return breeds.sort();
+}
+
+async function databaseMiddleware(req, res, next) {
+  const dbSetup = await databaseSetup();
+  req.dbClient = dbSetup.dbClient;
+  req.db = dbSetup.db;
   return next();
 }
 
 const middleware = nextConnect();
-middleware.use(database);
+middleware.use(databaseMiddleware);
 
 export default middleware;

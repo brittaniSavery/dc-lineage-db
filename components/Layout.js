@@ -29,9 +29,9 @@ export default function Layout({ title, children }) {
             aria-label="menu"
             aria-expanded="false"
           >
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
           </a>
         </div>
         <div className={`navbar-menu ${activeMenu && "is-active"}`}>
