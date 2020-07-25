@@ -23,6 +23,15 @@ export default function Add({ maleBreeds, femaleBreeds }) {
 
   const validate = (values) => {
     const errors = {};
+    if (!values.maleBreed) errors.maleBreed = "Required";
+    if (!values.femaleBreed) errors.femaleBreed = "Required";
+    if (!values.maleCode && !values.femaleCode) {
+      errors.maleCode = "A male code or female code is required.";
+      errors.femaleCode = "A male code or female code is required.";
+    }
+    if (!values.generation) errors.generation = "Required";
+    if (!values.type) errors.generation = "Required";
+
     return errors;
   };
 
@@ -51,7 +60,6 @@ export default function Add({ maleBreeds, femaleBreeds }) {
                   name="maleBreed"
                   label="Male Breed"
                   options={maleBreeds}
-                  getOptionLabel={(x) => x}
                   matchFromStart
                   required
                 />
@@ -77,7 +85,6 @@ export default function Add({ maleBreeds, femaleBreeds }) {
                   name="femaleBreed"
                   label="Female Breed"
                   options={femaleBreeds}
-                  getOptionLabel={(x) => x}
                   matchFromStart
                   required
                 />

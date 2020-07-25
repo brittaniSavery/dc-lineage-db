@@ -1,16 +1,26 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Field } from "react-final-form";
 import Select, { createFilter } from "react-select";
+import { createReactSelectOptions } from "../../middleware/helpers";
 
 export default function SearchableSelectField({
   name,
   label,
   options,
+  getOptionLabel,
+  getOptionValue,
   required,
   matchFromStart,
   ...rest
 }) {
   const filterConfig = { matchFrom: "start" };
+  //React-Select expects an array of objects of the {label: "label", value: value} variety
+  const generatedOptions = createReactSelectOptions(
+    options,
+    getOptionLabel,
+    getOptionValue
+  );
 
   return (
     <Field name={name}>
@@ -23,7 +33,7 @@ export default function SearchableSelectField({
           <div className="control">
             <Select
               inputId={name}
-              options={options}
+              options={generatedOptions}
               filterOption={matchFromStart && createFilter(filterConfig)}
               {...input}
               {...rest}
@@ -37,3 +47,20 @@ export default function SearchableSelectField({
     </Field>
   );
 }
+
+SearchableSelectField.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(PropTypes.node).isRequired,
+  getOptionLabel: PropTypes.func,
+  getOptionValue: PropTypes.func,
+  required: PropTypes.bool,
+  matchFromStart: PropTypes.bool,
+};
+
+SearchableSelectField.defaultProps = {
+  getOptionLabel: (option) => option,
+  getOptionValue: (option) => option,
+  required: false,
+  matchFromStart: false,
+};
