@@ -7,19 +7,17 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
 });
 
-async function databaseSetup() {
+export async function databaseSetup() {
   if (!client.isConnected()) await client.connect();
   return { dbClient: client, db: client.db(process.env.DATABASE_NAME) };
 }
 
-export async function getMaleBreeds() {
-  const db = (await databaseSetup()).db;
+export async function getMaleBreedNames(db) {
   let breeds = await db.collection("breeds").distinct("name", { male: true });
   return breeds.sort();
 }
 
-export async function getFemaleBreeds() {
-  const db = (await databaseSetup()).db;
+export async function getFemaleBreedNames(db) {
   let breeds = await db.collection("breeds").distinct("name", { female: true });
   return breeds.sort();
 }

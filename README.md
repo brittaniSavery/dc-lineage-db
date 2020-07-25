@@ -9,7 +9,9 @@ An online database for lineages and breedings of the digital dragons from the cr
 
 - [React](https://reactjs.org/)
 - [Next.js](https://nextjs.org/)
+- [MongoDB](https://www.mongodb.com/)
 - [Bulma](https://bulma.io/)
+- [Jest](https://jestjs.io/)
 
 ## 🤝 Contributing
 
@@ -19,4 +21,4 @@ If you're a coder yourself and want to help, awesome! Fork this repo, make your 
 
 ## 👋🏾 Author
 
-Brittani S Avery: Writer, Coder, Gamer, Nerd. Find me on [Twitter](https://twitter.com/brittanisavery) and [Github](https://github.com/brittaniSavery)
+Brittani S Avery: Writer, Coder, Gamer, Nerd. Find me on [Twitter](https://twitter.com/brittanisavery) or my [blog](https://www.brittanisavery.com/blog).

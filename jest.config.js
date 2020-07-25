@@ -1,4 +1,5 @@
 module.exports = {
+  preset: "@shelf/jest-mongodb",
   collectCoverageFrom: [
     "**/*.{js,jsx,ts,tsx}",
     "!**/*.d.ts",

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Form } from "react-final-form";
 import Button from "../components/fields/Button";
 import ButtonGroup from "../components/fields/ButtonGroup";
@@ -9,7 +10,11 @@ import TextareaField from "../components/fields/TextareaField";
 import Header from "../components/Header";
 import Layout from "../components/Layout";
 import { LINEAGE_SITES_STATUS, LINEAGE_TYPES } from "../lib/constants";
-import { getMaleBreeds, getFemaleBreeds } from "../middleware/database";
+import {
+  databaseSetup,
+  getMaleBreedNames,
+  getFemaleBreedNames,
+} from "../middleware/database";
 
 export default function Add({ maleBreeds, femaleBreeds }) {
   const onSubmit = (values) => {
@@ -157,11 +162,17 @@ export default function Add({ maleBreeds, femaleBreeds }) {
 }
 
 export async function getStaticProps() {
+  const db = (await databaseSetup()).db;
   return {
     props: {
-      maleBreeds: await getMaleBreeds(),
-      femaleBreeds: await getFemaleBreeds(),
+      maleBreeds: await getMaleBreedNames(db),
+      femaleBreeds: await getFemaleBreedNames(db),
     },
     unstable_revalidate: 86400, //attempts to pull new breeds every 24 hours
   };
 }
+
+Add.propTypes = {
+  maleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  femaleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
+};

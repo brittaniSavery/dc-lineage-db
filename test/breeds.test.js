@@ -1,44 +1,33 @@
-const {
-  getMaleBreeds,
-  getFemaleBreeds,
-  getRegularBreeds,
-  getDrakeBreeds,
-  getPygmyBreeds,
-  getTwoHeadedBreeds,
-} = require("../lib/breeds");
+import { getMaleBreedNames, getFemaleBreedNames } from "../middleware/database";
+import { MongoClient } from "mongodb";
+import { breeds, maleBreedNames, femaleBreedNames } from "./test-constants";
 
-test("Returns all male breeds", () => {
-  const breeds = getMaleBreeds();
-  expect(breeds).toContainObject({ male: true });
-});
+let client;
+let db;
 
-test("Returns all female breeds", () => {
-  const breeds = getFemaleBreeds();
-  expect(breeds).toContainObject({ female: true });
-});
-
-test("Returns all regular breeds", () => {
-  const breeds = getRegularBreeds();
-  expect(breeds).toContainObject({
-    drake: false,
-    twoHead: false,
-    pygmy: false,
+beforeAll(async () => {
+  client = await MongoClient.connect(global.__MONGO_URI__, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   });
+  db = client.db(global.__MONGO_DB_NAME__);
+  await db.collection("breeds").insertMany(breeds);
 });
 
-test("Returns all pygmy breeds", () => {
-  const breeds = getPygmyBreeds();
-  expect(breeds).toContainObject({ drake: false, twoHead: false, pygmy: true });
+afterAll(async () => {
+  await client.close();
 });
 
-test("Returns all drake breeds", () => {
-  const breeds = getDrakeBreeds();
-  expect(breeds).toContainObject({ drake: true, twoHead: false, pygmy: false });
+test("Returns all male breed names", async () => {
+  const breeds = await getMaleBreedNames(db);
+  expect(breeds).toEqual(expect.arrayContaining(maleBreedNames));
+  expect(breeds).not.toEqual(expect.arrayContaining(femaleBreedNames));
 });
 
-test("Returns all twoheaded breeds", () => {
-  const breeds = getTwoHeadedBreeds();
-  expect(breeds).toContainObject({ drake: false, twoHead: true, pygmy: false });
+test("Returns all female breed names", async () => {
+  const breeds = await getFemaleBreedNames(db);
+  expect(breeds).not.toEqual(expect.arrayContaining(maleBreedNames));
+  expect(breeds).toEqual(expect.arrayContaining(femaleBreedNames));
 });
 
 /**
