@@ -30,7 +30,7 @@ export default function Add({ maleBreeds, femaleBreeds }) {
       errors.femaleCode = "A male code or female code is required.";
     }
     if (!values.generation) errors.generation = "Required";
-    if (!values.type) errors.generation = "Required";
+    if (!values.type) errors.type = "Required";
 
     return errors;
   };
