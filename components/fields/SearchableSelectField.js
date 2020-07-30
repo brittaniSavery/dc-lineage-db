@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "react-final-form";
 import Select, { createFilter } from "react-select";
-import { createReactSelectOptions } from "../../middleware/helpers";
+import { createReactSelectOptions } from "../../lib/helpers";
 
 export default function SearchableSelectField({
   name,
@@ -23,7 +23,11 @@ export default function SearchableSelectField({
   );
 
   return (
-    <Field name={name}>
+    <Field
+      name={name}
+      parse={(v) => v && v.value}
+      format={(v) => options.find((o) => o.value === v)}
+    >
       {({ input, meta }) => (
         <div className="field">
           <label className="label">

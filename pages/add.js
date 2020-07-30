@@ -15,10 +15,25 @@ import {
   getMaleBreedNames,
   getFemaleBreedNames,
 } from "../middleware/database";
+import { useRouter } from "next/router";
 
 export default function Add({ maleBreeds, femaleBreeds }) {
-  const onSubmit = (values) => {
-    console.log(values);
+  const router = useRouter();
+
+  const onSubmit = async (values) => {
+    const result = await fetch("/api/lineages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+    if (result.ok) {
+      const data = await result.json();
+      router.push(`/lineages/${data.lineageId}`);
+    } else {
+      console.log(result);
+    }
   };
 
   const validate = (values) => {
