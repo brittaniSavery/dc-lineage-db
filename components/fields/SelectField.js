@@ -31,7 +31,7 @@ export default function SelectField({
                 ))}
               </select>
               {meta.error && meta.touched && (
-                <p class="help is-danger">{meta.error}</p>
+                <p className="help is-danger">{meta.error}</p>
               )}
             </div>
           </div>

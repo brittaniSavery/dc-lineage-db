@@ -1,3 +1,4 @@
+import React from "react";
 import Layout from "../components/Layout";
 import Link from "next/link";
 import Header from "../components/Header";
@@ -6,7 +7,7 @@ export default function Home() {
   return (
     <Layout title="Home">
       <Header centered>Dragon Cave Lineage Database</Header>
-      <h2 className="site-header is-size-5-desktop is-size-4-widescreen has-text-grey-light has-text-centered">
+      <h2 className="site-header is-size-5-desktop is-size-4-widescreen has-text-centered">
         The one-stop shop to host all your dragon cave lineages. No matter
         whether they are checkers or staircases, shinies or holidays, 2nd
         generation or 12th generation, all lineages are welcomed here!

@@ -120,23 +120,28 @@ export default function Add({ maleBreeds, femaleBreeds }) {
                   Lineage Information
                 </h2>
               </div>
-              <div className="column is-3">
-                <InputField
-                  name="generation"
-                  label="Generation"
-                  type="number"
-                  required
-                />
+              <div className="column is-12">
+                <div className="columns">
+                  <div className="column is-narrow">
+                    <InputField
+                      name="generation"
+                      label="Generation"
+                      type="number"
+                      style={{ width: "5em" }}
+                      required
+                    />
+                  </div>
+                  <div className="column">
+                    <SelectField
+                      name="type"
+                      label="Type"
+                      options={LINEAGE_TYPES}
+                      required
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="column">
-                <SelectField
-                  name="type"
-                  label="Type"
-                  options={LINEAGE_TYPES}
-                  required
-                />
-              </div>
-              <div className="column">
+              <div className="column is-12-tablet is-6-desktop">
                 <SelectField
                   name="cdc"
                   label="CDC Entry"
@@ -145,7 +150,7 @@ export default function Add({ maleBreeds, femaleBreeds }) {
                   getOptionValue={(x) => x.value}
                 />
               </div>
-              <div className="column">
+              <div className="column is-12-tablet is-6-desktop">
                 <SelectField
                   name="srogg"
                   label="SROGG Entry"
@@ -158,10 +163,20 @@ export default function Add({ maleBreeds, femaleBreeds }) {
                 <TextareaField name="notes" label="Notes" />
               </div>
               <div className="column is-12">
+                <div className="field">
+                  <div className="control">
+                    <label className="checkbox">
+                      <input type="checkbox" />
+                      Create another lineage?
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div className="column is-12">
                 <ButtonGroup alignment="center">
                   <Button
-                    primary
                     type="submit"
+                    color="primary"
                     disabled={submitting || pristine}
                   >
                     Add
