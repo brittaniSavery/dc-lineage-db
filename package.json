@@ -1,9 +1,9 @@
 {
-  "name": "dcldb-temp",
+  "name": "dc-lineage-db",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
+    "dev": "rm -rf .next && cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
     "test": "jest"

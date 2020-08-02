@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 export default function Header({ centered = false, children, ...rest }) {
   let classes = [
@@ -18,3 +19,8 @@ export default function Header({ centered = false, children, ...rest }) {
     </h1>
   );
 }
+
+Header.propTypes = {
+  centered: PropTypes.bool,
+  children: PropTypes.node.isRequired,
+};

@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Form } from "react-final-form";
-import Button from "../components/fields/Button";
-import ButtonGroup from "../components/fields/ButtonGroup";
+import Button from "../components/Button";
+import ButtonContainer from "../components/ButtonContainer";
 import InputField from "../components/fields/InputField";
 import SearchableSelectField from "../components/fields/SearchableSelectField";
 import SelectField from "../components/fields/SelectField";
@@ -16,11 +16,14 @@ import {
   getFemaleBreedNames,
 } from "../middleware/database";
 import { useRouter } from "next/router";
+import RadioGroup from "../components/fields/RadioGroup";
+import Subheader from "../components/Subheader";
+import CheckboxGroup from "../components/fields/CheckboxGroup";
 
 export default function Add({ maleBreeds, femaleBreeds }) {
   const router = useRouter();
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values, form) => {
     const result = await fetch("/api/lineages", {
       method: "POST",
       headers: {
@@ -30,9 +33,17 @@ export default function Add({ maleBreeds, femaleBreeds }) {
     });
     if (result.ok) {
       const data = await result.json();
-      router.push(`/lineages/${data.lineageId}`);
+      console.log("Success!");
+
+      //Restart formt to add another or jump to last inserted lineage
+      if (values.another) {
+        //setLastInserted(result.lineageId);
+        setTimeout(form.restart);
+      } else {
+        router.push(`/lineages/${data.lineageId}`);
+      }
     } else {
-      console.log(result);
+      console.dir(result);
     }
   };
 
@@ -66,11 +77,9 @@ export default function Add({ maleBreeds, femaleBreeds }) {
           <form onSubmit={handleSubmit}>
             <div className="columns is-multiline">
               <div className="column is-12">
-                <h2 className="is-uppercase has-text-weight-light has-text-info">
-                  Male Information
-                </h2>
+                <Subheader>Male Information</Subheader>
               </div>
-              <div className="column is-12-tablet is-6-desktop">
+              <div className="column is-12">
                 <SearchableSelectField
                   name="maleBreed"
                   label="Male Breed"
@@ -79,23 +88,25 @@ export default function Add({ maleBreeds, femaleBreeds }) {
                   required
                 />
               </div>
-              <div className="column is-narrow" style={{ width: "7em" }}>
-                <InputField
-                  name="maleCode"
-                  label="Male Code"
-                  maxLength="5"
-                  style={{ width: "5em" }} //Bulma Hack: doesn't recognize size attribute
-                />
-              </div>
-              <div className="column">
-                <InputField name="maleName" label="Male Name" />
+              <div className="column is-12">
+                <div className="columns">
+                  <div className="column is-narrow" style={{ width: "7em" }}>
+                    <InputField
+                      name="maleCode"
+                      label="Male Code"
+                      maxLength="5"
+                      style={{ width: "5em" }} //Bulma Hack: doesn't recognize size attribute
+                    />
+                  </div>
+                  <div className="column">
+                    <InputField name="maleName" label="Male Name" />
+                  </div>
+                </div>
               </div>
               <div className="column is-12">
-                <h2 className="is-uppercase has-text-weight-light has-text-info">
-                  Female Information
-                </h2>
+                <Subheader>Female Information</Subheader>
               </div>
-              <div className="column is-12-tablet is-6-desktop">
+              <div className="column is-12">
                 <SearchableSelectField
                   name="femaleBreed"
                   label="Female Breed"
@@ -104,21 +115,23 @@ export default function Add({ maleBreeds, femaleBreeds }) {
                   required
                 />
               </div>
-              <div className="column is-narrow">
-                <InputField
-                  name="femaleCode"
-                  label="Female Code"
-                  maxLength="5"
-                  style={{ width: "5em" }} //Bulma Hack: doesn't recognize size attribute
-                />
-              </div>
-              <div className="column">
-                <InputField name="femaleName" label="Female Name" />
+              <div className="column is-12">
+                <div className="columns">
+                  <div className="column is-narrow">
+                    <InputField
+                      name="femaleCode"
+                      label="Female Code"
+                      maxLength="5"
+                      style={{ width: "5em" }} //Bulma Hack: doesn't recognize size attribute
+                    />
+                  </div>
+                  <div className="column">
+                    <InputField name="femaleName" label="Female Name" />
+                  </div>
+                </div>
               </div>
               <div className="column is-12">
-                <h2 className="is-uppercase has-text-weight-light has-text-info">
-                  Lineage Information
-                </h2>
+                <Subheader>Lineage Information</Subheader>
               </div>
               <div className="column is-12">
                 <div className="columns">
@@ -141,8 +154,8 @@ export default function Add({ maleBreeds, femaleBreeds }) {
                   </div>
                 </div>
               </div>
-              <div className="column is-12-tablet is-6-desktop">
-                <SelectField
+              <div className="column is-12">
+                <RadioGroup
                   name="cdc"
                   label="CDC Entry"
                   options={LINEAGE_SITES_STATUS}
@@ -150,8 +163,8 @@ export default function Add({ maleBreeds, femaleBreeds }) {
                   getOptionValue={(x) => x.value}
                 />
               </div>
-              <div className="column is-12-tablet is-6-desktop">
-                <SelectField
+              <div className="column is-12">
+                <RadioGroup
                   name="srogg"
                   label="SROGG Entry"
                   options={LINEAGE_SITES_STATUS}
@@ -163,17 +176,13 @@ export default function Add({ maleBreeds, femaleBreeds }) {
                 <TextareaField name="notes" label="Notes" />
               </div>
               <div className="column is-12">
-                <div className="field">
-                  <div className="control">
-                    <label className="checkbox">
-                      <input type="checkbox" />
-                      Create another lineage?
-                    </label>
-                  </div>
-                </div>
+                <CheckboxGroup
+                  name="another"
+                  options={["Create another lineage?"]}
+                />
               </div>
               <div className="column is-12">
-                <ButtonGroup alignment="center">
+                <ButtonContainer alignment="center">
                   <Button
                     type="submit"
                     color="primary"
@@ -188,7 +197,7 @@ export default function Add({ maleBreeds, femaleBreeds }) {
                   >
                     Cancel
                   </Button>
-                </ButtonGroup>
+                </ButtonContainer>
               </div>
             </div>
           </form>

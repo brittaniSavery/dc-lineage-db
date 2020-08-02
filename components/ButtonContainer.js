@@ -1,6 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-export default function ButtonGroup({ alignment = "left", children }) {
+export default function ButtonContainer({ alignment = "left", children }) {
   let alignmentClass;
   switch (alignment) {
     case "center":
@@ -25,3 +26,8 @@ export default function ButtonGroup({ alignment = "left", children }) {
     </div>
   );
 }
+
+ButtonContainer.propTypes = {
+  alignment: PropTypes.string,
+  children: PropTypes.node,
+};

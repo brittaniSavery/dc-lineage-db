@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "react-final-form";
 
-export default function RadioGroup({
+export default function CheckboxGroup({
   name,
   label,
   options,
@@ -12,18 +12,20 @@ export default function RadioGroup({
 }) {
   return (
     <div className="field">
-      <label className="label">
-        {label}
-        {required && " *"}
-      </label>
+      {label && (
+        <label className="label">
+          {label}
+          {required && " *"}
+        </label>
+      )}
       {options.map((option, index) => (
-        <div key={`radioGroup-${name}-${index}`} className="control">
-          <label className="radio">
+        <div key={`checkboxGroup-${name}-${index}`} className="control">
+          <label className="checkbox">
             <Field
               name={name}
               component="input"
-              type="radio"
-              value={getOptionValue(option)}
+              type="checkbox"
+              value={options.length > 1 ? getOptionValue(option) : undefined}
             />
             &nbsp;
             {getOptionLabel(option)}
@@ -34,9 +36,9 @@ export default function RadioGroup({
   );
 }
 
-RadioGroup.propTypes = {
+CheckboxGroup.propTypes = {
   name: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   options: PropTypes.arrayOf(
     PropTypes.oneOfType([PropTypes.node, PropTypes.object])
   ).isRequired,

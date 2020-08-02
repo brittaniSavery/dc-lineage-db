@@ -1,20 +1,28 @@
-//colors
-$danger: #de3914;
-$warning: #e9d985;
-$success: #439a86;
-$info: #007991;
-$link: #56629f;
-$nav-link: #bcd8c1;
-$primary: #007991;
-$text: #222e50;
-$white: #fff;
+@import "./node_modules/bulma/sass/utilities/initial-variables.sass";
+
+// DCLDB colors
+$dcldb-red: #de3914;
+$dcldb-yellow: #e9d985;
+$dcldb-green: #5b9a66;
+$dcldb-teal: #007991;
+$dcldb-blue: #222e50;
+$dcldb-purple: #402259;
+
+//Resetting Bulma colors
+$danger: $dcldb-red;
+$warning: $dcldb-yellow;
+$success: $dcldb-green;
+$info: $dcldb-blue;
+$link: $dcldb-purple;
+$primary: $dcldb-teal;
+$text: $grey;
 
 //navigation customization
 $navbar-padding-vertical: 0.5rem;
 $navbar-padding-horizontal: 1rem;
 $navbar-background-color: $primary;
 $navbar-item-color: $white;
-$navbar-item-hover-color: $nav-link;
+//$navbar-item-hover-color: $nav-link;
 $navbar-item-hover-background-color: $primary;
 $navbar-burger-color: $white;
 
@@ -36,8 +44,12 @@ $section-padding: 0rem;
 }
 
 //form fields
-$label-color: $text;
-$label-weight: 400;
+$label-color: $grey;
+$label-weight: 500;
+.select:after {
+  z-index: auto !important;
+  border-color: $grey-light !important;
+}
 
 //misc
 $size-1: 4rem;
