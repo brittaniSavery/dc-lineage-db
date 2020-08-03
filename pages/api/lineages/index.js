@@ -10,7 +10,7 @@ handler.use(database);
 handler.get(async (req, res) => {
   let query = createMongoQuery(req.query);
   let lineages = await req.db
-    .collection("linages")
+    .collection("lineages")
     .find(query)
     .sort({ maleBreed: 1 })
     .toArray();
@@ -23,10 +23,10 @@ handler.post(async (req, res) => {
   let lineage = req.body;
 
   const maleBreedFull = await breedDb.findOne({
-    name: new RegExp(escapeRegExp(lineage.maleBreed), "i"),
+    name: new RegExp(escapeRegExp(lineage.male.breed), "i"),
   });
   const femaleBreedFull = await breedDb.findOne({
-    name: new RegExp(escapeRegExp(lineage.femaleBreed), "i"),
+    name: new RegExp(escapeRegExp(lineage.female.breed), "i"),
   });
 
   //making sure the combination is valid (drake with drake, pygmy with pygmy, etc.)

@@ -20,7 +20,6 @@ export default function CheckboxGroup({
       )}
       {options.map((option, index) => {
         const hasValue = options.length > 1;
-        console.log(hasValue);
 
         return (
           <div key={`checkboxGroup-${name}-${index}`} className="control">

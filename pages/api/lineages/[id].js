@@ -5,23 +5,23 @@ import database from "../../../middleware/database";
 const handler = nextConnect();
 handler.use(database);
 
-/** GET: Retrieves a specific breed */
+/** GET: Retrieves a specific lineage */
 handler.get(async (req, res) => {
-  let breed = await req.db
-    .collection("breeds")
-    .findOne({ _id: ObjectId(req.query.breedId) });
+  let lineage = await req.db
+    .collection("lineages")
+    .findOne({ _id: ObjectId(req.query.id) });
 
-  if (breed) {
-    res.json(breed);
+  if (lineage) {
+    res.json(lineage);
   } else {
     res.status(404);
-    res.send("Breed not found.");
+    res.send("Lineage not found.");
   }
 });
 
-/**PATCH: Update a specific breed */
-handler.patch(async (req, res, next) => {
-  const breedId = req.query.breedId;
+/**PATCH: Update a specific lineage */
+/* handler.patch(async (req, res, next) => {
+  const id = req.query.id;
 
   try {
     let result = await req.db
@@ -39,6 +39,6 @@ handler.patch(async (req, res, next) => {
   } catch (error) {
     next(Error(error));
   }
-});
+}); */
 
 export default handler;

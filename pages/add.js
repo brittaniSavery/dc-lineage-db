@@ -57,11 +57,13 @@ export default function Add({ maleBreeds, femaleBreeds }) {
 
   const validate = (values) => {
     const errors = {};
-    if (!values.maleBreed) errors.maleBreed = "Required";
-    if (!values.femaleBreed) errors.femaleBreed = "Required";
-    if (!(values.maleCode || values.femaleCode)) {
-      errors.maleCode = "One code is required.";
-      errors.femaleCode = "One code is required.";
+    if (values.male && values.female) {
+      if (!values.male.breed) errors.male.breed = "Required";
+      if (!values.female.breed) errors.female.breed = "Required";
+      if (!(values.male.code || values.female.code)) {
+        errors.male.code = "One code is required.";
+        errors.female.code = "One code is required.";
+      }
     }
     if (!values.generation) errors.generation = "Required";
     if (!values.type) errors.type = "Required";
@@ -103,7 +105,7 @@ export default function Add({ maleBreeds, femaleBreeds }) {
               </div>
               <div className="column is-12">
                 <SearchableSelectField
-                  name="maleBreed"
+                  name="male.breed"
                   label="Male Breed"
                   options={maleBreeds}
                   matchFromStart
@@ -115,14 +117,14 @@ export default function Add({ maleBreeds, femaleBreeds }) {
                 <div className="columns">
                   <div className="column is-narrow" style={{ width: "8em" }}>
                     <InputField
-                      name="maleCode"
+                      name="male.code"
                       label="Male Code"
                       maxLength="5"
                       style={{ width: "5em" }} //Bulma Hack: doesn't recognize size attribute
                     />
                   </div>
                   <div className="column">
-                    <InputField name="maleName" label="Male Name" />
+                    <InputField name="male.name" label="Male Name" />
                   </div>
                 </div>
               </div>
@@ -131,7 +133,7 @@ export default function Add({ maleBreeds, femaleBreeds }) {
               </div>
               <div className="column is-12">
                 <SearchableSelectField
-                  name="femaleBreed"
+                  name="female.breed"
                   label="Female Breed"
                   options={femaleBreeds}
                   matchFromStart
@@ -142,14 +144,14 @@ export default function Add({ maleBreeds, femaleBreeds }) {
                 <div className="columns">
                   <div className="column is-narrow" style={{ width: "8em" }}>
                     <InputField
-                      name="femaleCode"
+                      name="female.code"
                       label="Female Code"
                       maxLength="5"
                       style={{ width: "5em" }} //Bulma Hack: doesn't recognize size attribute
                     />
                   </div>
                   <div className="column">
-                    <InputField name="femaleName" label="Female Name" />
+                    <InputField name="female.name" label="Female Name" />
                   </div>
                 </div>
               </div>
@@ -197,7 +199,7 @@ export default function Add({ maleBreeds, femaleBreeds }) {
               </div>
               <div className="column">
                 <InputField
-                  name="offspringCode"
+                  name="sample"
                   label="Sample Offspring Code"
                   maxLength="5"
                   style={{ width: "5em" }} //Bulma Hack: doesn't recognize size attribute
