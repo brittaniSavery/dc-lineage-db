@@ -18,20 +18,26 @@ export default function CheckboxGroup({
           {required && " *"}
         </label>
       )}
-      {options.map((option, index) => (
-        <div key={`checkboxGroup-${name}-${index}`} className="control">
-          <label className="checkbox">
-            <Field
-              name={name}
-              component="input"
-              type="checkbox"
-              value={options.length > 1 ? getOptionValue(option) : undefined}
-            />
-            &nbsp;
-            {getOptionLabel(option)}
-          </label>
-        </div>
-      ))}
+      {options.map((option, index) => {
+        const hasValue = options.length > 1;
+        console.log(hasValue);
+
+        return (
+          <div key={`checkboxGroup-${name}-${index}`} className="control">
+            <label className="checkbox">
+              <Field
+                id={`${name}${hasValue ? `-${getOptionValue(option)}` : ""}`}
+                name={name}
+                component="input"
+                type="checkbox"
+                value={hasValue ? getOptionValue(option) : undefined}
+              />
+              &nbsp;
+              {getOptionLabel(option)}
+            </label>
+          </div>
+        );
+      })}
     </div>
   );
 }

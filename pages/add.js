@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Form } from "react-final-form";
+import { FORM_ERROR } from "final-form";
 import Button from "../components/Button";
 import ButtonContainer from "../components/ButtonContainer";
 import InputField from "../components/fields/InputField";
@@ -19,11 +20,16 @@ import { useRouter } from "next/router";
 import RadioGroup from "../components/fields/RadioGroup";
 import Subheader from "../components/Subheader";
 import CheckboxGroup from "../components/fields/CheckboxGroup";
+import Notification from "../components/Notification";
+import Link from "next/link";
 
 export default function Add({ maleBreeds, femaleBreeds }) {
   const router = useRouter();
+  const [lastInserted, setLastInserted] = React.useState();
 
   const onSubmit = async (values, form) => {
+    const another = values.another;
+    delete values.another;
     const result = await fetch("/api/lineages", {
       method: "POST",
       headers: {
@@ -32,18 +38,20 @@ export default function Add({ maleBreeds, femaleBreeds }) {
       body: JSON.stringify(values),
     });
     if (result.ok) {
-      const data = await result.json();
-      console.log("Success!");
+      const lineageId = (await result.json()).lineageId;
 
-      //Restart formt to add another or jump to last inserted lineage
-      if (values.another) {
-        //setLastInserted(result.lineageId);
+      //Restart form to add another or goto last inserted lineage
+      if (another) {
+        setLastInserted(lineageId);
         setTimeout(form.restart);
+        document.getElementById("top").scrollIntoView();
       } else {
-        router.push(`/lineages/${data.lineageId}`);
+        router.push(`/lineages/${lineageId}`);
       }
     } else {
-      console.dir(result);
+      //show error back to user
+      const error = await result.text();
+      return { [FORM_ERROR]: error };
     }
   };
 
@@ -51,9 +59,9 @@ export default function Add({ maleBreeds, femaleBreeds }) {
     const errors = {};
     if (!values.maleBreed) errors.maleBreed = "Required";
     if (!values.femaleBreed) errors.femaleBreed = "Required";
-    if (!values.maleCode && !values.femaleCode) {
-      errors.maleCode = "A male code or female code is required.";
-      errors.femaleCode = "A male code or female code is required.";
+    if (!(values.maleCode || values.femaleCode)) {
+      errors.maleCode = "One code is required.";
+      errors.femaleCode = "One code is required.";
     }
     if (!values.generation) errors.generation = "Required";
     if (!values.type) errors.type = "Required";
@@ -73,9 +81,23 @@ export default function Add({ maleBreeds, femaleBreeds }) {
       <Form
         onSubmit={onSubmit}
         validate={validate}
-        render={({ handleSubmit, submitting, pristine, form }) => (
+        render={({ handleSubmit, submitting, pristine, submitError }) => (
           <form onSubmit={handleSubmit}>
-            <div className="columns is-multiline">
+            <div id="top" className="columns is-multiline">
+              {submitError && (
+                <Notification status="error" title="Oops!">
+                  {submitError}
+                </Notification>
+              )}
+              {lastInserted && (
+                <Notification status="success" title="Lineage Created!">
+                  Your lineage was created successfully.{" "}
+                  <Link href={`/lineages/${lastInserted}`}>
+                    <a>Click here</a>
+                  </Link>{" "}
+                  to view it.
+                </Notification>
+              )}
               <div className="column is-12">
                 <Subheader>Male Information</Subheader>
               </div>
@@ -85,12 +107,13 @@ export default function Add({ maleBreeds, femaleBreeds }) {
                   label="Male Breed"
                   options={maleBreeds}
                   matchFromStart
+                  autoFocus
                   required
                 />
               </div>
               <div className="column is-12">
                 <div className="columns">
-                  <div className="column is-narrow" style={{ width: "7em" }}>
+                  <div className="column is-narrow" style={{ width: "8em" }}>
                     <InputField
                       name="maleCode"
                       label="Male Code"
@@ -117,7 +140,7 @@ export default function Add({ maleBreeds, femaleBreeds }) {
               </div>
               <div className="column is-12">
                 <div className="columns">
-                  <div className="column is-narrow">
+                  <div className="column is-narrow" style={{ width: "8em" }}>
                     <InputField
                       name="femaleCode"
                       label="Female Code"
@@ -135,7 +158,7 @@ export default function Add({ maleBreeds, femaleBreeds }) {
               </div>
               <div className="column is-12">
                 <div className="columns">
-                  <div className="column is-narrow">
+                  <div className="column is-narrow" style={{ width: "8em" }}>
                     <InputField
                       name="generation"
                       label="Generation"
@@ -172,6 +195,14 @@ export default function Add({ maleBreeds, femaleBreeds }) {
                   getOptionValue={(x) => x.value}
                 />
               </div>
+              <div className="column">
+                <InputField
+                  name="offspringCode"
+                  label="Sample Offspring Code"
+                  maxLength="5"
+                  style={{ width: "5em" }} //Bulma Hack: doesn't recognize size attribute
+                />
+              </div>
               <div className="column is-12">
                 <TextareaField name="notes" label="Notes" />
               </div>
@@ -186,14 +217,15 @@ export default function Add({ maleBreeds, femaleBreeds }) {
                   <Button
                     type="submit"
                     color="primary"
+                    loading={submitting}
                     disabled={submitting || pristine}
                   >
                     Add
                   </Button>
                   <Button
                     type="button"
-                    onClick={form.reset}
-                    disabled={submitting || pristine}
+                    onClick={() => router.back()}
+                    disabled={submitting}
                   >
                     Cancel
                   </Button>

@@ -36,6 +36,7 @@ export default function SearchableSelectField({
           </label>
           <div className="control">
             <Select
+              id={name}
               inputId={name}
               options={generatedOptions}
               filterOption={matchFromStart && createFilter(filterConfig)}
@@ -55,7 +56,9 @@ export default function SearchableSelectField({
 SearchableSelectField.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.node).isRequired,
+  options: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.node, PropTypes.object])
+  ).isRequired,
   getOptionLabel: PropTypes.func,
   getOptionValue: PropTypes.func,
   required: PropTypes.bool,

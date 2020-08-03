@@ -1,6 +1,6 @@
 import nextConnect from "next-connect";
 import database from "../../../middleware/database";
-import { createMongoQuery } from "../../../middleware/helpers";
+import { createMongoQuery } from "../../../lib/helpers";
 import escapeRegExp from "lodash.escaperegexp";
 
 const handler = nextConnect();

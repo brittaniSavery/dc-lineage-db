@@ -1,12 +1,11 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Field } from "react-final-form";
 
-export default function InputField({
+export default function TextareaField({
   name,
   label,
-  length,
-  type = "text",
-  required,
+  required = false,
   ...rest
 }) {
   return (
@@ -18,13 +17,19 @@ export default function InputField({
             {required && " *"}
           </label>
           <div className="control">
-            <textarea className="textarea" {...input} {...rest}></textarea>
+            <textarea id={name} className="textarea" {...input} {...rest} />
           </div>
           {meta.error && meta.touched && (
-            <p class="help is-danger">{meta.error}</p>
+            <p className="help is-danger">{meta.error}</p>
           )}
         </div>
       )}
     </Field>
   );
 }
+
+TextareaField.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  required: PropTypes.bool,
+};

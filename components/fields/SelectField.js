@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Field } from "react-final-form";
 
 export default function SelectField({
@@ -19,7 +20,7 @@ export default function SelectField({
           </label>
           <div className="control is-expanded">
             <div className="select is-fullwidth">
-              <select {...input}>
+              <select id={name} {...input}>
                 <option value="">Select...</option>
                 {options.map((option) => (
                   <option
@@ -40,3 +41,14 @@ export default function SelectField({
     </Field>
   );
 }
+
+SelectField.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(
+    PropTypes.oneOfType([PropTypes.node, PropTypes.object])
+  ).isRequired,
+  required: PropTypes.bool,
+  getOptionLabel: PropTypes.func,
+  getOptionValue: PropTypes.func,
+};

@@ -20,6 +20,7 @@ export default function RadioGroup({
         <div key={`radioGroup-${name}-${index}`} className="control">
           <label className="radio">
             <Field
+              id={`${name}-${getOptionValue(option)}`}
               name={name}
               component="input"
               type="radio"

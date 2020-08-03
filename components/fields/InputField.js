@@ -12,9 +12,9 @@ export default function InputField({ name, label, required = false, ...rest }) {
             {required && " *"}
           </label>
           <div className="control">
-            <input {...input} {...rest} className="input" />
+            <input id={name} {...input} {...rest} className="input" />
           </div>
-          {meta.error && meta.toclassNameName && (
+          {meta.error && meta.touched && (
             <p className="help is-danger">{meta.error}</p>
           )}
         </div>
