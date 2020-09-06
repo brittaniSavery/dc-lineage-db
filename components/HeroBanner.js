@@ -1,23 +1,33 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
+import classNames from "classnames";
 import { SITE_NAME } from "../lib/constants";
 
 export default function HeroBanner({
   title,
-  subtitle,
+  subtitle = "",
   color = "primary",
   fullHeight = false,
+  showTitle = false,
   children,
 }) {
   return (
-    <section className={`hero is-${color} ${fullHeight && "is-fullheight"}`}>
+    <section
+      className={classNames(
+        "hero",
+        { [`is-${color}`]: true },
+        { "is-fullheight": fullHeight }
+      )}
+    >
       <Head>
         <title>{`${SITE_NAME}: ${title}${subtitle && `—${subtitle}`}`}</title>
       </Head>
-      <div className="hero-body has-text-centered">
+      <div
+        className={classNames("hero-body", { "has-text-centered": showTitle })}
+      >
         <div className="container">
-          <h1 className="title">{title}</h1>
+          {showTitle && <h1 className="title">{title}</h1>}
           {subtitle && <h2 className="subtitle">{subtitle}</h2>}
           {children}
         </div>
@@ -31,5 +41,6 @@ HeroBanner.propTypes = {
   subtitle: PropTypes.string,
   color: PropTypes.string,
   fullHeight: PropTypes.bool,
+  showTitle: PropTypes.bool,
   children: PropTypes.node,
 };

@@ -13,5 +13,7 @@ export default function Login() {
     }
   }, [auth, loading]);
 
-  return <HeroBanner title="Loading" subtitle="Please wait" fullHeight />;
+  return (
+    <HeroBanner title="Loading" subtitle="Please wait" fullHeight showTitle />
+  );
 }
