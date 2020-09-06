@@ -5,10 +5,6 @@ import passport from "../lib/passport";
 
 const middleware = nextConnect();
 
-middleware
-  .use(database)
-  .use(session)
-  .use(passport.initialize())
-  .use(passport.session());
+middleware.use(database).use(session).use(passport.initialize());
 
 export default middleware;

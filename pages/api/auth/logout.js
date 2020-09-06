@@ -4,8 +4,12 @@ import middleware from "../../../middleware";
 const handler = nextConnect();
 handler.use(middleware);
 
-handler.get(async (req, res) => {
-  res.json(req.user || { message: "Not Logged In" });
+handler.get((req, res) => {
+  req.session.destroy();
+  res.status(307);
+  res.setHeader("Location", "/");
+  res.setHeader("Content-Length", 0);
+  res.end();
 });
 
 export default handler;

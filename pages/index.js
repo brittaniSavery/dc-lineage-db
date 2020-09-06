@@ -2,8 +2,12 @@ import React from "react";
 import Layout from "../components/Layout";
 import Link from "next/link";
 import Header from "../components/Header";
+import classNames from "classnames";
+import { useAuth } from "../lib/hooks";
 
 export default function Home() {
+  const { auth } = useAuth();
+
   return (
     <Layout title="Home">
       <Header centered>Dragon Cave Lineage Database</Header>
@@ -12,22 +16,29 @@ export default function Home() {
         whether they are checkers or staircases, shinies or holidays, 2nd
         generation or 12th generation, all lineages are welcomed here!
       </h2>
-      <p className="has-text-centered">
-        If you would like to add your lineages to the database and save favorite
-        searches, login/sign up{" "}
-        <Link href="/api/login">
-          <a>here</a>
-        </Link>
-        !
-      </p>
+      {!auth && (
+        <p className="has-text-centered">
+          If you would like to add your lineages to the database and save
+          favorite searches, login/sign up <a href="/api/auth/login">here</a>!
+        </p>
+      )}
       <div className="level pt-4">
         <div className="level-item has-text-centered">
           <div className="buttons">
-            <Link href="/add">
-              <a className="button is-primary is-uppercase">Add Lineage</a>
-            </Link>
+            {auth && (
+              <Link href="/add">
+                <a className="button is-primary is-uppercase">Add Lineage</a>
+              </Link>
+            )}
             <Link href="/search">
-              <a className="button is-primary is-outlined is-uppercase">
+              <a
+                className={classNames(
+                  "button",
+                  "is-primary",
+                  { "is-outlined": auth },
+                  "is-uppercase"
+                )}
+              >
                 Search Lineages
               </a>
             </Link>

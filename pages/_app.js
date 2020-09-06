@@ -6,7 +6,10 @@ import "../styles.scss";
 export default function MyApp({ Component, pageProps }) {
   return (
     <SWRConfig
-      value={{ fetcher: (...args) => fetch(...args).then((res) => res.json()) }}
+      value={{
+        fetcher: (...args) => fetch(...args).then((res) => res.json()),
+        onError: (err) => console.error(err),
+      }}
     >
       <Component {...pageProps} />
     </SWRConfig>

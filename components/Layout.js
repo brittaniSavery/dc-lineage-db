@@ -1,9 +1,13 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Head from "next/head";
 import Link from "next/link";
+import classNames from "classnames";
+import { useAuth } from "../lib/hooks";
 
 export default function Layout({ title, children }) {
   const siteName = "Dragon Cave Lineage Database";
+  const { auth } = useAuth();
   const [activeMenu, setActiveMenu] = React.useState(false);
 
   return (
@@ -25,7 +29,7 @@ export default function Layout({ title, children }) {
           <a
             role="button"
             onClick={() => setActiveMenu(!activeMenu)}
-            className={`navbar-burger ${activeMenu && "is-active"}`}
+            className={classNames("navbar-burger", { "is-active": activeMenu })}
             aria-label="menu"
             aria-expanded="false"
           >
@@ -34,25 +38,47 @@ export default function Layout({ title, children }) {
             <span aria-hidden="true" />
           </a>
         </div>
-        <div className={`navbar-menu ${activeMenu && "is-active"}`}>
+        <div className={classNames("navbar-menu", { "is-active": activeMenu })}>
           <div className="navbar-start">
-            <Link href="/lineages">
-              <a className="navbar-item is-uppercase has-text-weight-medium">
-                My Lineages
-              </a>
-            </Link>
             <Link href="/search">
               <a className="navbar-item is-uppercase has-text-weight-medium">
                 Database
               </a>
             </Link>
+            {auth && (
+              <Link href="/lineages">
+                <a className="navbar-item is-uppercase has-text-weight-medium">
+                  My Lineages
+                </a>
+              </Link>
+            )}
           </div>
           <div className="navbar-end">
-            <div className="navbar-item">
-              <a className="button is-primary is-inverted is-uppercase has-text-weight-medium	">
-                Login
-              </a>
-            </div>
+            {!auth && (
+              <div className="navbar-item">
+                <a
+                  href="/api/auth/login"
+                  className="button is-primary is-inverted is-uppercase has-text-weight-medium"
+                >
+                  Login
+                </a>
+              </div>
+            )}
+            {auth && (
+              <>
+                <Link href="/users/">
+                  <a className="navbar-item is-uppercase has-text-weight-medium">
+                    Profile
+                  </a>
+                </Link>
+                <a
+                  href="/api/auth/logout"
+                  className="navbar-item is-uppercase has-text-weight-medium"
+                >
+                  Logout
+                </a>
+              </>
+            )}
           </div>
         </div>
       </nav>
@@ -64,3 +90,8 @@ export default function Layout({ title, children }) {
     </section>
   );
 }
+
+Layout.propTypes = {
+  title: PropTypes.string.isRequired,
+  children: PropTypes.node,
+};
