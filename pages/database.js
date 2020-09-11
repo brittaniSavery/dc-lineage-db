@@ -1,15 +1,20 @@
 import React from "react";
-import Layout from "../components/Layout";
-import Header from "../components/Header";
 
-export default function Search() {
+export default function SearchDatabase() {
   return (
-    <Layout title="Search">
-      <Header>Search Database</Header>
-    </Layout>
+    <>
+      <p>Use the form below to search the database for lineages.</p>
+    </>
   );
 }
 
+export async function getStaticprops() {
+  return {
+    props: {
+      title: "Database Search",
+    },
+  };
+}
 /* //import { useRouter } from "next/router";
 import {
   Button,

@@ -1,30 +1,30 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Form } from "react-final-form";
 import { FORM_ERROR } from "final-form";
-import Button from "../components/Button";
-import ButtonContainer from "../components/ButtonContainer";
-import InputField from "../components/fields/InputField";
-import SearchableSelectField from "../components/fields/SearchableSelectField";
-import SelectField from "../components/fields/SelectField";
-import TextareaField from "../components/fields/TextareaField";
-import Header from "../components/Header";
-import Layout from "../components/Layout";
-import { LINEAGE_SITES_STATUS, LINEAGE_TYPES } from "../lib/constants";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import PropTypes from "prop-types";
+import React from "react";
+import { Form } from "react-final-form";
+import Button from "../../components/Button";
+import ButtonContainer from "../../components/ButtonContainer";
+import CheckboxGroup from "../../components/fields/CheckboxGroup";
+import InputField from "../../components/fields/InputField";
+import RadioGroup from "../../components/fields/RadioGroup";
+import SearchableSelectField from "../../components/fields/SearchableSelectField";
+import SelectField from "../../components/fields/SelectField";
+import TextareaField from "../../components/fields/TextareaField";
+import Notification from "../../components/Notification";
+import Subheader from "../../components/Subheader";
+import { LINEAGE_SITES_STATUS, LINEAGE_TYPES } from "../../lib/constants";
+import { useAuth } from "../../lib/hooks";
 import {
   databaseSetup,
-  getMaleBreedNames,
   getFemaleBreedNames,
-} from "../middleware/database";
-import { useRouter } from "next/router";
-import RadioGroup from "../components/fields/RadioGroup";
-import Subheader from "../components/Subheader";
-import CheckboxGroup from "../components/fields/CheckboxGroup";
-import Notification from "../components/Notification";
-import Link from "next/link";
+  getMaleBreedNames,
+} from "../../middleware/database";
 
-export default function Add({ maleBreeds, femaleBreeds }) {
+export default function AddLineage({ maleBreeds, femaleBreeds }) {
   const router = useRouter();
+  const { auth } = useAuth();
   const [lastInserted, setLastInserted] = React.useState();
 
   const onSubmit = async (values, form) => {
@@ -71,9 +71,18 @@ export default function Add({ maleBreeds, femaleBreeds }) {
     return errors;
   };
 
+  //tell user that they need to log in or sign up in order to add lineages
+  if (!auth) {
+    return (
+      <p>
+        Before you can add your lineages to the database, please login/sign up{" "}
+        <a href="/api/auth/login">here</a>.
+      </p>
+    );
+  }
+
   return (
-    <Layout title="Add">
-      <Header>Add Lineage</Header>
+    <>
       <p className="pb-5">
         All fields marked with an asterik (*) are{" "}
         <span className="has-text-info">required</span>. A male code or female
@@ -237,7 +246,7 @@ export default function Add({ maleBreeds, femaleBreeds }) {
           </form>
         )}
       />
-    </Layout>
+    </>
   );
 }
 
@@ -245,6 +254,7 @@ export async function getStaticProps() {
   const db = (await databaseSetup()).db;
   return {
     props: {
+      title: "Add Lineage",
       maleBreeds: await getMaleBreedNames(db),
       femaleBreeds: await getFemaleBreedNames(db),
     },
@@ -252,7 +262,7 @@ export async function getStaticProps() {
   };
 }
 
-Add.propTypes = {
+AddLineage.propTypes = {
   maleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
   femaleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

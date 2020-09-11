@@ -1,6 +1,6 @@
 import nextConnect from "next-connect";
 import database from "../../../middleware/database";
-import { createMongoQuery } from "../../../lib/helpers";
+import { createMongoQueryForFind } from "../../../lib/helpers";
 import escapeRegExp from "lodash.escaperegexp";
 
 const handler = nextConnect();
@@ -8,7 +8,7 @@ handler.use(database);
 
 /** GET: All lineage data based on search criteria */
 handler.get(async (req, res) => {
-  let query = createMongoQuery(req.query);
+  let query = createMongoQueryForFind(req.query);
   let lineages = await req.db
     .collection("lineages")
     .find(query)
@@ -19,7 +19,7 @@ handler.get(async (req, res) => {
 
 handler.post(async (req, res) => {
   const breedDb = req.db.collection("breeds");
-  const lineagesDb = req.db.collection("lineages"); // eslint-disable-line no-unused-vars
+  const lineagesDb = req.db.collection("lineages");
   let lineage = req.body;
 
   const maleBreedFull = await breedDb.findOne({
@@ -51,6 +51,8 @@ handler.post(async (req, res) => {
   res.status(201);
   res.json({ lineageId: result.insertedId });
 });
+
+export default handler;
 
 //#region helper functions
 
@@ -87,5 +89,3 @@ function getLineageOffspring(male, female) {
 }
 
 //#endregion
-
-export default handler;

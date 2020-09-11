@@ -2,12 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 export default function Header({ centered = false, children, ...rest }) {
-  let classes = [
-    "is-size-3-touch",
-    "is-size-2-desktop",
-    "is-size-1-widescreen",
-    "has-text-primary",
-  ];
+  let classes = ["is-size-2", "is-size-1-widescreen", "has-text-primary"];
   if (centered) {
     classes.push("has-text-centered");
     classes.push("site-header");

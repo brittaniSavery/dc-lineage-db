@@ -1,15 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field } from "react-final-form";
+import { Field, useField } from "react-final-form";
 
 export default function RadioGroup({
   name,
   label,
+  help,
   options,
   getOptionLabel = (option) => option,
   getOptionValue = (option) => option,
   required = false,
 }) {
+  const field = useField(name);
   return (
     <div className="field">
       <label className="label">
@@ -31,6 +33,10 @@ export default function RadioGroup({
           </label>
         </div>
       ))}
+      {!field.meta.error && help && <p className="help">{help}</p>}
+      {field.meta.error && field.meta.touched && (
+        <p className="help is-danger">{field.meta.error}</p>
+      )}
     </div>
   );
 }
@@ -38,6 +44,7 @@ export default function RadioGroup({
 RadioGroup.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  help: PropTypes.string,
   options: PropTypes.arrayOf(
     PropTypes.oneOfType([PropTypes.node, PropTypes.object])
   ).isRequired,

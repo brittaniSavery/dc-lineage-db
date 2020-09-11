@@ -25,9 +25,11 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-final-form": "^6.5.1",
+    "react-final-form-listeners": "^1.0.2",
     "react-select": "^3.1.0",
     "sass": "^1.26.10",
-    "swr": "^0.2.3"
+    "swr": "^0.2.3",
+    "title-case": "^3.0.2"
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "^1.2.3",

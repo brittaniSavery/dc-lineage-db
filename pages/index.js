@@ -1,7 +1,5 @@
 import React from "react";
-import Layout from "../components/Layout";
 import Link from "next/link";
-import Header from "../components/Header";
 import classNames from "classnames";
 import { useAuth } from "../lib/hooks";
 
@@ -9,8 +7,7 @@ export default function Home() {
   const { auth } = useAuth();
 
   return (
-    <Layout title="Home">
-      <Header centered>Dragon Cave Lineage Database</Header>
+    <>
       <h2 className="site-header is-size-5-desktop is-size-4-widescreen has-text-centered">
         The one-stop shop to host all your dragon cave lineages. No matter
         whether they are checkers or staircases, shinies or holidays, 2nd
@@ -26,11 +23,11 @@ export default function Home() {
         <div className="level-item has-text-centered">
           <div className="buttons">
             {auth && (
-              <Link href="/add">
+              <Link href="/lineages/add">
                 <a className="button is-primary is-uppercase">Add Lineage</a>
               </Link>
             )}
-            <Link href="/search">
+            <Link href="/database">
               <a
                 className={classNames(
                   "button",
@@ -45,6 +42,15 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
+}
+
+export async function getStaticProps() {
+  return {
+    props: {
+      title: "Home",
+      header: { title: "Dragon Cave Lineage Database", centered: true },
+    },
+  };
 }

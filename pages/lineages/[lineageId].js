@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Layout from "../../components/Layout";
 import Header from "../../components/Header";
 import useSWR from "swr";
+import { useAuth } from "../../lib/hooks";
 
 function getDragonDisplay(dragon) {
   return dragon.name || (dragon.code && `(${dragon.code})`) || "[Pending]";
@@ -11,6 +12,7 @@ function getDragonDisplay(dragon) {
 export default function Lineages() {
   const router = useRouter();
   const { lineageId } = router.query;
+  const { auth } = useAuth();
   const { data: lineage } = useSWR(lineageId && `/api/lineages/${lineageId}`);
   const maleDisplay = lineage && getDragonDisplay(lineage.male);
   const femaleDisplay = lineage && getDragonDisplay(lineage.female);

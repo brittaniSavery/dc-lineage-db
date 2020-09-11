@@ -2,7 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Field } from "react-final-form";
 
-export default function InputField({ name, label, required = false, ...rest }) {
+export default function InputField({
+  name,
+  label,
+  help,
+  required = false,
+  ...rest
+}) {
   return (
     <Field name={name}>
       {({ input, meta }) => (
@@ -14,6 +20,7 @@ export default function InputField({ name, label, required = false, ...rest }) {
           <div className="control">
             <input id={name} {...input} {...rest} className="input" />
           </div>
+          {!meta.error && help && <p className="help">{help}</p>}
           {meta.error && meta.touched && (
             <p className="help is-danger">{meta.error}</p>
           )}
@@ -26,5 +33,6 @@ export default function InputField({ name, label, required = false, ...rest }) {
 InputField.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  help: PropTypes.string,
   required: PropTypes.bool,
 };

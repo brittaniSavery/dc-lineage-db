@@ -18,13 +18,15 @@ export default function Layout({ title, children }) {
         }`}</title>
       </Head>
       <nav
-        className="navbar is-transparent is-spaced"
+        className="navbar is-primary"
         role="navigation"
         aria-label="main navigation"
       >
         <div className="navbar-brand">
           <Link href="/">
-            <a className="navbar-item is-size-4">DCLDB</a>
+            <a className="navbar-item is-size-4 has-text-weight-medium">
+              DCLDB
+            </a>
           </Link>
           <a
             role="button"
@@ -40,12 +42,12 @@ export default function Layout({ title, children }) {
         </div>
         <div className={classNames("navbar-menu", { "is-active": activeMenu })}>
           <div className="navbar-start">
-            <Link href="/search">
+            <Link href="/database">
               <a className="navbar-item is-uppercase has-text-weight-medium">
                 Database
               </a>
             </Link>
-            {auth && (
+            {auth && auth.user.isSetup && (
               <Link href="/lineages">
                 <a className="navbar-item is-uppercase has-text-weight-medium">
                   My Lineages
@@ -64,9 +66,9 @@ export default function Layout({ title, children }) {
                 </a>
               </div>
             )}
-            {auth && (
+            {auth && auth.user.isSetup && (
               <>
-                <Link href="/users/">
+                <Link href={`/users/${auth.user.username}`}>
                   <a className="navbar-item is-uppercase has-text-weight-medium">
                     Profile
                   </a>

@@ -14,4 +14,14 @@ handler.get((req, res) => {
   }
 });
 
+handler.put(async (req, res, next) => {
+  try {
+    req.session.set("user", req.body);
+    await req.session.save();
+    res.end();
+  } catch (error) {
+    next(Error(error));
+  }
+});
+
 export default handler;

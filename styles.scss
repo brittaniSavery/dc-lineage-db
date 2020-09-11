@@ -5,6 +5,8 @@ $dcldb-red: #de3914;
 $dcldb-yellow: #e9d985;
 $dcldb-green: #5b9a66;
 $dcldb-teal: #007991;
+$dcldb-teal-dark: #002229;
+$dcldb-eggshell: #c6e7de;
 $dcldb-blue: #222e50;
 $dcldb-purple: #402259;
 
@@ -15,25 +17,11 @@ $success: $dcldb-green;
 $info: $dcldb-blue;
 $link: $dcldb-purple;
 $primary: $dcldb-teal;
+$primary-dark: $dcldb-teal-dark;
 $text: $grey;
 
 //navigation customization
-$navbar-padding-vertical: 0.5rem;
-$navbar-padding-horizontal: 1rem;
-$navbar-background-color: $primary;
-$navbar-item-color: $white;
-//$navbar-item-hover-color: $nav-link;
-$navbar-item-hover-background-color: $primary;
-$navbar-burger-color: $white;
-
-.navbar-burger {
-  background-color: $primary;
-  color: $white;
-}
-
-.navbar-burger:hover {
-  color: $white;
-}
+$navbar-padding-horizontal: 2.5rem;
 
 //layout
 $section-padding: 0rem;
@@ -44,6 +32,7 @@ $section-padding: 0rem;
 }
 
 //form fields
+$input-shadow: none !important;
 $label-color: $grey;
 $label-weight: 500;
 .select:after {

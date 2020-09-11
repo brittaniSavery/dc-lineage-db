@@ -9,11 +9,21 @@ export default function Login() {
 
   React.useEffect(() => {
     if (!loading) {
-      auth && auth.user ? router.push("/") : router.push("/users/setup");
+      auth && auth.user.isSetup
+        ? router.push("/")
+        : router.push("/users/setup");
     }
   }, [auth, loading]);
 
   return (
     <HeroBanner title="Loading" subtitle="Please wait" fullHeight showTitle />
   );
+}
+
+export async function getStaticProps() {
+  return {
+    props: {
+      fullScreen: true,
+    },
+  };
 }

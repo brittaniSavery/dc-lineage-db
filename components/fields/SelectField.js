@@ -5,6 +5,7 @@ import { Field } from "react-final-form";
 export default function SelectField({
   name,
   label,
+  help,
   options,
   required = false,
   getOptionLabel = (x) => x,
@@ -31,6 +32,7 @@ export default function SelectField({
                   </option>
                 ))}
               </select>
+              {!meta.error && help && <p className="help">{help}</p>}
               {meta.error && meta.touched && (
                 <p className="help is-danger">{meta.error}</p>
               )}
@@ -45,6 +47,7 @@ export default function SelectField({
 SelectField.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  help: PropTypes.string,
   options: PropTypes.arrayOf(
     PropTypes.oneOfType([PropTypes.node, PropTypes.object])
   ).isRequired,

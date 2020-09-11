@@ -1,6 +1,6 @@
 import nextConnect from "next-connect";
 import database from "../../../middleware/database";
-import { createMongoQuery } from "../../../lib/helpers";
+import { createMongoQueryForFind } from "../../../lib/helpers";
 import escapeRegExp from "lodash.escaperegexp";
 
 const handler = nextConnect();
@@ -8,7 +8,7 @@ handler.use(database);
 
 /** GET: All breed data based on search criteria */
 handler.get(async (req, res) => {
-  let query = createMongoQuery(req.query);
+  let query = createMongoQueryForFind(req.query);
   let breeds = await req.db
     .collection("breeds")
     .find(query)

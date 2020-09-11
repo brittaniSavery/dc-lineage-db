@@ -7,6 +7,7 @@ import { createReactSelectOptions } from "../../lib/helpers";
 export default function SearchableSelectField({
   name,
   label,
+  help,
   options,
   getOptionLabel,
   getOptionValue,
@@ -44,6 +45,7 @@ export default function SearchableSelectField({
               {...rest}
             />
           </div>
+          {!meta.error && help && <p className="help">{help}</p>}
           {meta.error && meta.touched && (
             <p className="help is-danger">{meta.error}</p>
           )}
@@ -56,6 +58,7 @@ export default function SearchableSelectField({
 SearchableSelectField.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  help: PropTypes.string,
   options: PropTypes.arrayOf(
     PropTypes.oneOfType([PropTypes.node, PropTypes.object])
   ).isRequired,
