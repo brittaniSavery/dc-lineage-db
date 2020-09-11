@@ -18,6 +18,7 @@ globalConfig.json
 
 # misc
 .DS_Store
+.vscode/
 
 # debug
 npm-debug.log*
