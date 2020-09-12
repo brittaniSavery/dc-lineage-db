@@ -20,7 +20,6 @@ export default function SetupUser() {
   const onSubmit = async (values) => {
     delete values.custom;
     values.email = auth.user.email;
-    console.log(values);
 
     const response = await fetch(`/api/users/${auth.user._id}`, {
       method: "PUT",

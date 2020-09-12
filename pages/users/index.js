@@ -8,7 +8,7 @@ export default function SearchUsers() {
   );
 }
 
-export async function getStaticprops() {
+export async function getStaticProps() {
   return {
     props: {
       title: "Find a User",

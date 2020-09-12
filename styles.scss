@@ -31,6 +31,17 @@ $section-padding: 0rem;
   align-items: center;
 }
 
+.header {
+  font-size: 16px;
+  font-size: calc(100% + 3vw);
+}
+
+.site-header {
+  @extend .header;
+  line-height: 1.25;
+  padding-bottom: 0.5rem;
+}
+
 //form fields
 $input-shadow: none !important;
 $label-color: $grey;
@@ -43,10 +54,5 @@ $label-weight: 500;
 //misc
 $size-1: 4rem;
 $size-2: 3rem;
-
-.site-header {
-  line-height: 1.25;
-  padding-bottom: 0.5rem;
-}
 
 @import "./node_modules/bulma/bulma.sass";

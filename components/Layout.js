@@ -4,16 +4,16 @@ import Head from "next/head";
 import Link from "next/link";
 import classNames from "classnames";
 import { useAuth } from "../lib/hooks";
+import { SITE_NAME } from "../lib/constants";
 
 export default function Layout({ title, children }) {
-  const siteName = "Dragon Cave Lineage Database";
   const { auth } = useAuth();
   const [activeMenu, setActiveMenu] = React.useState(false);
 
   return (
     <section className="section">
       <Head>
-        <title>{`${siteName}: ${
+        <title>{`${SITE_NAME}: ${
           title === "Home" ? "A Dragon Cave fansite for lineage lovers" : title
         }`}</title>
       </Head>
@@ -48,11 +48,20 @@ export default function Layout({ title, children }) {
               </a>
             </Link>
             {auth && auth.user.isSetup && (
-              <Link href="/lineages">
-                <a className="navbar-item is-uppercase has-text-weight-medium">
+              <div className="navbar-item has-dropdown is-hoverable">
+                <a className="navbar-link is-uppercase has-text-weight-medium">
                   My Lineages
                 </a>
-              </Link>
+
+                <div className="navbar-dropdown">
+                  <Link href="/lineages/add">
+                    <a className="navbar-item is-uppercase">Add</a>
+                  </Link>
+                  <Link href="/lineages">
+                    <a className="navbar-item is-uppercase">Search</a>
+                  </Link>
+                </div>
+              </div>
             )}
           </div>
           <div className="navbar-end">
@@ -60,7 +69,10 @@ export default function Layout({ title, children }) {
               <div className="navbar-item">
                 <a
                   href="/api/auth/login"
-                  className="button is-primary is-inverted is-uppercase has-text-weight-medium"
+                  className={classNames(
+                    "button is-primary is-uppercase has-text-weight-medium",
+                    { "is-inverted": !activeMenu }
+                  )}
                 >
                   Login
                 </a>
@@ -94,6 +106,6 @@ export default function Layout({ title, children }) {
 }
 
 Layout.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   children: PropTypes.node,
 };

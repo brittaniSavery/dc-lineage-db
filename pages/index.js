@@ -8,7 +8,7 @@ export default function Home() {
 
   return (
     <>
-      <h2 className="site-header is-size-5-desktop is-size-4-widescreen has-text-centered">
+      <h2 className="is-size-5-desktop is-size-4-widescreen has-text-centered">
         The one-stop shop to host all your dragon cave lineages. No matter
         whether they are checkers or staircases, shinies or holidays, 2nd
         generation or 12th generation, all lineages are welcomed here!
@@ -19,28 +19,24 @@ export default function Home() {
           favorite searches, login/sign up <a href="/api/auth/login">here</a>!
         </p>
       )}
-      <div className="level pt-4">
-        <div className="level-item has-text-centered">
-          <div className="buttons">
-            {auth && (
-              <Link href="/lineages/add">
-                <a className="button is-primary is-uppercase">Add Lineage</a>
-              </Link>
+      <div className="buttons pt-4" style={{ justifyContent: "center" }}>
+        {auth && (
+          <Link href="/lineages/add">
+            <a className="button is-primary is-uppercase">Add Lineage</a>
+          </Link>
+        )}
+        <Link href="/database">
+          <a
+            className={classNames(
+              "button",
+              "is-primary",
+              { "is-outlined": auth },
+              "is-uppercase"
             )}
-            <Link href="/database">
-              <a
-                className={classNames(
-                  "button",
-                  "is-primary",
-                  { "is-outlined": auth },
-                  "is-uppercase"
-                )}
-              >
-                Search Lineages
-              </a>
-            </Link>
-          </div>
-        </div>
+          >
+            Search Lineages
+          </a>
+        </Link>
       </div>
     </>
   );
@@ -50,7 +46,11 @@ export async function getStaticProps() {
   return {
     props: {
       title: "Home",
-      header: { title: "Dragon Cave Lineage Database", centered: true },
+      header: {
+        title: "Dragon Cave Lineage Database",
+        centered: true,
+        site: true,
+      },
     },
   };
 }

@@ -1,15 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 
-export default function Header({ centered = false, children, ...rest }) {
-  let classes = ["is-size-2", "is-size-1-widescreen", "has-text-primary"];
-  if (centered) {
-    classes.push("has-text-centered");
-    classes.push("site-header");
-  }
-
+export default function Header({
+  site = false,
+  centered = false,
+  children,
+  ...rest
+}) {
   return (
-    <h1 className={classes.join(" ")} {...rest}>
+    <h1
+      className={classNames("has-text-weight-semibold", "has-text-primary", {
+        "has-text-centered": centered,
+        [`${site ? "site-" : ""}header`]: true,
+      })}
+      {...rest}
+    >
       {children}
     </h1>
   );
@@ -17,5 +23,6 @@ export default function Header({ centered = false, children, ...rest }) {
 
 Header.propTypes = {
   centered: PropTypes.bool,
+  site: PropTypes.bool,
   children: PropTypes.node.isRequired,
 };

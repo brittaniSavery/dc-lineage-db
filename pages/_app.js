@@ -6,13 +6,15 @@ import Header from "../components/Header";
 import "../styles.scss";
 
 export default function MyApp({ Component, pageProps }) {
-  const title = pageProps.title || "Testing";
+  const title = pageProps.title || "";
   let header = title;
   let centered = false;
+  let site = false;
 
   if (pageProps.header) {
     header = pageProps.header.title;
     centered = pageProps.header.centered;
+    site = pageProps.header.site;
   }
 
   return (
@@ -25,7 +27,11 @@ export default function MyApp({ Component, pageProps }) {
       {pageProps.fullScreen && <Component {...pageProps} />}
       {!pageProps.fullScreen && (
         <Layout title={title}>
-          <Header centered={centered}>{header}</Header>
+          {title && (
+            <Header site={site} centered={centered}>
+              {header}
+            </Header>
+          )}
           <Component {...pageProps} />
         </Layout>
       )}

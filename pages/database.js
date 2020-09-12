@@ -8,7 +8,7 @@ export default function SearchDatabase() {
   );
 }
 
-export async function getStaticprops() {
+export async function getStaticProps() {
   return {
     props: {
       title: "Database Search",

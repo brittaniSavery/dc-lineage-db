@@ -30,6 +30,8 @@ export default function AddLineage({ maleBreeds, femaleBreeds }) {
   const onSubmit = async (values, form) => {
     const another = values.another;
     delete values.another;
+    values.owner = auth.user.username;
+
     const result = await fetch("/api/lineages", {
       method: "POST",
       headers: {
@@ -56,7 +58,7 @@ export default function AddLineage({ maleBreeds, femaleBreeds }) {
   };
 
   const validate = (values) => {
-    const errors = {};
+    const errors = { male: {}, female: {} };
     if (values.male && values.female) {
       if (!values.male.breed) errors.male.breed = "Required";
       if (!values.female.breed) errors.female.breed = "Required";
