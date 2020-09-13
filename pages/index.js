@@ -34,7 +34,7 @@ export default function Home() {
               "is-uppercase"
             )}
           >
-            Search Lineages
+            Search Database
           </a>
         </Link>
       </div>

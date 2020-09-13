@@ -18,7 +18,7 @@ export default function ButtonContainer({ alignment = "left", children }) {
 
   return (
     <div className={`field is-grouped ${alignmentClass}`}>
-      {children.map((child, index) => (
+      {React.Children.map(children, (child, index) => (
         <p key={`buttonGroup-${index}`} className="control">
           {child}
         </p>

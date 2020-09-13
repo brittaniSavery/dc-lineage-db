@@ -21,6 +21,16 @@ export async function getFemaleBreedNames(db) {
   return breeds.sort();
 }
 
+export async function getAllBreedNames(db) {
+  let breeds = await db.collection("breeds").distinct("name");
+  return breeds.sort();
+}
+
+export async function getAllUsers(db) {
+  let users = await db.collection("users").distinct("username");
+  return users.sort();
+}
+
 export default async function databaseMiddleware(req, res, next) {
   const dbSetup = await databaseSetup();
   req.dbClient = dbSetup.dbClient;
