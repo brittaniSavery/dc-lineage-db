@@ -11,5 +11,5 @@ export default function ExternalLink({ url, children }) {
 
 ExternalLink.propTypes = {
   url: PropTypes.string.isRequired,
-  children: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
 };

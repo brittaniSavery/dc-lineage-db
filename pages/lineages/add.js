@@ -30,17 +30,34 @@ export default function AddLineage({ maleBreeds, femaleBreeds }) {
   const onSubmit = async (values, form) => {
     const another = values.another;
     delete values.another;
-    values.owner = auth.user.username;
 
-    const result = await fetch("/api/lineages", {
+    //makes sure breeding pair is valid and returns offspring/holiday values
+    const verifiedParams = new URLSearchParams();
+    verifiedParams.set("male", values.male.breed);
+    verifiedParams.set("female", values.female.breed);
+    const verified = await fetch(
+      `/api/lineages/verify?${verifiedParams.toString()}`
+    );
+
+    if (!verified.ok) {
+      setLastInserted(null);
+      document.getElementById("top").scrollIntoView();
+      return await setFormError(verified);
+    }
+
+    const verifiedResults = await verified.json();
+    values = { ...values, ...verifiedResults, owner: auth.user.username };
+
+    const inserted = await fetch("/api/lineages", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(values),
     });
-    if (result.ok) {
-      const lineageId = (await result.json()).lineageId;
+
+    if (inserted.ok) {
+      const lineageId = (await inserted.json()).lineageId;
 
       //Restart form to add another or goto last inserted lineage
       if (another) {
@@ -51,9 +68,9 @@ export default function AddLineage({ maleBreeds, femaleBreeds }) {
         router.push(`/lineages/${lineageId}`);
       }
     } else {
-      //show error back to user
-      const error = await result.text();
-      return { [FORM_ERROR]: error };
+      setLastInserted(null);
+      document.getElementById("top").scrollIntoView();
+      return await setFormError(inserted);
     }
   };
 
@@ -66,6 +83,12 @@ export default function AddLineage({ maleBreeds, femaleBreeds }) {
         errors.male.code = "One code is required.";
         errors.female.code = "One code is required.";
       }
+      if (values.male.name && !values.male.code)
+        errors.male.code =
+          "If a name is added, a corresponding code is required.";
+      if (values.female.name && !values.female.code)
+        errors.female.code =
+          "If a name is added, a corresponding code is required.";
     }
     if (!values.generation) errors.generation = "Required";
     if (!values.type) errors.type = "Required";
@@ -252,6 +275,16 @@ export default function AddLineage({ maleBreeds, femaleBreeds }) {
   );
 }
 
+AddLineage.propTypes = {
+  maleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  femaleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
+
+async function setFormError(apiCall) {
+  const error = await apiCall.text();
+  return { [FORM_ERROR]: error };
+}
+
 export async function getStaticProps() {
   const db = (await databaseSetup()).db;
   return {
@@ -263,8 +296,3 @@ export async function getStaticProps() {
     unstable_revalidate: 86400, //attempts to pull new breeds every 24 hours
   };
 }
-
-AddLineage.propTypes = {
-  maleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
-  femaleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
