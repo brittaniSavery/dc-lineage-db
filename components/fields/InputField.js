@@ -11,21 +11,25 @@ export default function InputField({
 }) {
   return (
     <Field name={name}>
-      {({ input, meta }) => (
-        <div className="field">
-          <label className="label">
-            {label}
-            {required && " *"}
-          </label>
-          <div className="control">
-            <input id={name} {...input} {...rest} className="input" />
+      {({ input, meta }) => {
+        if (rest.type === "number" && input.value)
+          input.onChange(parseInt(input.value, 10));
+        return (
+          <div className="field">
+            <label className="label">
+              {label}
+              {required && " *"}
+            </label>
+            <div className="control">
+              <input id={name} {...input} {...rest} className="input" />
+            </div>
+            {!meta.error && help && <p className="help">{help}</p>}
+            {meta.error && meta.touched && (
+              <p className="help is-danger">{meta.error}</p>
+            )}
           </div>
-          {!meta.error && help && <p className="help">{help}</p>}
-          {meta.error && meta.touched && (
-            <p className="help is-danger">{meta.error}</p>
-          )}
-        </div>
-      )}
+        );
+      }}
     </Field>
   );
 }

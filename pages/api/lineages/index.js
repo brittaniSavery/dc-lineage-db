@@ -8,11 +8,15 @@ handler.use(database);
 /** GET: All lineage data based on search criteria */
 handler.get(async (req, res) => {
   let query = createMongoQueryForFind(req.query);
-  let lineages = await req.db
+
+  const lineages = await req.db
     .collection("lineages")
     .find(query)
     .sort({ maleBreed: 1 })
+    .skip(req.query.skip || 0)
+    .limit(req.limit.limit || 200)
     .toArray();
+
   res.json(lineages);
 });
 

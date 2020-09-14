@@ -1,21 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Form } from "react-final-form";
-import Button from "../components/Button";
-import InputField from "../components/fields/InputField";
-import SearchableSelectField from "../components/fields/SearchableSelectField";
-import SelectField from "../components/fields/SelectField";
-import { HOLIDAYS, LINEAGE_TYPES } from "../lib/constants";
+import SearchForm from "../components/SearchForm";
 import {
   databaseSetup,
-  getAllUsers,
   getAllBreedNames,
+  getAllUsers,
   getFemaleBreedNames,
   getMaleBreedNames,
 } from "../middleware/database";
-import ButtonContainer from "../components/ButtonContainer";
-import CheckboxGroup from "../components/fields/CheckboxGroup";
-import useSWR from "swr";
 
 export default function SearchDatabase({
   allUsers,
@@ -23,10 +15,20 @@ export default function SearchDatabase({
   maleBreeds,
   femaleBreeds,
 }) {
-  const { data: users } = useSWR("/api/users", { initialData: allUsers });
+  const [results, setResults] = React.useState();
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const onSubmit = async (values) => {
+    values.public = 1; //only allow certain searches
+    const params = new URLSearchParams(values);
+    console.log(params.toString());
+
+    const search = await fetch(`/api/lineages?${params.toString()}`);
+
+    if (search.ok) {
+      console.log(await search.json());
+    } else {
+      console.log(await search.text());
+    }
   };
 
   const validate = (values) => {
@@ -41,109 +43,28 @@ export default function SearchDatabase({
       <p className="pb-5">
         Use the form below to search the database for lineages.
       </p>
-      <Form
-        onSubmit={onSubmit}
-        validate={validate}
-        render={({ handleSubmit, submitting, pristine, values }) => (
-          <form onSubmit={handleSubmit}>
-            <div className="columns is-multiline">
-              <div className="column is-12 pb-0">
-                <CheckboxGroup
-                  name="couple"
-                  options={[
-                    "Check this to search for a specific breed combination",
-                  ]}
-                />
-              </div>
-              {!values.couple && (
-                <div className="column is-12">
-                  <SearchableSelectField
-                    name="allBreed"
-                    label="Breed"
-                    options={allBreeds}
-                    matchFromStart
-                    autoFocus
-                  />
-                </div>
-              )}
-              {values.couple && (
-                <div className="column is-12">
-                  <div className="columns">
-                    <div className="column">
-                      <SearchableSelectField
-                        name="maleBreed"
-                        label="Male Breed"
-                        options={maleBreeds}
-                        matchFromStart
-                      />
-                    </div>
-                    <div className="column">
-                      <SearchableSelectField
-                        name="femaleBreed"
-                        label="Female Breed"
-                        options={femaleBreeds}
-                        matchFromStart
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-              <div className="column is-12">
-                <div className="columns">
-                  <div className="column is-narrow" style={{ width: "8em" }}>
-                    <InputField
-                      name="generation"
-                      label="Generation"
-                      type="number"
-                      style={{ width: "5em" }}
-                    />
-                  </div>
-                  <div className="column">
-                    <SelectField
-                      name="type"
-                      label="Type"
-                      options={LINEAGE_TYPES}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="column is-12">
-                <div className="columns">
-                  <div className="column is-narrow" style={{ width: "8em" }}>
-                    <CheckboxGroup
-                      name="holiday"
-                      label="Holiday"
-                      options={HOLIDAYS}
-                    />
-                  </div>
-                  <div className="column">
-                    <SearchableSelectField
-                      name="owner"
-                      label="Owner"
-                      options={users}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="column is-12">
-                <ButtonContainer alignment="center">
-                  <Button
-                    type="submit"
-                    color="primary"
-                    loading={submitting}
-                    disabled={submitting || pristine}
-                  >
-                    Search
-                  </Button>
-                </ButtonContainer>
-              </div>
-            </div>
-          </form>
-        )}
-      />
+      {results ? (
+        <div>Stuff goes here</div>
+      ) : (
+        <SearchForm
+          onSubmit={onSubmit}
+          validate={validate}
+          allUsers={allUsers}
+          allBreeds={allBreeds}
+          maleBreeds={maleBreeds}
+          femaleBreeds={femaleBreeds}
+        />
+      )}
     </>
   );
 }
+
+SearchDatabase.propTypes = {
+  allUsers: PropTypes.arrayOf(PropTypes.string).isRequired,
+  allBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  maleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  femaleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
 
 export async function getStaticProps() {
   const db = (await databaseSetup()).db;
@@ -162,10 +83,3 @@ export async function getStaticProps() {
     unstable_revalidate: 86400, //attempts to pull data every 24 hours
   };
 }
-
-SearchDatabase.propTypes = {
-  allUsers: PropTypes.arrayOf(PropTypes.string).isRequired,
-  allBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
-  maleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
-  femaleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
