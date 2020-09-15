@@ -14,7 +14,7 @@ handler.get(async (req, res) => {
     .find(query)
     .sort({ maleBreed: 1 })
     .skip(req.query.skip || 0)
-    .limit(req.limit.limit || 200)
+    .limit(req.query.limit || 200)
     .toArray();
 
   res.json(lineages);
