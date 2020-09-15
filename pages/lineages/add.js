@@ -216,7 +216,11 @@ export default function AddLineage({ maleBreeds, femaleBreeds }) {
               <div className="column is-12">
                 <RadioGroup
                   name="cdc"
-                  label="CDC Entry"
+                  label={
+                    <span>
+                      <abbr title="Checker Database Center">CDC</abbr> Entry
+                    </span>
+                  }
                   options={LINEAGE_SITES_STATUS}
                   getOptionLabel={(x) => x.label}
                   getOptionValue={(x) => x.value}
@@ -225,7 +229,14 @@ export default function AddLineage({ maleBreeds, femaleBreeds }) {
               <div className="column is-12">
                 <RadioGroup
                   name="srogg"
-                  label="SROGG Entry"
+                  label={
+                    <span>
+                      <abbr title="Special Release Offspring Gifiting Group">
+                        SROGG
+                      </abbr>{" "}
+                      Entry
+                    </span>
+                  }
                   options={LINEAGE_SITES_STATUS}
                   getOptionLabel={(x) => x.label}
                   getOptionValue={(x) => x.value}

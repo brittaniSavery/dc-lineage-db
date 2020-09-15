@@ -133,13 +133,20 @@ export default function ViewLineage() {
           )}
           {lineage.cdc && (
             <p>
-              <b>CDC Entry:</b>{" "}
+              <b>
+                <abbr title="Checker Database Center">CDC</abbr> Entry:
+              </b>{" "}
               {LINEAGE_SITES_STATUS.find((s) => s.value === lineage.cdc).label}
             </p>
           )}
           {lineage.srogg && (
             <p>
-              <b>SROGG Entry:</b>{" "}
+              <b>
+                <abbr title="Special Release Offspring Gifiting Group">
+                  SROGG
+                </abbr>{" "}
+                Entry:
+              </b>{" "}
               {
                 LINEAGE_SITES_STATUS.find((s) => s.value === lineage.srogg)
                   .label
