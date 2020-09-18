@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Form } from "react-final-form";
 import useSWR from "swr";
+import { titleCase } from "title-case";
 import { HOLIDAYS, LINEAGE_TYPES } from "../lib/constants";
 import Button from "./Button";
 import ButtonContainer from "./ButtonContainer";
@@ -41,7 +42,6 @@ export default function SearchForm({
                   name="allBreed"
                   label="Breed"
                   options={allBreeds}
-                  matchFromStart
                   isClearable
                   autoFocus
                 />
@@ -97,6 +97,7 @@ export default function SearchForm({
                     name="holiday"
                     label="Holiday"
                     options={HOLIDAYS}
+                    getOptionLabel={(option) => titleCase(option)}
                   />
                 </div>
                 <div className="column">

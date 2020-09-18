@@ -8,6 +8,7 @@ import {
   getFemaleBreedNames,
   getMaleBreedNames,
 } from "../middleware/database";
+import LineagesTable from "../components/LineagesTable";
 
 export default function SearchDatabase({
   allUsers,
@@ -18,14 +19,21 @@ export default function SearchDatabase({
   const [results, setResults] = React.useState();
 
   const onSubmit = async (values) => {
-    values.public = 1; //only allow certain searches
-    const params = new URLSearchParams(values);
-    console.log(params.toString());
+    if (!values.couple) {
+      delete values.maleBreed;
+      delete values.femaleBreed;
+    } else {
+      delete values.allBreed;
+    }
 
+    delete values.couple;
+    values.public = 1; //only allow certain searches
+
+    const params = new URLSearchParams(values);
     const search = await fetch(`/api/lineages?${params.toString()}`);
 
     if (search.ok) {
-      console.log(await search.json());
+      setResults(await search.json());
     } else {
       console.log(await search.text());
     }
@@ -40,20 +48,27 @@ export default function SearchDatabase({
 
   return (
     <>
-      <p className="pb-5">
-        Use the form below to search the database for lineages.
-      </p>
       {results ? (
-        <div>Stuff goes here</div>
+        <>
+          <a className="mb-2" onClick={() => setResults(null)}>
+            &lt; Back to Search
+          </a>
+          <LineagesTable lineages={results} />
+        </>
       ) : (
-        <SearchForm
-          onSubmit={onSubmit}
-          validate={validate}
-          allUsers={allUsers}
-          allBreeds={allBreeds}
-          maleBreeds={maleBreeds}
-          femaleBreeds={femaleBreeds}
-        />
+        <>
+          <p className="pb-5">
+            Use the form below to search the database for lineages.
+          </p>
+          <SearchForm
+            onSubmit={onSubmit}
+            validate={validate}
+            allUsers={allUsers}
+            allBreeds={allBreeds}
+            maleBreeds={maleBreeds}
+            femaleBreeds={femaleBreeds}
+          />
+        </>
       )}
     </>
   );

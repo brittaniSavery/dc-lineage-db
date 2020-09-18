@@ -9,12 +9,17 @@ handler.use(database);
 handler.get(async (req, res) => {
   let query = createMongoQueryForFind(req.query);
 
+  //limiting return for load management
+  const limit =
+    req.query.limit && req.query.limit < 200 ? req.query.limit : 200;
+
   const lineages = await req.db
     .collection("lineages")
     .find(query)
     .sort({ maleBreed: 1 })
     .skip(req.query.skip || 0)
-    .limit(req.query.limit || 200)
+    .limit(limit)
+    .project({ generation: 1, type: 1, male: 1, female: 1, owner: 1 })
     .toArray();
 
   res.json(lineages);

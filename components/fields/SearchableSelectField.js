@@ -15,7 +15,12 @@ export default function SearchableSelectField({
   matchFromStart,
   ...rest
 }) {
-  const filterConfig = { matchFrom: "start" };
+  const filterConfig = {
+    ignoreCase: true,
+    ignoreAccents: true,
+    trim: true,
+    matchFrom: matchFromStart ? "start" : "any",
+  };
   //React-Select expects an array of objects of the {label: "label", value: value} variety
   const generatedOptions = createReactSelectOptions(
     options,
@@ -40,7 +45,7 @@ export default function SearchableSelectField({
               id={name}
               inputId={name}
               options={generatedOptions}
-              filterOption={matchFromStart && createFilter(filterConfig)}
+              filterOption={createFilter(filterConfig)}
               {...input}
               {...rest}
             />
