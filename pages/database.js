@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useRouter } from "next/router";
 import SearchForm from "../components/SearchForm";
 import {
   databaseSetup,
@@ -9,6 +10,9 @@ import {
   getMaleBreedNames,
 } from "../middleware/database";
 import LineagesTable from "../components/LineagesTable";
+import { searchLineages } from "../lib/helpers";
+import { FORM_ERROR } from "final-form";
+import PageLoader from "../components/PageLoader";
 
 export default function SearchDatabase({
   allUsers,
@@ -17,26 +21,31 @@ export default function SearchDatabase({
   femaleBreeds,
 }) {
   const [results, setResults] = React.useState();
+  const [isLoading, setLoading] = React.useState(true);
+  const router = useRouter();
+
+  React.useEffect(() => {
+    const getQuerySearch = async (queryString) => {
+      const search = await fetch(`/api/lineages?${queryString}`);
+      const result = await search.json();
+      setResults(result);
+      setLoading(false);
+    };
+
+    const queryString = router.asPath.split("?")[1];
+    if (!queryString) {
+      setLoading(false);
+      return null;
+    }
+
+    getQuerySearch(queryString);
+  }, []);
 
   const onSubmit = async (values) => {
-    if (!values.couple) {
-      delete values.maleBreed;
-      delete values.femaleBreed;
-    } else {
-      delete values.allBreed;
-    }
+    const result = await searchLineages(values, true);
+    if (result.error) return { [FORM_ERROR]: result.error };
 
-    delete values.couple;
-    values.public = 1; //only allow certain searches
-
-    const params = new URLSearchParams(values);
-    const search = await fetch(`/api/lineages?${params.toString()}`);
-
-    if (search.ok) {
-      setResults(await search.json());
-    } else {
-      console.log(await search.text());
-    }
+    setResults(result);
   };
 
   const validate = (values) => {
@@ -45,6 +54,8 @@ export default function SearchDatabase({
       errors.holiday = "No more than two holidays can be selected.";
     return errors;
   };
+
+  if (isLoading) return <PageLoader loading={true} />;
 
   return (
     <>

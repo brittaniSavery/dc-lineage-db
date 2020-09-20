@@ -58,7 +58,7 @@ export default function Layout({ title, children }) {
                     <a className="navbar-item is-uppercase">Add</a>
                   </Link>
                   <Link href="/lineages">
-                    <a className="navbar-item is-uppercase">Search</a>
+                    <a className="navbar-item is-uppercase">View</a>
                   </Link>
                 </div>
               </div>

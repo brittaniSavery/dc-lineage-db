@@ -10,6 +10,7 @@ import CheckboxGroup from "./fields/CheckboxGroup";
 import InputField from "./fields/InputField";
 import SearchableSelectField from "./fields/SearchableSelectField";
 import SelectField from "./fields/SelectField";
+import Notification from "./Notification";
 
 export default function SearchForm({
   onSubmit,
@@ -25,9 +26,14 @@ export default function SearchForm({
     <Form
       onSubmit={onSubmit}
       validate={validate}
-      render={({ handleSubmit, submitting, pristine, values }) => (
+      render={({ handleSubmit, submitting, pristine, values, submitError }) => (
         <form onSubmit={handleSubmit}>
           <div className="columns is-multiline">
+            {submitError && (
+              <Notification status="error" title="Oops!">
+                {submitError}
+              </Notification>
+            )}
             <div className="column is-12 pb-0">
               <CheckboxGroup
                 name="couple"
