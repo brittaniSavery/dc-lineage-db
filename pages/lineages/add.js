@@ -128,7 +128,10 @@ export default function AddLineage({ maleBreeds, femaleBreeds }) {
               {lastInserted && (
                 <Notification status="success" title="Lineage Created!">
                   Your lineage was created successfully.{" "}
-                  <Link href={`/lineages/${lastInserted}`}>
+                  <Link
+                    href="/lineages/[lineageId]"
+                    as={`/lineages/${lastInserted}`}
+                  >
                     <a>Click here</a>
                   </Link>{" "}
                   to view it.

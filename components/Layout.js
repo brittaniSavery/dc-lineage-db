@@ -80,7 +80,10 @@ export default function Layout({ title, children }) {
             )}
             {auth && auth.user.isSetup && (
               <>
-                <Link href={`/users/${auth.user.username}`}>
+                <Link
+                  href="/users/[username]"
+                  as={`/users/${auth.user.username}`}
+                >
                   <a className="navbar-item is-uppercase has-text-weight-medium">
                     Profile
                   </a>

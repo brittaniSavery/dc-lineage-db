@@ -5,6 +5,15 @@ import Layout from "../components/Layout";
 import Header from "../components/Header";
 import "../styles.scss";
 
+import { config, library } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+config.autoAddCss = false;
+
+import { faEdit, faEye, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
+
+library.add(faEdit, faEye, faTrashAlt, faGithub);
+
 export default function MyApp({ Component, pageProps }) {
   const title = pageProps.title || "";
   let header = title;

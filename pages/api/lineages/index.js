@@ -16,7 +16,7 @@ handler.get(async (req, res) => {
   const lineages = await req.db
     .collection("lineages")
     .find(query)
-    .sort({ maleBreed: 1 })
+    .sort({ "male.breed": 1, "female.breed": 1, generation: 1 })
     .skip(req.query.skip || 0)
     .limit(limit)
     .project({ generation: 1, type: 1, male: 1, female: 1, owner: 1 })

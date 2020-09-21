@@ -11,5 +11,5 @@ export default function PageLoader({ loading, children }) {
 
 PageLoader.propTypes = {
   loading: PropTypes.bool.isRequired,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
 };

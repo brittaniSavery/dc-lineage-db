@@ -35,7 +35,7 @@ export default function SearchDatabase({
     const queryString = router.asPath.split("?")[1];
     if (!queryString) {
       setLoading(false);
-      return null;
+      return undefined;
     }
 
     getQuerySearch(queryString);
@@ -64,7 +64,7 @@ export default function SearchDatabase({
           <a className="mb-2" onClick={() => setResults(null)}>
             &lt; Back to Search
           </a>
-          <LineagesTable lineages={results} />
+          <LineagesTable lineages={results} isPublic />
         </>
       ) : (
         <>

@@ -22,7 +22,7 @@ export default function Button({
 
     let classes = {};
     classes[`is-${color}`] = true;
-    if (shade && BUTTON.SHADES.includes(color)) classes[`is-${shade}`] = true;
+    if (shade && BUTTON.SHADES.includes(shade)) classes[`is-${shade}`] = true;
 
     return classes;
   };
@@ -41,9 +41,20 @@ export default function Button({
 }
 
 Button.propTypes = {
-  variant: PropTypes.string,
-  color: PropTypes.string,
-  size: PropTypes.string,
+  variant: PropTypes.oneOf(BUTTON.VARIANTS),
+  color: function (props, propName, componentName) {
+    if (!props[propName]) return;
+
+    const [color, shade] = props[propName].split("-");
+    if (
+      !BUTTON.COLORS.includes(color) ||
+      (shade && !BUTTON.SHADES.includes(shade))
+    )
+      return new Error(
+        `Invalid prop ${props[propName]} suppplied to ${componentName}. Validation failed.`
+      );
+  },
+  size: PropTypes.oneOf(BUTTON.SIZES),
   fullWidth: PropTypes.bool,
   loading: PropTypes.bool,
   children: PropTypes.node,

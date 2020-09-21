@@ -19,6 +19,22 @@ handler.get(async (req, res) => {
   }
 });
 
+handler.delete(async (req, res, next) => {
+  try {
+    const dbResult = await req.db
+      .collection("lineages")
+      .deleteOne({ _id: ObjectId(req.query.id) });
+
+    if (dbResult.result.n === 0) {
+      res.status(404);
+      res.send("Lineage not found.");
+    } else if (dbResult.result.ok) res.status(204).end();
+    else next(Error("Deletion failed."));
+  } catch (error) {
+    next(Error(error));
+  }
+});
+
 /**PATCH: Update a specific lineage */
 /* handler.patch(async (req, res, next) => {
   const id = req.query.id;
