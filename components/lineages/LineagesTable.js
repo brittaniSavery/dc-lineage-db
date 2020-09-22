@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getDragonDisplay } from "../lib/helpers";
-import { useAuth } from "../lib/hooks";
+import { getDragonDisplay, getSampleLink } from "../../lib/helpers";
+import { useAuth } from "../../lib/hooks";
 import Link from "next/link";
 import DeleteLineageConfirm from "./DeleteLineageConfirm";
 
@@ -30,6 +30,7 @@ export default function LineagesTable({ lineages, isPublic }) {
             <th>Type</th>
             <th>Male</th>
             <th>Female</th>
+            <th>Offspring</th>
             {isPublic && <th>Owner</th>}
             <th>Actions</th>
           </tr>
@@ -48,6 +49,7 @@ export default function LineagesTable({ lineages, isPublic }) {
                 <td>{`${lineage.female.breed} - ${getDragonDisplay(
                   lineage.female
                 )}`}</td>
+                <td>{getSampleLink(lineage)}</td>
                 {isPublic && <td>{lineage.owner}</td>}
                 <td style={{ whiteSpace: "nowrap" }}>
                   <Link

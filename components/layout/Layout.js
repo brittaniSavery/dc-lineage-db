@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import Head from "next/head";
 import Link from "next/link";
 import classNames from "classnames";
-import { useAuth } from "../lib/hooks";
-import { SITE_NAME } from "../lib/constants";
+import { useAuth } from "../../lib/hooks";
+import { SITE_NAME } from "../../lib/constants";
 
 export default function Layout({ title, children }) {
   const { auth } = useAuth();

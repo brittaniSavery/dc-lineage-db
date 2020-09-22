@@ -8,7 +8,7 @@ import {
   getMaleBreedNames,
 } from "../../middleware/database";
 import useSWR from "swr";
-import LineagesTable from "../../components/LineagesTable";
+import LineagesTable from "../../components/lineages/LineagesTable";
 import { useAuth } from "../../lib/hooks";
 import PageLoader from "../../components/PageLoader";
 

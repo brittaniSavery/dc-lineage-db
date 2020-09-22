@@ -19,7 +19,14 @@ handler.get(async (req, res) => {
     .sort({ "male.breed": 1, "female.breed": 1, generation: 1 })
     .skip(req.query.skip || 0)
     .limit(limit)
-    .project({ generation: 1, type: 1, male: 1, female: 1, owner: 1 })
+    .project({
+      generation: 1,
+      type: 1,
+      male: 1,
+      female: 1,
+      owner: 1,
+      sample: 1,
+    })
     .toArray();
 
   res.json(lineages);

@@ -13,7 +13,7 @@ import SearchableSelectField from "../../components/fields/SearchableSelectField
 import SelectField from "../../components/fields/SelectField";
 import TextareaField from "../../components/fields/TextareaField";
 import Notification from "../../components/Notification";
-import Subheader from "../../components/Subheader";
+import Subheader from "../../components/layout/Subheader";
 import { LINEAGE_SITES_STATUS, LINEAGE_TYPES } from "../../lib/constants";
 import { useAuth } from "../../lib/hooks";
 import {

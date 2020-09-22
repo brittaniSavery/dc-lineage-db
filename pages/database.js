@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useRouter } from "next/router";
-import SearchForm from "../components/SearchForm";
+import SearchForm from "../components/lineages/SearchForm";
 import {
   databaseSetup,
   getAllBreedNames,
@@ -9,7 +9,7 @@ import {
   getFemaleBreedNames,
   getMaleBreedNames,
 } from "../middleware/database";
-import LineagesTable from "../components/LineagesTable";
+import LineagesTable from "../components/lineages/LineagesTable";
 import { searchLineages } from "../lib/helpers";
 import { FORM_ERROR } from "final-form";
 import PageLoader from "../components/PageLoader";

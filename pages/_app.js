@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { SWRConfig } from "swr";
-import Layout from "../components/Layout";
-import Header from "../components/Header";
+import Layout from "../components/layout/Layout";
+import Header from "../components/layout/Header";
 import "../styles.scss";
 
 import { config, library } from "@fortawesome/fontawesome-svg-core";

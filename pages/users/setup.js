@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Form, FormSpy, Field } from "react-final-form";
 import { OnChange } from "react-final-form-listeners";
 import Button from "../../components/Button";
-import HeroBanner from "../../components/HeroBanner";
+import HeroBanner from "../../components/layout/HeroBanner";
 import InputField from "../../components/fields/InputField";
 import CheckboxGroup from "../../components/fields/CheckboxGroup";
 import TextareaField from "../../components/fields/TextareaField";

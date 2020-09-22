@@ -1,7 +1,7 @@
 import React from "react";
 import { useAuth } from "../lib/hooks";
 import { useRouter } from "next/router";
-import HeroBanner from "../components/HeroBanner";
+import HeroBanner from "../components/layout/HeroBanner";
 
 export default function Login() {
   const { auth, loading } = useAuth();

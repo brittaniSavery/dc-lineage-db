@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import Notification from "./Notification";
-import { getDragonDisplay } from "../lib/helpers";
-import ButtonContainer from "./ButtonContainer";
-import Button from "./Button";
+import Notification from "../Notification";
+import { getDragonDisplay } from "../../lib/helpers";
+import ButtonContainer from "../ButtonContainer";
+import Button from "../Button";
 
 export default function DeleteLineageConfirm({
   open = false,

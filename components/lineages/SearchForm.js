@@ -3,14 +3,14 @@ import React from "react";
 import { Form } from "react-final-form";
 import useSWR from "swr";
 import { titleCase } from "title-case";
-import { HOLIDAYS, LINEAGE_TYPES } from "../lib/constants";
-import Button from "./Button";
-import ButtonContainer from "./ButtonContainer";
-import CheckboxGroup from "./fields/CheckboxGroup";
-import InputField from "./fields/InputField";
-import SearchableSelectField from "./fields/SearchableSelectField";
-import SelectField from "./fields/SelectField";
-import Notification from "./Notification";
+import { HOLIDAYS, LINEAGE_TYPES } from "../../lib/constants";
+import Button from "../Button";
+import ButtonContainer from "../ButtonContainer";
+import CheckboxGroup from "../fields/CheckboxGroup";
+import InputField from "../fields/InputField";
+import SearchableSelectField from "../fields/SearchableSelectField";
+import SelectField from "../fields/SelectField";
+import Notification from "../Notification";
 
 export default function SearchForm({
   onSubmit,
