@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
 import classNames from "classnames";
-import { SITE_NAME } from "../lib/constants";
+import { SITE_NAME } from "../../lib/constants";
 
 export default function HeroBanner({
   title,
