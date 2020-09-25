@@ -106,6 +106,6 @@ export async function getStaticProps() {
       maleBreeds,
       femaleBreeds,
     },
-    unstable_revalidate: 86400, //attempts to pull data every 24 hours
+    revalidate: 60,
   };
 }

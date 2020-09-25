@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field } from "react-final-form";
+import { Field, useField } from "react-final-form";
 import Select, { createFilter } from "react-select";
 import { createReactSelectOptions } from "../../lib/helpers";
 
@@ -28,34 +28,45 @@ export default function SearchableSelectField({
     getOptionValue
   );
 
+  //setting the initial value
+
   return (
     <Field
       name={name}
       parse={(v) => v && v.value}
       format={(v) => options.find((o) => o.value === v)}
     >
-      {({ input, meta }) => (
-        <div className="field">
-          <label className="label">
-            {label}
-            {required && " *"}
-          </label>
-          <div className="control">
-            <Select
-              id={name}
-              inputId={name}
-              options={generatedOptions}
-              filterOption={createFilter(filterConfig)}
-              {...input}
-              {...rest}
-            />
+      {({ input, meta }) => {
+        const initialValue = createReactSelectOptions(
+          [meta.initial],
+          getOptionLabel,
+          getOptionLabel
+        )[0];
+
+        return (
+          <div className="field">
+            <label className="label">
+              {label}
+              {required && " *"}
+            </label>
+            <div className="control">
+              <Select
+                id={name}
+                inputId={name}
+                options={generatedOptions}
+                filterOption={createFilter(filterConfig)}
+                defaultValue={initialValue}
+                {...input}
+                {...rest}
+              />
+            </div>
+            {!meta.error && help && <p className="help">{help}</p>}
+            {meta.error && meta.touched && (
+              <p className="help is-danger">{meta.error}</p>
+            )}
           </div>
-          {!meta.error && help && <p className="help">{help}</p>}
-          {meta.error && meta.touched && (
-            <p className="help is-danger">{meta.error}</p>
-          )}
-        </div>
-      )}
+        );
+      }}
     </Field>
   );
 }

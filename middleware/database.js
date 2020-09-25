@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 
 const uri = `${process.env.DATABASE_URL}${process.env.DATABASE_NAME}?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
@@ -29,6 +29,10 @@ export async function getAllBreedNames(db) {
 export async function getAllUsers(db) {
   let users = await db.collection("users").distinct("username");
   return users.sort();
+}
+
+export async function getLineageById(db, id) {
+  return db.collection("lineages").findOne({ _id: ObjectId(id) });
 }
 
 export default async function databaseMiddleware(req, res, next) {

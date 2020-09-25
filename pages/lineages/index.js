@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import {
   databaseSetup,
   getAllBreedNames,
-  getAllUsers,
   getFemaleBreedNames,
   getMaleBreedNames,
 } from "../../middleware/database";
@@ -42,18 +41,16 @@ Lineages.propTypes = {
 
 export async function getStaticProps() {
   const db = (await databaseSetup()).db;
-  const allUsers = await getAllUsers(db);
   const allBreeds = await getAllBreedNames(db);
   const maleBreeds = await getMaleBreedNames(db);
   const femaleBreeds = await getFemaleBreedNames(db);
   return {
     props: {
       title: "My Lineages",
-      allUsers,
       allBreeds,
       maleBreeds,
       femaleBreeds,
     },
-    unstable_revalidate: 86400, //attempts to pull data every 24 hours
+    revalidate: 60,
   };
 }

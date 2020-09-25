@@ -1,15 +1,13 @@
 import nextConnect from "next-connect";
 import { ObjectId } from "mongodb";
-import database from "../../../middleware/database";
+import database, { getLineageById } from "../../../middleware/database";
 
 const handler = nextConnect();
 handler.use(database);
 
 /** GET: Retrieves a specific lineage */
 handler.get(async (req, res) => {
-  let lineage = await req.db
-    .collection("lineages")
-    .findOne({ _id: ObjectId(req.query.id) });
+  let lineage = await getLineageById(req.db, req.query.id);
 
   if (lineage) {
     res.json(lineage);
