@@ -14,11 +14,13 @@ import {
 import LineageForm from "../../../components/lineages/LineageForm";
 import PageLoader from "../../../components/PageLoader";
 
-export default function EditLineage({ lineage, maleBreeds, femaleBreeds }) {
+export default function EditLineage(props) {
   const router = useRouter();
   const { auth } = useAuth();
-  const { data } = useSWR(lineage._id && `/api/lineages/${lineage._id}`, {
-    initialData: lineage,
+
+  const { lineageId } = router.query;
+  const { data: lineage } = useSWR(lineageId && `/api/lineages/${lineageId}`, {
+    initialData: props.lineage,
   });
 
   const loading = router.isFallback;
@@ -33,18 +35,18 @@ export default function EditLineage({ lineage, maleBreeds, femaleBreeds }) {
           <a href="/api/auth/login">here</a>.
         </p>
       );
-    else if (!data)
+    else if (!lineage)
       return (
         <Notification status="error" title="Lineage Not Found">
           Sorry, there is no lineage with this id in the database.
         </Notification>
       );
-    else if (auth.user.username !== data.owner)
+    else if (auth.user.username !== lineage.owner)
       return (
         <Notification status="warning" title="Oops!">
           Sorry, you can only edit your own lineages. If you want to view this
           lineage, please{" "}
-          <Link href="/lineages/[lineageId]" as={`/lineages/${data._id}`}>
+          <Link href="/lineages/[lineageId]" as={`/lineages/${lineage._id}`}>
             click here.
           </Link>
         </Notification>
@@ -58,10 +60,10 @@ export default function EditLineage({ lineage, maleBreeds, femaleBreeds }) {
   return (
     <LineageForm
       type="edit"
-      maleBreeds={maleBreeds}
-      femaleBreeds={femaleBreeds}
+      maleBreeds={props.maleBreeds}
+      femaleBreeds={props.femaleBreeds}
       onSubmit={onSubmit}
-      lineage={data}
+      lineage={lineage}
     />
   );
 }
