@@ -13,6 +13,7 @@ import {
 } from "../../../middleware/database";
 import LineageForm from "../../../components/lineages/LineageForm";
 import PageLoader from "../../../components/PageLoader";
+import { setFormError } from "../../../lib/helpers";
 
 export default function EditLineage(props) {
   const router = useRouter();
@@ -22,6 +23,45 @@ export default function EditLineage(props) {
   const { data: lineage } = useSWR(lineageId && `/api/lineages/${lineageId}`, {
     initialData: props.lineage,
   });
+
+  const onSubmit = async (values, form) => {
+    const state = form.getState();
+
+    //makes sure breeding pair is valid and returns offspring/holiday values
+    if (state.dirtyFields?.male?.breed || state.dirtyFields?.male?.breed) {
+      const verifiedParams = new URLSearchParams();
+      verifiedParams.set("male", values.male.breed);
+      verifiedParams.set("female", values.female.breed);
+      const verified = await fetch(
+        `/api/lineages/verify?${verifiedParams.toString()}`
+      );
+
+      if (!verified.ok) {
+        document.getElementById("top").scrollIntoView();
+        return await setFormError(verified);
+      }
+
+      const verifiedResults = await verified.json();
+      values = { ...values, ...verifiedResults };
+    }
+    delete values["_id"]; //deleting to avoid mistype on ObjectId
+    const updated = await fetch(`/api/lineages/${lineageId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+
+    console.log(updated);
+
+    if (updated.ok) {
+      router.push(`/lineages/${lineageId}`);
+    } else {
+      document.getElementById("top").scrollIntoView();
+      return await setFormError(updated);
+    }
+  };
 
   const loading = router.isFallback;
 
@@ -52,10 +92,6 @@ export default function EditLineage(props) {
         </Notification>
       );
   }
-
-  const onSubmit = async (values) => {
-    console.log(values);
-  };
 
   return (
     <LineageForm

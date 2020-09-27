@@ -1,9 +1,9 @@
-import { FORM_ERROR } from "final-form";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React from "react";
 import LineageForm from "../../components/lineages/LineageForm";
 import { useAuth } from "../../lib/hooks";
+import { setFormError } from "../../lib/helpers";
 import {
   databaseSetup,
   getFemaleBreedNames,
@@ -87,11 +87,6 @@ AddLineage.propTypes = {
   maleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
   femaleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
-
-async function setFormError(apiCall) {
-  const error = await apiCall.text();
-  return { [FORM_ERROR]: error };
-}
 
 export async function getStaticProps() {
   const db = (await databaseSetup()).db;

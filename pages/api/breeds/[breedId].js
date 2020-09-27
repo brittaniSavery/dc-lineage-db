@@ -34,7 +34,7 @@ handler.patch(async (req, res, next) => {
     } else if (result.modifiedCount === 0) {
       next(Error("Update failed."));
     } else {
-      res.status(204).send();
+      res.status(204).end();
     }
   } catch (error) {
     next(Error(error));

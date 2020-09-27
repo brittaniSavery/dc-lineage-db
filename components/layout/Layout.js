@@ -7,7 +7,7 @@ import { useAuth } from "../../lib/hooks";
 import { SITE_NAME } from "../../lib/constants";
 
 export default function Layout({ title, children }) {
-  const { auth } = useAuth();
+  const { auth, isLoading } = useAuth();
   const [activeMenu, setActiveMenu] = React.useState(false);
 
   return (
@@ -47,7 +47,7 @@ export default function Layout({ title, children }) {
                 Database
               </a>
             </Link>
-            {auth && auth.user.isSetup && (
+            {!isLoading && auth && auth.user.isSetup && (
               <div className="navbar-item has-dropdown is-hoverable">
                 <a className="navbar-link is-uppercase has-text-weight-medium">
                   My Lineages
@@ -65,7 +65,7 @@ export default function Layout({ title, children }) {
             )}
           </div>
           <div className="navbar-end">
-            {!auth && (
+            {!isLoading && !auth && (
               <div className="navbar-item">
                 <a
                   href="/api/auth/login"
@@ -78,7 +78,7 @@ export default function Layout({ title, children }) {
                 </a>
               </div>
             )}
-            {auth && auth.user.isSetup && (
+            {!isLoading && auth && auth.user.isSetup && (
               <>
                 <Link
                   href="/users/[username]"

@@ -23,36 +23,39 @@ handler.delete(async (req, res, next) => {
       .collection("lineages")
       .deleteOne({ _id: ObjectId(req.query.id) });
 
-    if (dbResult.result.n === 0) {
+    if (dbResult.deletedCount === 0) {
       res.status(404);
       res.send("Lineage not found.");
-    } else if (dbResult.result.ok) res.status(204).end();
-    else next(Error("Deletion failed."));
+    } else if (dbResult.result.ok) {
+      res.status(204).end();
+    } else {
+      next(Error("Deletion failed."));
+    }
   } catch (error) {
     next(Error(error));
   }
 });
 
-/**PATCH: Update a specific lineage */
-/* handler.patch(async (req, res, next) => {
+/**PUT: Update a specific lineage */
+handler.put(async (req, res, next) => {
   const id = req.query.id;
 
   try {
-    let result = await req.db
-      .collection("breeds")
-      .updateOne({ _id: ObjectId(breedId) }, { $set: req.body });
+    const dbResult = await req.db
+      .collection("lineages")
+      .replaceOne({ _id: ObjectId(id) }, req.body);
 
-    if (result.matchedCount === 0) {
+    if (dbResult.matchedCount === 0) {
       res.status(404);
-      res.send("Breed not found.");
-    } else if (result.modifiedCount === 0) {
+      res.send("Lineage not found.");
+    } else if (!dbResult.result.ok) {
       next(Error("Update failed."));
     } else {
-      res.status(204).send();
+      res.status(204).end();
     }
   } catch (error) {
     next(Error(error));
   }
-}); */
+});
 
 export default handler;

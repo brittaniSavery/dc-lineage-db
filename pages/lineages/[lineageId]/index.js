@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useRouter } from "next/router";
 import Header from "../../../components/layout/Header";
 import useSWR from "swr";
-//import { useAuth } from "../../lib/hooks";
+//import { useAuth } from "../../../lib/hooks";
 import Head from "next/head";
 import { LINEAGE_SITES_STATUS, SITE_NAME } from "../../../lib/constants";
 import Subheader from "../../../components/layout/Subheader";
@@ -11,6 +11,7 @@ import Link from "next/link";
 import { getDragonDisplay, getSampleLink } from "../../../lib/helpers";
 import Notification from "../../../components/Notification";
 import { titleCase } from "title-case";
+import { databaseSetup, getLineageById } from "../../../middleware/database";
 
 const ParentColumn = ({ dragon, gender }) => (
   <div className="column">
@@ -36,6 +37,11 @@ const ParentColumn = ({ dragon, gender }) => (
   </div>
 );
 
+ParentColumn.propTypes = {
+  dragon: PropTypes.object,
+  gender: PropTypes.string,
+};
+
 const Attributes = ({ lineage }) => {
   if (lineage.shiny || (lineage.holiday && lineage.holiday.length > 0))
     return (
@@ -52,13 +58,14 @@ const Attributes = ({ lineage }) => {
   else return null;
 };
 
-export default function ViewLineage() {
+export default function ViewLineage(props) {
   //const { auth } = useAuth();
   const router = useRouter();
 
   const { lineageId } = router.query;
   const { data: lineage, error } = useSWR(
-    lineageId && `/api/lineages/${lineageId}`
+    lineageId && `/api/lineages/${lineageId}`,
+    { initialData: props.lineage }
   );
 
   const loading = !lineage && !error;
@@ -145,7 +152,28 @@ export default function ViewLineage() {
   );
 }
 
-ParentColumn.propTypes = {
-  dragon: PropTypes.object,
-  gender: PropTypes.string,
+ViewLineage.propTypes = {
+  lineage: PropTypes.object,
 };
+
+export async function getStaticPaths() {
+  const db = (await databaseSetup()).db;
+  const ids = await db
+    .collection("lineages")
+    .distinct("_id", { owner: "Forever_Mone" });
+  return {
+    paths: ids.map((id) => ({ params: { lineageId: `${id}` } })),
+    fallback: true,
+  };
+}
+
+export async function getStaticProps({ params }) {
+  const db = (await databaseSetup()).db;
+  const lineage = await getLineageById(db, params.lineageId);
+
+  return {
+    props: {
+      lineage: JSON.parse(JSON.stringify(lineage)), //Next uses strict serializing in SSR
+    },
+  };
+}

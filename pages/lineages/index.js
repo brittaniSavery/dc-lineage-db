@@ -33,7 +33,6 @@ export default function Lineages() {
 }
 
 Lineages.propTypes = {
-  allUsers: PropTypes.arrayOf(PropTypes.string).isRequired,
   allBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
   maleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
   femaleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
