@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useRouter } from "next/router";
 import Header from "../../../components/layout/Header";
 import useSWR from "swr";
-//import { useAuth } from "../../../lib/hooks";
+import { useAuth } from "../../../lib/hooks";
 import Head from "next/head";
 import { LINEAGE_SITES_STATUS, SITE_NAME } from "../../../lib/constants";
 import Subheader from "../../../components/layout/Subheader";
@@ -12,6 +12,10 @@ import { getDragonDisplay, getSampleLink } from "../../../lib/helpers";
 import Notification from "../../../components/Notification";
 import { titleCase } from "title-case";
 import { databaseSetup, getLineageById } from "../../../middleware/database";
+import ButtonContainer from "../../../components/ButtonContainer";
+import Button from "../../../components/Button";
+import DeleteLineageConfirm from "../../../components/lineages/DeleteLineageConfirm";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ParentColumn = ({ dragon, gender }) => (
   <div className="column">
@@ -59,7 +63,7 @@ const Attributes = ({ lineage }) => {
 };
 
 export default function ViewLineage(props) {
-  //const { auth } = useAuth();
+  const { auth } = useAuth();
   const router = useRouter();
 
   const { lineageId } = router.query;
@@ -68,7 +72,9 @@ export default function ViewLineage(props) {
     { initialData: props.lineage }
   );
 
-  const loading = !lineage && !error;
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = React.useState(false);
+  const [deletedLineage, setDeletedLineage] = React.useState();
+  const loading = router.isFallback || (!lineage && !error);
 
   //Tell user that things are still loading
   if (loading) {
@@ -94,6 +100,15 @@ export default function ViewLineage(props) {
         <title>{`${SITE_NAME}: ${maleDisplay} & ${femaleDisplay}`}</title>
       </Head>
       <Header>{`${maleDisplay} & ${femaleDisplay}`}</Header>
+      <DeleteLineageConfirm
+        open={deleteConfirmOpen}
+        onClose={() => {
+          setDeletedLineage();
+          setDeleteConfirmOpen(false);
+        }}
+        lineage={deletedLineage}
+      />
+
       <div className="columns pt-3">
         <ParentColumn dragon={lineage.male} gender="male" />
         <ParentColumn dragon={lineage.female} gender="female" />
@@ -145,6 +160,29 @@ export default function ViewLineage(props) {
             <p>
               <b>Notes:</b> {lineage.notes}
             </p>
+          )}
+          {auth && (
+            <ButtonContainer className="pt-3">
+              <Link
+                href="/lineages/[lineageId]/edit"
+                as={`/lineages/${lineage._id}/edit`}
+                passHref
+              >
+                <Button link color="primary">
+                  Edit
+                  <FontAwesomeIcon className="ml-2" icon="edit" />
+                </Button>
+              </Link>
+              <Button
+                color="danger"
+                onClick={() => {
+                  setDeletedLineage(lineage);
+                  setDeleteConfirmOpen(true);
+                }}
+              >
+                Delete <FontAwesomeIcon className="ml-2" icon="trash-alt" />
+              </Button>
+            </ButtonContainer>
           )}
         </div>
       </div>

@@ -9,6 +9,7 @@ export default function Button({
   size,
   fullWidth = false,
   loading = false,
+  link = false,
   children,
   ...rest
 }) {
@@ -27,8 +28,10 @@ export default function Button({
     return classes;
   };
 
+  const ButtonTag = link ? "a" : "button";
+
   return (
-    <button
+    <ButtonTag
       className={classNames("button", variantClass, sizeClass, colorClass(), {
         "is-fullwidth": fullWidth,
         "is-loading": loading,
@@ -36,7 +39,7 @@ export default function Button({
       {...rest}
     >
       {children}
-    </button>
+    </ButtonTag>
   );
 }
 
@@ -57,5 +60,6 @@ Button.propTypes = {
   size: PropTypes.oneOf(BUTTON.SIZES),
   fullWidth: PropTypes.bool,
   loading: PropTypes.bool,
+  link: PropTypes.bool,
   children: PropTypes.node,
 };

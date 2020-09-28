@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { mutate } from "swr";
 import PropTypes from "prop-types";
 import React from "react";
 import LineageForm from "../../components/lineages/LineageForm";
@@ -46,6 +47,7 @@ export default function AddLineage({ maleBreeds, femaleBreeds }) {
 
     if (inserted.ok) {
       const lineageId = (await inserted.json()).lineageId;
+      mutate(`/api/lineages/${lineageId}`);
 
       //Restart form to add another or goto last inserted lineage
       if (another) {

@@ -20,9 +20,12 @@ export default function EditLineage(props) {
   const { auth } = useAuth();
 
   const { lineageId } = router.query;
-  const { data: lineage } = useSWR(lineageId && `/api/lineages/${lineageId}`, {
-    initialData: props.lineage,
-  });
+  const { data: lineage, error, mutate: updateLineageCache } = useSWR(
+    lineageId && `/api/lineages/${lineageId}`,
+    {
+      initialData: props.lineage,
+    }
+  );
 
   const onSubmit = async (values, form) => {
     const state = form.getState();
@@ -44,6 +47,8 @@ export default function EditLineage(props) {
       const verifiedResults = await verified.json();
       values = { ...values, ...verifiedResults };
     }
+
+    updateLineageCache(values, false);
     delete values["_id"]; //deleting to avoid mistype on ObjectId
     const updated = await fetch(`/api/lineages/${lineageId}`, {
       method: "PUT",
@@ -53,9 +58,8 @@ export default function EditLineage(props) {
       body: JSON.stringify(values),
     });
 
-    console.log(updated);
-
     if (updated.ok) {
+      updateLineageCache();
       router.push(`/lineages/${lineageId}`);
     } else {
       document.getElementById("top").scrollIntoView();
@@ -63,7 +67,7 @@ export default function EditLineage(props) {
     }
   };
 
-  const loading = router.isFallback;
+  const loading = router.isFallback || (!lineage && !error);
 
   if (loading) {
     return <PageLoader loading={true} />;

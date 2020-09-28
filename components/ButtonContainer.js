@@ -1,7 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 
-export default function ButtonContainer({ alignment = "left", children }) {
+export default function ButtonContainer({
+  alignment = "left",
+  children,
+  className,
+}) {
   let alignmentClass;
   switch (alignment) {
     case "center":
@@ -17,7 +22,7 @@ export default function ButtonContainer({ alignment = "left", children }) {
   }
 
   return (
-    <div className={`field is-grouped ${alignmentClass}`}>
+    <div className={classNames("field is-grouped", alignmentClass, className)}>
       {React.Children.map(children, (child, index) => (
         <p key={`buttonGroup-${index}`} className="control">
           {child}
@@ -29,5 +34,6 @@ export default function ButtonContainer({ alignment = "left", children }) {
 
 ButtonContainer.propTypes = {
   alignment: PropTypes.string,
+  className: PropTypes.node,
   children: PropTypes.node,
 };
