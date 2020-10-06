@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, useField } from "react-final-form";
+import { Field } from "react-final-form";
 import Select, { createFilter } from "react-select";
-import { createReactSelectOptions } from "../../lib/helpers";
+import { getReactSelectOptions } from "../../lib/helpers";
 
 export default function SearchableSelectField({
   name,
@@ -22,7 +22,7 @@ export default function SearchableSelectField({
     matchFrom: matchFromStart ? "start" : "any",
   };
   //React-Select expects an array of objects of the {label: "label", value: value} variety
-  const generatedOptions = createReactSelectOptions(
+  const generatedOptions = getReactSelectOptions(
     options,
     getOptionLabel,
     getOptionValue
@@ -37,7 +37,7 @@ export default function SearchableSelectField({
       format={(v) => options.find((o) => o.value === v)}
     >
       {({ input, meta }) => {
-        const initialValue = createReactSelectOptions(
+        const initialValue = getReactSelectOptions(
           [meta.initial],
           getOptionLabel,
           getOptionLabel

@@ -1,13 +1,13 @@
 import nextConnect from "next-connect";
 import database from "../../../middleware/database";
-import { createMongoQueryForFind } from "../../../lib/helpers";
+import { getMongoQueryForFind } from "../../../lib/helpers";
 
 const handler = nextConnect();
 handler.use(database);
 
 /** GET: All lineage data based on search criteria */
 handler.get(async (req, res) => {
-  let query = createMongoQueryForFind(req.query);
+  let query = getMongoQueryForFind(req.query);
 
   //limiting return for load management
   const limit =

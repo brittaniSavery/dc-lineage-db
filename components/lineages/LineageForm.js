@@ -91,7 +91,6 @@ export default function LineageForm({
                   name="male.breed"
                   label="Male Breed"
                   options={maleBreeds}
-                  matchFromStart
                   autoFocus
                   required
                 />
@@ -119,7 +118,6 @@ export default function LineageForm({
                   name="female.breed"
                   label="Female Breed"
                   options={femaleBreeds}
-                  matchFromStart
                   required
                 />
               </div>

@@ -1,7 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
+import { FORM_ERROR } from "final-form";
 import { useRouter } from "next/router";
+import PropTypes from "prop-types";
+import React from "react";
+import useSWR from "swr";
+import LineagesTable from "../components/lineages/LineagesTable";
 import SearchForm from "../components/lineages/SearchForm";
+import PageLoader from "../components/PageLoader";
+import { getSearchParamsForLineages } from "../lib/helpers";
 import {
   databaseSetup,
   getAllBreedNames,
@@ -9,16 +14,18 @@ import {
   getFemaleBreedNames,
   getMaleBreedNames,
 } from "../middleware/database";
-import LineagesTable from "../components/lineages/LineagesTable";
-import { searchLineages } from "../lib/helpers";
-import { FORM_ERROR } from "final-form";
-import PageLoader from "../components/PageLoader";
-import useSWR from "swr";
 
 export default function SearchDatabase(props) {
-  const [results, setResults] = React.useState();
-  const [isLoading, setLoading] = React.useState(true);
+  //const [results, setResults] = React.useState();
+  const [search, setSearch] = React.useState(null);
   const router = useRouter();
+
+  const {
+    data: results,
+    error: resultsError,
+    isValidating: resultsLoading,
+  } = useSWR(search ? `/api/lineages?${search}` : null);
+  const isLoading = resultsLoading && !results && !resultsError;
 
   const { data: maleBreeds } = useSWR("/api/breeds/names?type=male", {
     initialData: props.maleBreeds,
@@ -34,27 +41,17 @@ export default function SearchDatabase(props) {
   });
 
   React.useEffect(() => {
-    const getQuerySearch = async (queryString) => {
-      const search = await fetch(`/api/lineages?${queryString}`);
-      const result = await search.json();
-      setResults(result);
-      setLoading(false);
-    };
-
     const queryString = router.asPath.split("?")[1];
-    if (!queryString) {
-      setLoading(false);
-      return undefined;
+    if (queryString) {
+      setSearch(queryString);
     }
-
-    getQuerySearch(queryString);
   }, []);
 
   const onSubmit = async (values) => {
-    const result = await searchLineages(values, true);
-    if (result.error) return { [FORM_ERROR]: result.error };
+    const params = getSearchParamsForLineages(values, true);
+    setSearch(params);
 
-    setResults(result);
+    if (!isLoading && resultsError) return { [FORM_ERROR]: resultsError };
   };
 
   const validate = (values) => {
@@ -70,7 +67,7 @@ export default function SearchDatabase(props) {
     <>
       {results ? (
         <>
-          <a className="mb-2" onClick={() => setResults(null)}>
+          <a className="mb-2" onClick={() => setSearch(null)}>
             &lt; Back to Search
           </a>
           <LineagesTable lineages={results} isPublic />

@@ -10,17 +10,19 @@ handler.use(database);
 
 /** GET: All breed (names only) */
 handler.get(async (req, res) => {
-  let names;
+  let names = [];
 
   switch (req.query.type) {
     case "male":
-      names = getMaleBreedNames(req.db);
+      names = await getMaleBreedNames(req.db);
       break;
     case "female":
-      names = getFemaleBreedNames(req.db);
+      names = await getFemaleBreedNames(req.db);
       break;
     default:
-      names = getAllBreedNames(req.db);
+      names = await getAllBreedNames(req.db);
   }
   res.json(names);
 });
+
+export default handler;
