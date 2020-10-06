@@ -13,16 +13,25 @@ import LineagesTable from "../components/lineages/LineagesTable";
 import { searchLineages } from "../lib/helpers";
 import { FORM_ERROR } from "final-form";
 import PageLoader from "../components/PageLoader";
+import useSWR from "swr";
 
-export default function SearchDatabase({
-  allUsers,
-  allBreeds,
-  maleBreeds,
-  femaleBreeds,
-}) {
+export default function SearchDatabase(props) {
   const [results, setResults] = React.useState();
   const [isLoading, setLoading] = React.useState(true);
   const router = useRouter();
+
+  const { data: maleBreeds } = useSWR("/api/breeds/names?type=male", {
+    initialData: props.maleBreeds,
+  });
+  const { data: femaleBreeds } = useSWR("/api/breeds/names?type=female", {
+    initialData: props.femaleBreeds,
+  });
+  const { data: allBreeds } = useSWR("/api/breeds/names", {
+    initialData: props.allBreeds,
+  });
+  const { data: allUsers } = useSWR("/api/users", {
+    initialData: props.allUsers,
+  });
 
   React.useEffect(() => {
     const getQuerySearch = async (queryString) => {
@@ -106,6 +115,5 @@ export async function getStaticProps() {
       maleBreeds,
       femaleBreeds,
     },
-    revalidate: 60,
   };
 }

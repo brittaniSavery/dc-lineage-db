@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { mutate } from "swr";
+import useSWR, { mutate } from "swr";
 import PropTypes from "prop-types";
 import React from "react";
 import LineageForm from "../../components/lineages/LineageForm";
@@ -11,9 +11,15 @@ import {
   getMaleBreedNames,
 } from "../../middleware/database";
 
-export default function AddLineage({ maleBreeds, femaleBreeds }) {
+export default function AddLineage(props) {
   const router = useRouter();
   const { auth } = useAuth();
+  const { data: maleBreeds } = useSWR("/api/breeds/names?type=male", {
+    initialData: props.maleBreeds,
+  });
+  const { data: femaleBreeds } = useSWR("/api/breeds/names?type=female", {
+    initialData: props.femaleBreeds,
+  });
   const [lastInserted, setLastInserted] = React.useState();
 
   const onSubmit = async (values, form) => {

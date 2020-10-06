@@ -26,6 +26,12 @@ export default function EditLineage(props) {
       initialData: props.lineage,
     }
   );
+  const { data: maleBreeds } = useSWR("/api/breeds/names?type=male", {
+    initialData: props.maleBreeds,
+  });
+  const { data: femaleBreeds } = useSWR("/api/breeds/names?type=female", {
+    initialData: props.femaleBreeds,
+  });
 
   const onSubmit = async (values, form) => {
     const state = form.getState();
@@ -100,8 +106,8 @@ export default function EditLineage(props) {
   return (
     <LineageForm
       type="edit"
-      maleBreeds={props.maleBreeds}
-      femaleBreeds={props.femaleBreeds}
+      maleBreeds={maleBreeds}
+      femaleBreeds={femaleBreeds}
       onSubmit={onSubmit}
       lineage={lineage}
     />
@@ -110,8 +116,8 @@ export default function EditLineage(props) {
 
 EditLineage.propTypes = {
   lineage: PropTypes.object,
-  maleBreeds: PropTypes.arrayOf(PropTypes.string) /* .isRequired */,
-  femaleBreeds: PropTypes.arrayOf(PropTypes.string) /* .isRequired */,
+  maleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  femaleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export async function getStaticPaths() {
