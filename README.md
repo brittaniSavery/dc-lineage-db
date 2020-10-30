@@ -13,6 +13,12 @@ An online database for lineages and breedings of the digital dragons from the cr
 - [Bulma](https://bulma.io/)
 - [Jest](https://jestjs.io/)
 
+## 📃 TODO List
+
+- [x] Footer (github link & copyright)
+- [ ] Pagination for database and user lineages
+- [ ] Filter for user lineages
+
 ## 🤝 Contributing
 
 All sorts of contributions are welcomed! To suggest a feature request or report a bug, feel free to create an issue [here](https://github.com/brittaniSavery/dc-lineage-db/issues).

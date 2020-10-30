@@ -20,11 +20,20 @@ $primary: $dcldb-teal;
 $primary-dark: $dcldb-teal-dark;
 $text: $grey;
 
+@import "node_modules/bulma/sass/utilities/functions.sass";
+@import "node_modules/bulma/sass/utilities/derived-variables.scss";
+
 //navigation customization
 $navbar-padding-horizontal: 2.5rem;
 
 //layout
 $section-padding: 0rem;
+$footer-padding: 2rem 1.5rem;
+
+.full-viewport {
+  min-height: calc(100vh - 9rem);
+}
+
 .grid-centered {
   display: flex;
   justify-content: center;
