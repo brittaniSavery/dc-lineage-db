@@ -9,15 +9,15 @@ handler.use(database);
 handler.get(async (req, res) => {
   let query = getMongoQueryForFind(req.query);
 
-  //limiting return for load management
+  const skip = +req.query.skip || 0;
   const limit =
-    req.query.limit && req.query.limit < 200 ? req.query.limit : 200;
+    req.query.limit && req.query.limit < 200 ? +req.query.limit : 200;
 
   const lineages = await req.db
     .collection("lineages")
     .find(query)
     .sort({ "male.breed": 1, "female.breed": 1, generation: 1 })
-    .skip(req.query.skip || 0)
+    .skip(skip)
     .limit(limit)
     .project({
       generation: 1,

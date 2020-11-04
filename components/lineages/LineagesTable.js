@@ -89,7 +89,7 @@ export default function LineagesTable({ lineages, isPublic }) {
           })}
           {lineages.length === 0 && (
             <tr>
-              <td colSpan="6">No results found</td>
+              <td colSpan="7">No results found</td>
             </tr>
           )}
         </tbody>

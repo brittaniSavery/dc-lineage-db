@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { Form } from "react-final-form";
-import useSWR from "swr";
 import { titleCase } from "title-case";
 import { HOLIDAYS, LINEAGE_TYPES } from "../../lib/constants";
 import Button from "../Button";
@@ -20,8 +19,6 @@ export default function SearchForm({
   maleBreeds,
   femaleBreeds,
 }) {
-  const { data: users } = useSWR("/api/users", { initialData: allUsers });
-
   return (
     <Form
       onSubmit={onSubmit}
@@ -84,6 +81,7 @@ export default function SearchForm({
                     name="generation"
                     label="Generation"
                     type="number"
+                    min="1"
                     style={{ width: "5em" }}
                   />
                 </div>
@@ -110,7 +108,7 @@ export default function SearchForm({
                   <SearchableSelectField
                     name="owner"
                     label="Owner"
-                    options={users}
+                    options={allUsers}
                     isClearable
                   />
                 </div>

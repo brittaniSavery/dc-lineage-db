@@ -2,11 +2,11 @@ import { FORM_ERROR } from "final-form";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React from "react";
-import useSWR from "swr";
 import LineagesTable from "../components/lineages/LineagesTable";
 import SearchForm from "../components/lineages/SearchForm";
 import PageLoader from "../components/PageLoader";
 import { getSearchParamsForLineages } from "../lib/helpers";
+import { useLineageSearch } from "../lib/hooks";
 import {
   databaseSetup,
   getAllBreedNames,
@@ -15,30 +15,15 @@ import {
   getMaleBreedNames,
 } from "../middleware/database";
 
-export default function SearchDatabase(props) {
-  //const [results, setResults] = React.useState();
+export default function SearchDatabase({
+  allBreeds,
+  allUsers,
+  maleBreeds,
+  femaleBreeds,
+}) {
   const [search, setSearch] = React.useState(null);
   const router = useRouter();
-
-  const {
-    data: results,
-    error: resultsError,
-    isValidating: resultsLoading,
-  } = useSWR(search ? `/api/lineages?${search}` : null);
-  const isLoading = resultsLoading && !results && !resultsError;
-
-  const { data: maleBreeds } = useSWR("/api/breeds/names?type=male", {
-    initialData: props.maleBreeds,
-  });
-  const { data: femaleBreeds } = useSWR("/api/breeds/names?type=female", {
-    initialData: props.femaleBreeds,
-  });
-  const { data: allBreeds } = useSWR("/api/breeds/names", {
-    initialData: props.allBreeds,
-  });
-  const { data: allUsers } = useSWR("/api/users", {
-    initialData: props.allUsers,
-  });
+  const { lineages, searchError, isSearchLoading } = useLineageSearch(search);
 
   React.useEffect(() => {
     const queryString = router.asPath.split("?")[1];
@@ -51,26 +36,28 @@ export default function SearchDatabase(props) {
     const params = getSearchParamsForLineages(values, true);
     setSearch(params);
 
-    if (!isLoading && resultsError) return { [FORM_ERROR]: resultsError };
+    if (!isSearchLoading && searchError) return { [FORM_ERROR]: searchError };
   };
 
   const validate = (values) => {
     const errors = {};
     if (values.holiday && values.holiday.length > 2)
       errors.holiday = "No more than two holidays can be selected.";
+    if (values.generation < 1)
+      errors.generation = "Generation cannot be less than 1.";
     return errors;
   };
 
-  if (isLoading) return <PageLoader loading={true} />;
+  if (isSearchLoading) return <PageLoader loading={true} />;
 
   return (
     <>
-      {results ? (
+      {lineages ? (
         <>
           <a className="mb-2" onClick={() => setSearch(null)}>
             &lt; Back to Search
           </a>
-          <LineagesTable lineages={results} isPublic />
+          <LineagesTable lineages={lineages} isPublic />
         </>
       ) : (
         <>
@@ -112,5 +99,6 @@ export async function getStaticProps() {
       maleBreeds,
       femaleBreeds,
     },
+    revalidate: 60,
   };
 }

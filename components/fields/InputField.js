@@ -12,8 +12,6 @@ export default function InputField({
   return (
     <Field name={name}>
       {({ input, meta }) => {
-        if (rest.type === "number" && input.value)
-          input.onChange(parseInt(input.value, 10));
         return (
           <div className="field">
             <label className="label">

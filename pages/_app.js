@@ -30,6 +30,12 @@ export default function MyApp({ Component, pageProps }) {
     <SWRConfig
       value={{
         fetcher: (...args) => fetch(...args).then((res) => res.json()),
+        onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+          if (error.status === 404) return; //don't retry for missing routes
+          if (retryCount >= 5) return; //only retry up to five times
+
+          setTimeout(() => revalidate({ retryCount: retryCount + 1 }), 5000); //retry after five seconds
+        },
         onError: (err) => console.error(err),
       }}
     >
