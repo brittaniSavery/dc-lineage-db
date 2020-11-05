@@ -62,6 +62,20 @@ const Attributes = ({ lineage }) => {
   else return null;
 };
 
+const EditButton = React.forwardRef(({ href }, ref) => {
+  return (
+    <Button link color="primary" href={href} ref={ref}>
+      Edit
+      <FontAwesomeIcon className="ml-2" icon="edit" />
+    </Button>
+  );
+});
+
+EditButton.propTypes = {
+  href: PropTypes.string,
+};
+EditButton.displayName = "EditButton";
+
 export default function ViewLineage(props) {
   const { auth } = useAuth();
   const router = useRouter();
@@ -168,10 +182,7 @@ export default function ViewLineage(props) {
                 as={`/lineages/${lineage._id}/edit`}
                 passHref
               >
-                <Button link color="primary">
-                  Edit
-                  <FontAwesomeIcon className="ml-2" icon="edit" />
-                </Button>
+                <EditButton />
               </Link>
               <Button
                 color="danger"
