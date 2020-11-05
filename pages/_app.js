@@ -29,12 +29,22 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <SWRConfig
       value={{
-        fetcher: (...args) => fetch(...args).then((res) => res.json()),
+        fetcher: async (url) => {
+          const controller = new AbortController();
+
+          //a 5-second timeout to kill the current request (prod-only issue)
+          const timeout = setTimeout(() => controller.abort(), 5000);
+
+          const response = await fetch(url, { signal: controller.signal });
+          clearTimeout(timeout); //fetch was successful and short, so clear timeout
+
+          return response.json();
+        },
         onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
           if (error.status === 404) return; //don't retry for missing routes
           if (retryCount >= 5) return; //only retry up to five times
 
-          setTimeout(() => revalidate({ retryCount: retryCount + 1 }), 5000); //retry after five seconds
+          setTimeout(() => revalidate({ retryCount: retryCount + 1 }), 1000); //retry after 1 second
         },
         onError: (err) => console.error(err),
       }}
