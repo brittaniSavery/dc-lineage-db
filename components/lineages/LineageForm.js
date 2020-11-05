@@ -146,6 +146,7 @@ export default function LineageForm({
                       name="generation"
                       label="Generation"
                       type="number"
+                      min="1"
                       style={{ width: "5em" }}
                       required
                     />

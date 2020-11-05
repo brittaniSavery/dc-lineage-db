@@ -17,7 +17,6 @@ export default function DeleteLineageConfirm({
     const result = await fetch(`/api/lineages/${lineage._id}`, {
       method: "DELETE",
     });
-    debugger;
     if (result.ok) setSuccessfulDelete(true);
     else console.log(await result.text());
   };

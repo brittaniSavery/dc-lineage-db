@@ -11,10 +11,10 @@ handler.get(async (req, res) => {
   const femaleName = req.query.female;
 
   const male = await db.findOne({
-    name: new RegExp(escapeRegExp(maleName), "i"),
+    name: new RegExp("^" + escapeRegExp(maleName) + "$", "i"),
   });
   const female = await db.findOne({
-    name: new RegExp(escapeRegExp(femaleName), "i"),
+    name: new RegExp("^" + escapeRegExp(femaleName) + "$", "i"),
   });
 
   //making sure the combination is valid (drake with drake, pygmy with pygmy, etc.)

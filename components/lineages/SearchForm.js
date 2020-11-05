@@ -58,7 +58,6 @@ export default function SearchForm({
                       name="maleBreed"
                       label="Male Breed"
                       options={maleBreeds}
-                      matchFromStart
                       isClearable
                     />
                   </div>
@@ -67,7 +66,6 @@ export default function SearchForm({
                       name="femaleBreed"
                       label="Female Breed"
                       options={femaleBreeds}
-                      matchFromStart
                       isClearable
                     />
                   </div>
