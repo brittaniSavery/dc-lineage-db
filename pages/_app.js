@@ -46,7 +46,10 @@ export default function MyApp({ Component, pageProps }) {
 
           setTimeout(() => revalidate({ retryCount: retryCount + 1 }), 1000); //retry after 1 second
         },
-        onError: (err) => console.error(err),
+        onError: (err) => {
+          if (err.message.includes("aborted")) return; //ignore purposefully cancelled requests
+          console.error(err);
+        },
       }}
     >
       {pageProps.fullScreen && <Component {...pageProps} />}

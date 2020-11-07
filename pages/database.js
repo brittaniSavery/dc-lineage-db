@@ -21,22 +21,29 @@ export default function SearchDatabase({
   maleBreeds,
   femaleBreeds,
 }) {
-  const [search, setSearch] = React.useState(null);
   const router = useRouter();
+  const [search, setSearch] = React.useState(null);
   const { lineages, searchError, isSearchLoading } = useLineageSearch(search);
 
   React.useEffect(() => {
     const queryString = router.asPath.split("?")[1];
     if (queryString) {
       setSearch(queryString);
+    } else {
+      setSearch(null);
     }
-  }, []);
+  });
 
   const onSubmit = async (values) => {
     const params = getSearchParamsForLineages(values, true);
     setSearch(params);
 
     if (!isSearchLoading && searchError) return { [FORM_ERROR]: searchError };
+
+    //shows search in URL (for history purposes)
+    const publicQuery = new URLSearchParams(params);
+    publicQuery.delete("public");
+    router.push(`/database?${publicQuery}`, undefined, { shallow: true });
   };
 
   const validate = (values) => {
@@ -54,7 +61,12 @@ export default function SearchDatabase({
     <>
       {lineages ? (
         <>
-          <a className="mb-2" onClick={() => setSearch(null)}>
+          <a
+            className="mb-2"
+            onClick={() =>
+              router.push("/database", undefined, { shallow: true })
+            }
+          >
             &lt; Back to Search
           </a>
           <LineagesTable lineages={lineages} isPublic />
