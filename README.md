@@ -15,9 +15,7 @@ An online database for lineages and breedings of the digital dragons from the cr
 
 ## 📃 TODO List
 
-- [x] Footer (github link & copyright)
-- [ ] Pagination for database and user lineages
-- [ ] Filter for user lineages
+Check out the current [projects](https://github.com/brittaniSavery/dc-lineage-db/projects) to see what features are coming next.
 
 ## 🤝 Contributing
 
