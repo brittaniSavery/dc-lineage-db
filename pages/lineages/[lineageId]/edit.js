@@ -73,7 +73,8 @@ export default function EditLineage(props) {
     }
   };
 
-  const loading = router.isFallback || (!lineage && !error);
+  const loading =
+    router.isFallback || (!lineage && !error) || !femaleBreeds || !maleBreeds;
 
   if (loading) {
     return <PageLoader loading={true} />;
