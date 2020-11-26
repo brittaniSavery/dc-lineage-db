@@ -2,8 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useRouter } from "next/router";
 import Header from "../../../components/layout/Header";
-import useSWR from "swr";
-import { useAuth } from "../../../lib/hooks";
+import { useAuth, useLineage } from "../../../lib/hooks";
 import Head from "next/head";
 import { LINEAGE_SITES_STATUS, SITE_NAME } from "../../../lib/constants";
 import Subheader from "../../../components/layout/Subheader";
@@ -64,10 +63,10 @@ const Attributes = ({ lineage }) => {
 
 const EditButton = React.forwardRef(({ href }, ref) => {
   return (
-    <Button link color="primary" href={href} ref={ref}>
+    <a className="button is-primary" href={href} ref={ref}>
       Edit
       <FontAwesomeIcon className="ml-2" icon="edit" />
-    </Button>
+    </a>
   );
 });
 
@@ -81,14 +80,11 @@ export default function ViewLineage(props) {
   const router = useRouter();
 
   const { lineageId } = router.query;
-  const { data: lineage, error } = useSWR(
-    lineageId && `/api/lineages/${lineageId}`,
-    { initialData: props.lineage }
-  );
+  const { lineage, isLineageLoading } = useLineage(lineageId, props.lineage);
 
   const [deleteConfirmOpen, setDeleteConfirmOpen] = React.useState(false);
   const [deletedLineage, setDeletedLineage] = React.useState();
-  const loading = router.isFallback || (!lineage && !error);
+  const loading = router.isFallback || isLineageLoading;
 
   //Tell user that things are still loading
   if (loading) {

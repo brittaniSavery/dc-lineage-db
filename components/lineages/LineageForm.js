@@ -235,3 +235,12 @@ export default function LineageForm({
     </>
   );
 }
+
+LineageForm.propTypes = {
+  type: PropTypes.string,
+  lineage: PropTypes.object,
+  maleBreeds: PropTypes.arrayOf(PropTypes.string),
+  femaleBreeds: PropTypes.arrayOf(PropTypes.string),
+  onSubmit: PropTypes.func,
+  lastInserted: PropTypes.number,
+};

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import useSWR from "swr";
-import { useAuth } from "../../../lib/hooks";
+import { useAuth, useLineage } from "../../../lib/hooks";
 import Notification from "../../../components/Notification";
 import {
   databaseSetup,
@@ -20,11 +20,9 @@ export default function EditLineage(props) {
   const { auth } = useAuth();
 
   const { lineageId } = router.query;
-  const { data: lineage, error, mutate: updateLineageCache } = useSWR(
-    lineageId && `/api/lineages/${lineageId}`,
-    {
-      initialData: props.lineage,
-    }
+  const { lineage, isLineageLoading, updateLineageCache } = useLineage(
+    lineageId,
+    props.lineage
   );
   const { data: maleBreeds } = useSWR("/api/breeds/names?type=male", {
     initialData: props.maleBreeds,
@@ -74,7 +72,7 @@ export default function EditLineage(props) {
   };
 
   const loading =
-    router.isFallback || (!lineage && !error) || !femaleBreeds || !maleBreeds;
+    router.isFallback || isLineageLoading || !femaleBreeds || !maleBreeds;
 
   if (loading) {
     return <PageLoader loading={true} />;
