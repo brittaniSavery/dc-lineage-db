@@ -10,7 +10,6 @@ import Link from "next/link";
 import { getDragonDisplay, getSampleLink } from "../../../lib/helpers";
 import Notification from "../../../components/Notification";
 import { titleCase } from "title-case";
-import { databaseSetup, getLineageById } from "../../../middleware/database";
 import ButtonContainer from "../../../components/ButtonContainer";
 import Button from "../../../components/Button";
 import DeleteLineageConfirm from "../../../components/lineages/DeleteLineageConfirm";
@@ -75,12 +74,12 @@ EditButton.propTypes = {
 };
 EditButton.displayName = "EditButton";
 
-export default function ViewLineage(props) {
+export default function ViewLineage() {
   const { auth } = useAuth();
   const router = useRouter();
 
   const { lineageId } = router.query;
-  const { lineage, isLineageLoading } = useLineage(lineageId, props.lineage);
+  const { lineage, isLineageLoading } = useLineage(lineageId);
 
   const [deleteConfirmOpen, setDeleteConfirmOpen] = React.useState(false);
   const [deletedLineage, setDeletedLineage] = React.useState();
@@ -195,30 +194,4 @@ export default function ViewLineage(props) {
       </div>
     </>
   );
-}
-
-ViewLineage.propTypes = {
-  lineage: PropTypes.object,
-};
-
-export async function getStaticPaths() {
-  const db = (await databaseSetup()).db;
-  const ids = await db
-    .collection("lineages")
-    .distinct("_id", { owner: "Forever_Mone" });
-  return {
-    paths: ids.map((id) => ({ params: { lineageId: `${id}` } })),
-    fallback: true,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const db = (await databaseSetup()).db;
-  const lineage = await getLineageById(db, params.lineageId);
-
-  return {
-    props: {
-      lineage: JSON.parse(JSON.stringify(lineage)), //Next uses strict serializing in SSR
-    },
-  };
 }
