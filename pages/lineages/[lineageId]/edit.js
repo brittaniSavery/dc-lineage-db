@@ -49,8 +49,13 @@ export default function EditLineage(props) {
       }
 
       const verifiedResults = await verified.json();
-      values = { ...values, ...verifiedResults };
+      values = {
+        ...values,
+        ...verifiedResults,
+      };
     }
+
+    values.generation = +values.generation; //make generation an actual number type rather than string
 
     updateLineageCache(values, false);
     delete values["_id"]; //deleting to avoid mistype on ObjectId

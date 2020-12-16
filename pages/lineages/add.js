@@ -41,7 +41,12 @@ export default function AddLineage(props) {
     }
 
     const verifiedResults = await verified.json();
-    values = { ...values, ...verifiedResults, owner: auth.user.username };
+    values = {
+      ...values,
+      ...verifiedResults,
+      generation: +values.generation,
+      owner: auth.user.username,
+    };
 
     const inserted = await fetch("/api/lineages", {
       method: "POST",

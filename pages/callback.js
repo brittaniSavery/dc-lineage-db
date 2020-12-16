@@ -4,16 +4,15 @@ import { useRouter } from "next/router";
 import HeroBanner from "../components/layout/HeroBanner";
 
 export default function Login() {
-  const { auth, loading } = useAuth();
+  const { auth, error, loading } = useAuth();
   const router = useRouter();
 
   React.useEffect(() => {
-    if (!loading) {
-      auth && auth.user.isSetup
-        ? router.push("/")
-        : router.push("/users/setup");
+    if (error) router.push("/index?error=login");
+    if (!loading && auth) {
+      auth.user.isSetup ? router.push("/") : router.push("/users/setup");
     }
-  }, [auth, loading]);
+  }, [auth, error, loading]);
 
   return (
     <HeroBanner title="Loading" subtitle="Please wait" fullHeight showTitle />
