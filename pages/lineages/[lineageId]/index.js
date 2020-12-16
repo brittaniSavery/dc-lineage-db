@@ -83,14 +83,13 @@ export default function ViewLineage() {
 
   const [deleteConfirmOpen, setDeleteConfirmOpen] = React.useState(false);
   const [deletedLineage, setDeletedLineage] = React.useState();
-  const loading = router.isFallback || isLineageLoading;
 
   //Tell user that things are still loading
-  if (loading) {
+  if (isLineageLoading) {
     return <Header>Loading...</Header>;
   }
   //Or the lineage is not found
-  else if (!(loading || lineage))
+  else if (!(isLineageLoading || lineage))
     return (
       <>
         <Notification status="error" title="Lineage Not Found">
