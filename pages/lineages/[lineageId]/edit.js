@@ -1,35 +1,26 @@
-import PropTypes from "prop-types";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import useSWR from "swr";
 import { useAuth, useLineage } from "../../../lib/hooks";
 import Notification from "../../../components/Notification";
-import {
-  databaseSetup,
-  getFemaleBreedNames,
-  getLineageById,
-  getMaleBreedNames,
-} from "../../../middleware/database";
 import LineageForm from "../../../components/lineages/LineageForm";
 import PageLoader from "../../../components/PageLoader";
-import { setFormError } from "../../../lib/helpers";
+import { getDragonDisplay, setFormError } from "../../../lib/helpers";
+import Header from "../../../components/layout/Header";
+import Head from "next/head";
+import { SITE_NAME } from "../../../lib/constants";
 
-export default function EditLineage(props) {
+export default function EditLineage() {
   const router = useRouter();
   const { auth } = useAuth();
 
   const { lineageId } = router.query;
   const { lineage, isLineageLoading, updateLineageCache } = useLineage(
-    lineageId,
-    props.lineage
+    lineageId
   );
-  const { data: maleBreeds } = useSWR("/api/breeds/names?type=male", {
-    initialData: props.maleBreeds,
-  });
-  const { data: femaleBreeds } = useSWR("/api/breeds/names?type=female", {
-    initialData: props.femaleBreeds,
-  });
+  const { data: maleBreeds } = useSWR("/api/breeds/names?type=male");
+  const { data: femaleBreeds } = useSWR("/api/breeds/names?type=female");
 
   const onSubmit = async (values, form) => {
     const state = form.getState();
@@ -107,44 +98,22 @@ export default function EditLineage(props) {
       );
   }
 
+  const maleDisplay = getDragonDisplay(lineage.male);
+  const femaleDisplay = getDragonDisplay(lineage.female);
+
   return (
-    <LineageForm
-      type="edit"
-      maleBreeds={maleBreeds}
-      femaleBreeds={femaleBreeds}
-      onSubmit={onSubmit}
-      lineage={lineage}
-    />
+    <>
+      <Head>
+        <title>{`${SITE_NAME}: Edit Lineage - ${maleDisplay} & ${femaleDisplay}`}</title>
+      </Head>
+      <Header>Edit Lineage</Header>
+      <LineageForm
+        type="edit"
+        maleBreeds={maleBreeds}
+        femaleBreeds={femaleBreeds}
+        onSubmit={onSubmit}
+        lineage={lineage}
+      />
+    </>
   );
-}
-
-EditLineage.propTypes = {
-  lineage: PropTypes.object,
-  maleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
-  femaleBreeds: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
-
-export async function getStaticPaths() {
-  const db = (await databaseSetup()).db;
-  const ids = await db
-    .collection("lineages")
-    .distinct("_id", { owner: "Forever_Mone" });
-  return {
-    paths: ids.map((id) => ({ params: { lineageId: `${id}` } })),
-    fallback: true,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  const db = (await databaseSetup()).db;
-  const lineage = await getLineageById(db, params.lineageId);
-
-  return {
-    props: {
-      title: "Edit Lineage",
-      lineage: JSON.parse(JSON.stringify(lineage)), //Next uses strict serializing in SSR
-      maleBreeds: await getMaleBreedNames(db),
-      femaleBreeds: await getFemaleBreedNames(db),
-    },
-  };
 }
