@@ -32,7 +32,7 @@ test("Returns all female breed names", async () => {
 
 /**
  * Extending the {expect} matcher to check if object within an array contains a specific set of properties
- * @param {Array} received - The array to seach within
+ * @param {Array} received - The array to search within
  * @param {object} argument - The object of the set of properties to be find in array
  */
 expect.extend({
