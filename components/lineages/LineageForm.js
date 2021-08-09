@@ -54,7 +54,7 @@ export default function LineageForm({
   return (
     <>
       <p className="pb-5">
-        All fields marked with an asterik (*) are{" "}
+        All fields marked with an asterisk (*) are{" "}
         <span className="has-text-info">required</span>. A male code or female
         code is also required.
       </p>

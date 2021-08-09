@@ -54,7 +54,7 @@ Button.propTypes = {
       (shade && !BUTTON.SHADES.includes(shade))
     )
       return new Error(
-        `Invalid prop ${props[propName]} suppplied to ${componentName}. Validation failed.`
+        `Invalid prop ${props[propName]} supplied to ${componentName}. Validation failed.`
       );
   },
   size: PropTypes.oneOf(BUTTON.SIZES),

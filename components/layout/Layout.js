@@ -7,7 +7,7 @@ import Navigation from "./Navigation";
 
 export default function Layout({ title, children }) {
   return (
-    <section className="section">
+    <section>
       <Head>
         <title>{`${SITE_NAME}: ${
           title === "Home" ? "A Dragon Cave fansite for lineage lovers" : title
