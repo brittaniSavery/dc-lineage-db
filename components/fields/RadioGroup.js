@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Field, useField } from "react-final-form";
+import Button from "../Button";
 
 export default function RadioGroup({
   name,
@@ -36,6 +37,11 @@ export default function RadioGroup({
       {!field.meta.error && help && <p className="help">{help}</p>}
       {field.meta.error && field.meta.touched && (
         <p className="help is-danger">{field.meta.error}</p>
+      )}
+      {field.input.value && (
+        <Button color="text" onClick={() => field.input.onChange()}>
+          Clear
+        </Button>
       )}
     </div>
   );
