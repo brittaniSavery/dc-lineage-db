@@ -2,11 +2,12 @@ import PropTypes from "prop-types";
 import React from "react";
 import { Form } from "react-final-form";
 import { titleCase } from "title-case";
-import { HOLIDAYS, LINEAGE_TYPES } from "../../lib/constants";
+import { HOLIDAYS, LINEAGE_STATUS, LINEAGE_TYPES } from "../../lib/constants";
 import Button from "../Button";
 import ButtonContainer from "../ButtonContainer";
 import CheckboxGroup from "../fields/CheckboxGroup";
 import InputField from "../fields/InputField";
+import RadioGroup from "../fields/RadioGroup";
 import SearchableSelectField from "../fields/SearchableSelectField";
 import SelectField from "../fields/SelectField";
 import Notification from "../Notification";
@@ -90,6 +91,14 @@ export default function SearchForm({
                     options={LINEAGE_TYPES}
                   />
                 </div>
+                <div className="column">
+                  <SearchableSelectField
+                    name="owner"
+                    label="Owner"
+                    options={allUsers}
+                    isClearable
+                  />
+                </div>
               </div>
             </div>
             <div className="column is-12">
@@ -102,12 +111,13 @@ export default function SearchForm({
                     getOptionLabel={(option) => titleCase(option)}
                   />
                 </div>
-                <div className="column">
-                  <SearchableSelectField
-                    name="owner"
-                    label="Owner"
-                    options={allUsers}
-                    isClearable
+                <div className="column is-narrow">
+                  <RadioGroup
+                    name="status"
+                    label="Status"
+                    options={LINEAGE_STATUS}
+                    getOptionLabel={(x) => x.label}
+                    getOptionValue={(x) => x.value}
                   />
                 </div>
               </div>
