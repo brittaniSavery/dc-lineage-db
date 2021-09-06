@@ -15,10 +15,10 @@ export default function AddLineage(props) {
   const router = useRouter();
   const { auth } = useAuth();
   const { data: maleBreeds } = useSWR("/api/breeds/names?type=male", {
-    initialData: props.maleBreeds,
+    fallbackData: props.maleBreeds,
   });
   const { data: femaleBreeds } = useSWR("/api/breeds/names?type=female", {
-    initialData: props.femaleBreeds,
+    fallbackData: props.femaleBreeds,
   });
   const [lastInserted, setLastInserted] = React.useState();
 
