@@ -14,6 +14,7 @@ import ButtonContainer from "../../../components/ButtonContainer";
 import Button from "../../../components/Button";
 import DeleteLineageConfirm from "../../../components/lineages/DeleteLineageConfirm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import parse from "html-react-parser";
 
 const ParentColumn = ({ dragon, gender }) => (
   <div className="column">
@@ -23,7 +24,7 @@ const ParentColumn = ({ dragon, gender }) => (
       <b>Breed:</b> {dragon.breed}
     </p>
     <p>
-      <b>Name:</b> {getDragonDisplay(dragon)}
+      <b>Name:</b> {parse(getDragonDisplay(dragon))}
     </p>
     {dragon.code && (
       <p>
@@ -32,7 +33,7 @@ const ParentColumn = ({ dragon, gender }) => (
           target="_blank"
           rel="noreferrer"
         >
-          {`View Lineage of ${getDragonDisplay(dragon)}`}
+          {parse(`View Lineage of ${getDragonDisplay(dragon)}`)}
         </a>
       </p>
     )}

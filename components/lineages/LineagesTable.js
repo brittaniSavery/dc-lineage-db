@@ -5,6 +5,7 @@ import { getDragonDisplay, getSampleLink } from "../../lib/helpers";
 import { useAuth } from "../../lib/hooks";
 import Link from "next/link";
 import DeleteLineageConfirm from "./DeleteLineageConfirm";
+import parse from "html-react-parser";
 
 export default function LineagesTable({ lineages, isPublic }) {
   const { auth } = useAuth();
@@ -43,12 +44,19 @@ export default function LineagesTable({ lineages, isPublic }) {
               <tr key={`lineage-${index}`}>
                 <td>{lineage.generation}</td>
                 <td>{lineage.type}</td>
-                <td>{`${lineage.male.breed} - ${getDragonDisplay(
-                  lineage.male
-                )}`}</td>
-                <td>{`${lineage.female.breed} - ${getDragonDisplay(
-                  lineage.female
-                )}`}</td>
+                <td>
+                  {parse(
+                    `${lineage.male.breed} - ${getDragonDisplay(lineage.male)}`
+                  )}
+                </td>
+                <td>
+                  {parse(
+                    `${lineage.female.breed} - ${getDragonDisplay(
+                      lineage.female
+                    )}`
+                  )}
+                </td>
+
                 <td>{getSampleLink(lineage)}</td>
                 {isPublic && <td>{lineage.owner}</td>}
                 <td style={{ whiteSpace: "nowrap" }}>

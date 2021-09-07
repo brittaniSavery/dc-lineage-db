@@ -179,7 +179,7 @@ export default function LineageForm({
                   name="srogg"
                   label={
                     <span>
-                      <abbr title="Special Release Offspring Gifiting Group">
+                      <abbr title="Special Release Offspring Gifting Group">
                         SROGG
                       </abbr>{" "}
                       Entry
