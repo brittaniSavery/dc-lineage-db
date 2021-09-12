@@ -1,6 +1,7 @@
 import nextConnect from "next-connect";
 import database from "../../../middleware/database";
 import { getMongoQueryForFind } from "../../../lib/helpers";
+import { PAGE_SIZE } from "../../../lib/constants";
 
 const handler = nextConnect();
 handler.use(database);
@@ -11,14 +12,14 @@ handler.get(async (req, res) => {
 
   const skip = +req.query.skip || 0;
   const limit =
-    req.query.limit && req.query.limit < 200 ? +req.query.limit : 200;
+    req.query.limit && req.query.limit < PAGE_SIZE
+      ? +req.query.limit
+      : PAGE_SIZE;
 
-  const lineages = await req.db
+  const lineageCursor = await req.db
     .collection("lineages")
     .find(query)
     .sort({ "male.breed": 1, "female.breed": 1, generation: 1 })
-    .skip(skip)
-    .limit(limit)
     .project({
       generation: 1,
       type: 1,
@@ -26,10 +27,15 @@ handler.get(async (req, res) => {
       female: 1,
       owner: 1,
       sample: 1,
-    })
-    .toArray();
+    });
 
-  res.json(lineages);
+  const total = await lineageCursor.count();
+  const lineages = await lineageCursor.skip(skip).limit(limit).toArray();
+
+  // closing the cursor
+  await lineageCursor.close();
+
+  res.json({ total: total, lineages: lineages });
 });
 
 handler.post(async (req, res, next) => {

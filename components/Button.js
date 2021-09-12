@@ -11,6 +11,7 @@ export default function Button({
   loading = false,
   link = false,
   children,
+  className,
   ...rest
 }) {
   const variantClass = BUTTON.VARIANTS.includes(variant) && `is-${variant}`;
@@ -32,10 +33,17 @@ export default function Button({
 
   return (
     <ButtonTag
-      className={classNames("button", variantClass, sizeClass, colorClass(), {
-        "is-fullwidth": fullWidth,
-        "is-loading": loading,
-      })}
+      className={classNames(
+        "button",
+        className,
+        variantClass,
+        sizeClass,
+        colorClass(),
+        {
+          "is-fullwidth": fullWidth,
+          "is-loading": loading,
+        }
+      )}
       {...rest}
     >
       {children}
@@ -62,4 +70,5 @@ Button.propTypes = {
   loading: PropTypes.bool,
   link: PropTypes.bool,
   children: PropTypes.node,
+  className: PropTypes.string,
 };

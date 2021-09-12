@@ -2,9 +2,12 @@ import { FORM_ERROR } from "final-form";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import React from "react";
+import Button from "../components/Button";
+import Pagination from "../components/layout/Pagination";
 import LineagesTable from "../components/lineages/LineagesTable";
 import SearchForm from "../components/lineages/SearchForm";
 import PageLoader from "../components/PageLoader";
+import { PAGE_SIZE } from "../lib/constants";
 import { getSearchParamsForLineages } from "../lib/helpers";
 import { useLineageSearch } from "../lib/hooks";
 import {
@@ -23,14 +26,30 @@ export default function SearchDatabase({
 }) {
   const router = useRouter();
   const [search, setSearch] = React.useState(null);
-  const { lineages, searchError, isSearchLoading } = useLineageSearch(search);
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const { total, lineages, searchError, isSearchLoading } = useLineageSearch(
+    search,
+    currentPage,
+    PAGE_SIZE
+  );
 
   React.useEffect(() => {
-    const queryString = router.asPath.split("?")[1];
-    if (queryString) {
-      setSearch(queryString);
+    const query = router.query;
+
+    if (Object.keys(query).length) {
+      // setting the current page from the url
+      if ("page" in query) {
+        setCurrentPage(+query.page);
+        delete query.page;
+      }
+
+      // getting the search criteria
+      const newSearch = new URLSearchParams(query);
+      setSearch(newSearch.toString());
     } else {
+      // resetting the search
       setSearch(null);
+      setCurrentPage(1);
     }
   });
 
@@ -43,7 +62,14 @@ export default function SearchDatabase({
     //shows search in URL (for history purposes)
     const publicQuery = new URLSearchParams(params);
     publicQuery.delete("public");
-    router.push(`/database?${publicQuery}`, undefined, { shallow: true });
+    router.push(`/database?${publicQuery}&page=${currentPage}`, undefined, {
+      shallow: true,
+    });
+  };
+
+  const onPageChange = (page) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
   };
 
   const validate = (values) => {
@@ -61,15 +87,26 @@ export default function SearchDatabase({
     <>
       {lineages ? (
         <>
-          <a
-            className="mb-2"
-            onClick={() =>
-              router.push("/database", undefined, { shallow: true })
-            }
+          <Button
+            onClick={() => {
+              router.push("/database", undefined, { shallow: true });
+            }}
+            color="primary"
+            className="mb-3"
           >
-            &lt; Back to Search
-          </a>
+            Return to Search
+          </Button>
+          <Pagination
+            currentPage={currentPage}
+            totalItems={total}
+            handlePageChange={(p) => onPageChange(p)}
+          />
           <LineagesTable lineages={lineages} isPublic />
+          <Pagination
+            currentPage={currentPage}
+            totalItems={total}
+            handlePageChange={(p) => onPageChange(p)}
+          />
         </>
       ) : (
         <>
