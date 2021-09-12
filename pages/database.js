@@ -51,7 +51,7 @@ export default function SearchDatabase({
     if (values.holiday && values.holiday.length > 2)
       errors.holiday = "No more than two holidays can be selected.";
     if (values.generation < 1)
-      errors.generation = "Generation cannot be less than 1.";
+      errors.generation = "Generation must be 2 or greater.";
     return errors;
   };
 
