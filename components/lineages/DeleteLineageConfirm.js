@@ -5,10 +5,12 @@ import Notification from "../Notification";
 import { getDragonDisplay } from "../../lib/helpers";
 import ButtonContainer from "../ButtonContainer";
 import Button from "../Button";
+import parse from "html-react-parser";
 
 export default function DeleteLineageConfirm({
   open = false,
-  onClose = () => null,
+  onClose = (f) => f,
+  onSuccessClose = (f) => f,
   lineage,
 }) {
   const [successfulDelete, setSuccessfulDelete] = React.useState(false);
@@ -29,7 +31,7 @@ export default function DeleteLineageConfirm({
       <div className="modal-content">
         {successfulDelete ? (
           <Notification status="success" title="Deletion Complete!">
-            <Button variant="outlined" onClick={onClose}>
+            <Button variant="outlined" onClick={onSuccessClose}>
               Close
             </Button>
           </Notification>
@@ -47,11 +49,20 @@ export default function DeleteLineageConfirm({
                 <ul>
                   <li>
                     <b>Male: </b>
-                    {lineage.male.breed} - {getDragonDisplay(lineage.male)}
+                    {parse(
+                      `${lineage.male.breed} - ${getDragonDisplay(
+                        lineage.male
+                      )}`
+                    )}
                   </li>
                   <li>
                     <b>Female: </b>
-                    {lineage.female.breed} - {getDragonDisplay(lineage.female)}
+                    {}
+                    {parse(
+                      `${lineage.female.breed} - ${getDragonDisplay(
+                        lineage.female
+                      )}`
+                    )}
                   </li>
                 </ul>
               </div>
@@ -82,5 +93,6 @@ export default function DeleteLineageConfirm({
 DeleteLineageConfirm.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  onSuccessClose: PropTypes.func.isRequired,
   lineage: PropTypes.object,
 };
