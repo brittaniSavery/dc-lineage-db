@@ -70,6 +70,13 @@ export default function SearchDatabase({
   const onPageChange = (page) => {
     setCurrentPage(page);
     window.scrollTo(0, 0);
+
+    const query = router.query;
+    query.page = page;
+    const newQuery = new URLSearchParams(query);
+    router.push(`/database?${newQuery.toString()}`, undefined, {
+      shallow: true,
+    });
   };
 
   const validate = (values) => {

@@ -6,6 +6,7 @@ import { useAuth } from "../../lib/hooks";
 import Link from "next/link";
 import DeleteLineageConfirm from "./DeleteLineageConfirm";
 import parse from "html-react-parser";
+import router from "next/router";
 
 export default function LineagesTable({ lineages, isPublic }) {
   const { auth } = useAuth();
@@ -19,6 +20,11 @@ export default function LineagesTable({ lineages, isPublic }) {
         onClose={() => {
           setDeletedLineage();
           setDeleteConfirmOpen(false);
+        }}
+        onSuccessClose={() => {
+          setDeletedLineage();
+          setDeleteConfirmOpen(false);
+          router.reload();
         }}
         lineage={deletedLineage}
       />

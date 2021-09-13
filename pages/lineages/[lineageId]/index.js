@@ -115,6 +115,13 @@ export default function ViewLineage() {
           setDeletedLineage();
           setDeleteConfirmOpen(false);
         }}
+        onSuccessClose={() => {
+          if (window.history.length > 1) {
+            router.back();
+          } else {
+            router.push("/database");
+          }
+        }}
         lineage={deletedLineage}
       />
 
