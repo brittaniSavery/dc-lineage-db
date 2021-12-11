@@ -4,8 +4,7 @@ import { Form } from "react-final-form";
 import { titleCase } from "title-case";
 import {
   HOLIDAYS,
-  LINEAGE_SITES_STATUS,
-  LINEAGE_STATUS,
+  LINEAGE_SEARCH_STATUS,
   LINEAGE_TYPES,
 } from "../../lib/constants";
 import Button from "../Button";
@@ -108,6 +107,15 @@ export default function SearchForm({
             </div>
             <div className="column is-12">
               <div className="columns">
+                <div className="column is-narrow">
+                  <RadioGroup
+                    name="status"
+                    label="Status"
+                    options={LINEAGE_SEARCH_STATUS}
+                    getOptionLabel={(x) => x.label}
+                    getOptionValue={(x) => x.value}
+                  />
+                </div>
                 <div className="column is-narrow" style={{ width: "8em" }}>
                   <CheckboxGroup
                     name="holiday"
@@ -117,41 +125,13 @@ export default function SearchForm({
                   />
                 </div>
                 <div className="column is-narrow">
-                  <RadioGroup
-                    name="status"
-                    label="Status"
-                    options={LINEAGE_STATUS}
-                    getOptionLabel={(x) => x.label}
-                    getOptionValue={(x) => x.value}
-                  />
-                </div>
-                <div className="column is-narrow">
-                  <RadioGroup
-                    name="cdc"
-                    label={
-                      <span>
-                        <abbr title="Checker Database Center">CDC</abbr> Entry
-                      </span>
+                  <CheckboxGroup
+                    name="databases"
+                    label="Database Status"
+                    options={["cdc", "srogg"]}
+                    getOptionLabel={(option) =>
+                      `Show Only Incomplete ${option.toUpperCase()} entries`
                     }
-                    options={LINEAGE_SITES_STATUS}
-                    getOptionLabel={(x) => x.label}
-                    getOptionValue={(x) => x.value}
-                  />
-                </div>
-                <div className="column is-narrow">
-                  <RadioGroup
-                    name="srogg"
-                    label={
-                      <span>
-                        <abbr title="Special Release Offspring Gifting Group">
-                          SROGG
-                        </abbr>{" "}
-                        Entry
-                      </span>
-                    }
-                    options={LINEAGE_SITES_STATUS}
-                    getOptionLabel={(x) => x.label}
-                    getOptionValue={(x) => x.value}
                   />
                 </div>
               </div>
