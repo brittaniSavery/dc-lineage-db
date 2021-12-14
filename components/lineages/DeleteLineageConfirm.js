@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import Notification from "../Notification";
-import { getDragonDisplay } from "../../lib/helpers";
+import { getLineageDisplay } from "../../lib/helpers";
 import ButtonContainer from "../ButtonContainer";
 import Button from "../Button";
 import parse from "html-react-parser";
@@ -24,6 +24,8 @@ export default function DeleteLineageConfirm({
   };
 
   if (!lineage) return null;
+
+  const lineageDisplay = getLineageDisplay(lineage);
 
   return (
     <div className={classNames("modal", { "is-active": open })}>
@@ -50,18 +52,14 @@ export default function DeleteLineageConfirm({
                   <li>
                     <b>Male: </b>
                     {parse(
-                      `${lineage.male.breed} - ${getDragonDisplay(
-                        lineage.male
-                      )}`
+                      `${lineage.male.breed} - ${lineageDisplay.male.view}`
                     )}
                   </li>
                   <li>
                     <b>Female: </b>
                     {}
                     {parse(
-                      `${lineage.female.breed} - ${getDragonDisplay(
-                        lineage.female
-                      )}`
+                      `${lineage.female.breed} - ${lineageDisplay.female.view}`
                     )}
                   </li>
                 </ul>

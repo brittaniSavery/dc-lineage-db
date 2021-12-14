@@ -7,33 +7,32 @@ import Head from "next/head";
 import { LINEAGE_SITES_STATUS, SITE_NAME } from "../../../lib/constants";
 import Subheader from "../../../components/layout/Subheader";
 import Link from "next/link";
-import { getDragonDisplay, getSampleLink } from "../../../lib/helpers";
+import { getLineageDisplay, getSampleLink } from "../../../lib/helpers";
 import Notification from "../../../components/Notification";
 import { titleCase } from "title-case";
 import ButtonContainer from "../../../components/ButtonContainer";
 import Button from "../../../components/Button";
 import DeleteLineageConfirm from "../../../components/lineages/DeleteLineageConfirm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import parse from "html-react-parser";
 
-const ParentColumn = ({ dragon, gender }) => (
+const ParentColumn = ({ name, code, gender, breed }) => (
   <div className="column">
     <Subheader>{gender || "male"}</Subheader>
     {/* <img src="/images/Aeon_Wyvern_male.png" alt="" className="py-2" /> */}
     <p>
-      <b>Breed:</b> {dragon.breed}
+      <b>Breed:</b> {breed}
     </p>
     <p>
-      <b>Name:</b> {parse(getDragonDisplay(dragon))}
+      <b>Name:</b> {name}
     </p>
-    {dragon.code && (
+    {code && (
       <p>
         <a
-          href={`https://dragcave.net/lineage/${dragon.code}`}
+          href={`https://dragcave.net/lineage/${code}`}
           target="_blank"
           rel="noreferrer"
         >
-          {parse(`View Lineage of ${getDragonDisplay(dragon)}`)}
+          View Lineage of {name}
         </a>
       </p>
     )}
@@ -41,8 +40,10 @@ const ParentColumn = ({ dragon, gender }) => (
 );
 
 ParentColumn.propTypes = {
-  dragon: PropTypes.object,
+  name: PropTypes.node,
+  code: PropTypes.string,
   gender: PropTypes.string,
+  breed: PropTypes.string,
 };
 
 const Attributes = ({ lineage }) => {
@@ -59,6 +60,10 @@ const Attributes = ({ lineage }) => {
       </div>
     );
   else return null;
+};
+
+Attributes.propTypes = {
+  lineage: PropTypes.object,
 };
 
 const EditButton = React.forwardRef(({ href }, ref) => {
@@ -99,16 +104,17 @@ export default function ViewLineage() {
       </>
     );
 
-  const maleDisplay = getDragonDisplay(lineage.male);
-  const femaleDisplay = getDragonDisplay(lineage.female);
+  const lineageDisplay = getLineageDisplay(lineage);
   const lineageSample = getSampleLink(lineage, true);
 
   return (
     <>
       <Head>
-        <title>{`${SITE_NAME}: ${maleDisplay} & ${femaleDisplay}`}</title>
+        <title>{`${SITE_NAME}: ${lineageDisplay.male.title} & ${lineageDisplay.female.title}`}</title>
       </Head>
-      <Header>{`${maleDisplay} & ${femaleDisplay}`}</Header>
+      <Header>
+        {lineageDisplay.male.view} {"&"} {lineageDisplay.female.view}
+      </Header>
       <DeleteLineageConfirm
         open={deleteConfirmOpen}
         onClose={() => {
@@ -126,8 +132,18 @@ export default function ViewLineage() {
       />
 
       <div className="columns pt-3">
-        <ParentColumn dragon={lineage.male} gender="male" />
-        <ParentColumn dragon={lineage.female} gender="female" />
+        <ParentColumn
+          name={lineageDisplay.male.view}
+          code={lineage.male.code}
+          breed={lineage.male.breed}
+          gender="male"
+        />
+        <ParentColumn
+          name={lineageDisplay.female.view}
+          code={lineage.female.code}
+          breed={lineage.female.breed}
+          gender="female"
+        />
       </div>
       <div className="columns">
         <div className="column">

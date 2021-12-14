@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import parse from "html-react-parser";
-
 export default function Header({
   site = false,
   centered = false,
@@ -17,7 +15,7 @@ export default function Header({
       })}
       {...rest}
     >
-      {parse(children)}
+      {children}
     </h1>
   );
 }

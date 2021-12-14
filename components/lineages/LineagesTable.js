@@ -1,11 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getDragonDisplay, getSampleLink } from "../../lib/helpers";
+import { getLineageDisplay, getSampleLink } from "../../lib/helpers";
 import { useAuth } from "../../lib/hooks";
 import Link from "next/link";
 import DeleteLineageConfirm from "./DeleteLineageConfirm";
-import parse from "html-react-parser";
 import router from "next/router";
 
 export default function LineagesTable({ lineages, isPublic }) {
@@ -46,25 +45,14 @@ export default function LineagesTable({ lineages, isPublic }) {
           <tbody>
             {lineages.map((lineage, index) => {
               const isPrivate = auth && auth.user.username === lineage.owner;
+              const lineageDisplay = getLineageDisplay(lineage);
 
               return (
                 <tr key={`lineage-${index}`}>
                   <td>{lineage.generation}</td>
                   <td>{lineage.type}</td>
-                  <td>
-                    {parse(
-                      `${lineage.male.breed} - ${getDragonDisplay(
-                        lineage.male
-                      )}`
-                    )}
-                  </td>
-                  <td>
-                    {parse(
-                      `${lineage.female.breed} - ${getDragonDisplay(
-                        lineage.female
-                      )}`
-                    )}
-                  </td>
+                  <td>{lineageDisplay.male.table}</td>
+                  <td>{lineageDisplay.female.table}</td>
 
                   <td>{getSampleLink(lineage)}</td>
                   {isPublic && <td>{lineage.owner}</td>}
