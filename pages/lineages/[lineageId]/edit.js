@@ -6,7 +6,7 @@ import { useAuth, useLineage } from "../../../lib/hooks";
 import Notification from "../../../components/Notification";
 import LineageForm from "../../../components/lineages/LineageForm";
 import PageLoader from "../../../components/PageLoader";
-import { getDragonDisplay, setFormError } from "../../../lib/helpers";
+import { getLineageDisplay, setFormError } from "../../../lib/helpers";
 import Header from "../../../components/layout/Header";
 import Head from "next/head";
 import { SITE_NAME } from "../../../lib/constants";
@@ -98,13 +98,12 @@ export default function EditLineage() {
       );
   }
 
-  const maleDisplay = getDragonDisplay(lineage.male);
-  const femaleDisplay = getDragonDisplay(lineage.female);
+  const lineageDisplay = getLineageDisplay(lineage);
 
   return (
     <>
       <Head>
-        <title>{`${SITE_NAME}: Edit Lineage - ${maleDisplay} & ${femaleDisplay}`}</title>
+        <title>{`${SITE_NAME}: Edit Lineage - ${lineageDisplay.male.title} & ${lineageDisplay.female.title}`}</title>
       </Head>
       <Header>Edit Lineage</Header>
       <LineageForm
